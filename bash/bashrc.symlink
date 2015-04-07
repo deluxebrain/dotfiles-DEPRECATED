@@ -1,0 +1,27 @@
+# Linux and OSX (via `/usr/bin/launch -l` Terminal options) spawn interactive non-login shells
+# `.bashrc` is therefore the main dotfile for environment configuration
+
+# `.bashrc` is pointed to by $BASH_ENV for non-interactive shells
+# Hence this file is split into interactive (Terminal) and non-interfactive (e.g. Cron) sections
+case $- in
+ *i*)	# interactive
+	interactive
+ ;;
+ *) 	# non-interactive
+	non-interactive
+ ;;
+esac
+
+non-interactive()
+{
+}
+
+interactive()
+{
+
+# Connect to the ssh-agent
+# Note you would not "normally" have todo this when using Terminal on OSX
+# However, for some reason this is not auto-wired when using a non-login shell
+eval $(ssh-aent)
+
+}
