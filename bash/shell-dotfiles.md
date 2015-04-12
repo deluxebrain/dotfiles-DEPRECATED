@@ -52,48 +52,62 @@ As noted above, Linux windowing systems execute the interactive login dotfile ch
 
 In addition, the files are normally executed using the `dash` shell.
 
-### dotfile strategy
+## Strategy to unify dotfile approach across platforms
 1. Align OSX behaviour with Linux by forcing Terminal sessions to spawn an interactive non-login shell.
 2. Setup environment in `.bashrc`
 3. To support logging in remotely, create a `.bash_profile` which simply sources the `.bashrc`
 
-#### Caveats with unifying OSX and Linux dotfiles mechanism
+### Caveats with unifying OSX and Linux dotfiles mechanism
 Note that OSX spawning interactive login shells when launching Terminal is the correct behaviour as, unlike Linux, this actually represents the first Posix subsystem login event.
 
 In addition, changing the OSX behaviour to spawn non-login shells has the side-affect that the full chain of dotfiles tied to a login shell is never read. Specifically, the `/etc/profile` is never executed and hence cannot be utilised as part of environment configuration.
 
 However, within the context of the configuration of a development environment (as opposed to a server environment) the benefits of a unified dotfile mechanism out weighs this limitation.
 
-#### Forcing OSX to spawn non-login interactive shells
+### Forcing OSX to spawn non-login interactive shells
 Use the `/usr/bin/login` utility to log specified user (`-f`) into the system using a non-login (`-l`) shell.
 
 The `-f` options allows a specific shell to be specified (in this case `/bin/bash`).
 
-> Note that OSX normally starts an `ssh-agent` daemon when an interactive login shell is spawned by a terminal emulator. 
-E.g. within a vanilla Terminal window `ssh-add -l` will work automatically without an `ssh-agent` daemon having to be explicitly started. **This is not the case when using a non-login shell** meaning the `ssh-agent` will need to be explicitly started using `eval $(ssh-agent)`.
+> Note that this approach breaks the default OSX behaviour to automatically launch `ssh-agent` on demand within the spawned shell. `ssh-agent` therefore needs to be explicitly started in the dotfiles.
 
-##### Spawning interactive non-login shell in Terminal  
+#### Spawning interactive non-login shell in Terminal  
 1. Terminal ...
 2. Preferences ...
 3. General ...
 4. Shells open with ...
 5. Command: `/usr/bin/login -l -f <user> /bin/bash`
 
-##### Spawning interactive non-login shell in iTerm2
+#### Spawning interactive non-login shell in iTerm2
 1. iTerm ...
 2. Preferences ...
 3. Profile ...
 4. General ...
 5. Command: `/usr/bin/login -l -f <user> /bin/bash`
 
-#### `.bashrc` and `.bash_profile` structure
-> See actual `.bashrc` and `.bash_profile` dotfiles
+## Cross platform `ssh` identity management
+
+On OSX, `ssh-agent` is integrated with `launchd` such that `ssh-agent` is automatically started on demand. In addition, `ssh-add` (with the `-K` option) adds the ssh identity and passphrase to Keychain, which is then used directly by `ssh-agent`. This prevents `ssh-add` from needing to be called again. 
+
+> The auto launch `ssh-agent` behaviour is implemented by creating a socket on a system-wide `ssh-agent` instance and pointing the ssh agent forwarding environment variable (`$SSH_AUTH_SOCK`) at this socket. This environment variable is set by default by e.g. Terminal when lauching login shells (e.g. `echo $SSH_AUTH_SOCK`). 
+
+This means that the *usual approach* on OSX (i.e. within `.bash_profile` for a login interactive shell) for ssh identity management is to **take no explicit action**. 
+
+However, to provide a unified approach that works across platforms, shell types and terminal multiplexers (`screen`, `tmux`) identity management is made explicit by directly launching `ssh-agent` and telling it about keys using  `ssh-add`.   
+
+## Overview of `.bashrc` and `.bash_profile` structure
+
+> Due to the apporach of standardising on using interactive non-login shells, the `.bashrc` becomes the master dotfile
+
+Certain steps are not necessary under all certain circumstances. I.e. these form a superset of commong steps across all platforms. 
 
 1. Split `.bashrc` into interactive and non-interactive sections. 
 	* The interactive session will be used for e.g. terminal sessions. 
 	* The non-interactive sessions will use used for e.g. `cron` jobs in conjunction with the `$BASH_ENV`
-2. Source the `.bashrc` file from the `.bash_profile` file to ensure environment is setup for e.g. remote connections.
-3. Check in `.bash_profile` if the file is being executed within an interactive login shell. Warn (`echo` to `stderr`) if so as this implies that the terminal emulator has not been configured correctly.
+2. Spawn (or attach to an existing) `ssh-agent`. As noted, this is not required under OSX when using the default login shell. 
+3. Add ssh identities to `ssh-agent` using `ssh-add`. Note that certain display managers have hooks to automatically perform this step.
+4. Source the `.bashrc` file from the `.bash_profile` file to ensure environment is setup for e.g. remote connections.
+5. Check in `.bash_profile` if the file is being executed within an interactive login shell. Warn (`echo` to `stderr`) if so as this implies that the terminal emulator has not been configured correctly.
 
 Note that the warning in the `.bash_profile` file will not affect desktop environment login as Linux windows systems execute the `~/.profile` file at login.
 
@@ -102,12 +116,15 @@ Note that the warning in the `.bash_profile` file will not affect desktop enviro
 `[[ $- == *i* ]] && echo 'interactive' || 'non-interative'`
 
 #### Notes
-`[[`		: test (without word splitting nor pathname expansion)
-`$-`		: current options set for the shell
-`s1 == s2`	: string s1 is identical to string s2, where s2 can be a wildcard pattern
-`*`		: match any string of zero or more characters 
 
-###  More structures test for interactive shell
+snippet		| description
+---		| ---
+`[[`		| test (without word splitting nor pathname expansion)
+`$-`		| current options set for the shell
+`s1 == s2`	| string s1 is identical to string s2, where s2 can be a wildcard pattern
+`*`		| match any string of zero or more characters 
+
+###  More structured test for interactive shell
 ```bash
 case $- in
  *i*)	# interactive commands go here
@@ -121,21 +138,22 @@ esac
 
 #### Notes
 	
----	|	---
-`)`	|	case values are demarcated with the `)` character
-`|*?`	|	case values can contain patterns
-`;;`	|	skip to `esac` keyword
+snippet		| description
+---		| --- 
+`)`		| case values are demarcated with the `)` character
+`|*?`		| case values can contain patterns
+`;;`		| skip to `esac` keyword
 
 ### Testing for login shell
 `shopt -q login_shell && echo 'login shell' || 'not-login shell'` 
 
 #### Notes
 
-a		|	a
----		|	---
-`shopt`		|	control bash shell options
-`-q`		|	suppress output (quiet)
-`login_shell`	|	read-only shell descriptor set by the shell when it is a login shell
+snippet		| description
+---		| ---
+`shopt`		| control bash shell options
+`-q`		| suppress output (quiet)
+`login_shell`	| read-only shell descriptor set by the shell when it is a login shell
 
 ## Use of `$BASH_ENV` in non-interactive shells
 When bash is started non-interactively (e.g. to run a shell script) it looks for the `$BASH_ENV` environment variable, expands its value and uses the expanded value as the name of a file to read and execute.
