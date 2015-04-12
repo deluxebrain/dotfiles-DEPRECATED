@@ -131,6 +131,7 @@ esac
 
 #### Notes
 
+a		|	a
 ---		|	---
 `shopt`		|	control bash shell options
 `-q`		|	suppress output (quiet)
