@@ -4,6 +4,28 @@
 
 ### SSH agent forwarding
 
+SSH agent forwarding allows all SSH access to a group of servers to be centralised through a single bastion server. This has the following benefits:
+
+* It is only necessary to open up firewall access to the bastion server. The other servers are accesses via the bastion and hence do not require explicit external access.
+* It is only necessary (nor possible) to copy your public key to the bastion server. Without agent forwarding, to access server B from server A would required your public key to be added to both servers (which in turn would require you to add your private key to server A).
+
+With SSH agent forwarding, all authentication requests are forwarded back to the SSH client on your local machine. Agent forwarding creates a socket on the SSH server and sets its location in the `$SSH_AUTH_SOCK` environment variable. SSH access from the SSH server out to other machines is then authenticated via this socket back to the SSH client on your machine.
+
+**Note SSH agent forwarding presents a security risk in that if the remote server is compromised the intruder can use the socket to authenticate across machines**
+
+#### Limiting SSH agent forwarding
+
+Due to the risks associated with SSH agent forwarding, it should only be used when explicitly required and for trusted servers. Best practice is to disabled it system-wide, and then re-enable it per host.
+
+```script
+# Within /etc/ssh_config
+AllowAgentForwarding no
+
+# Within ~/.ssh/config
+Host <my_trusted_host>
+	ForwardAgent yes
+```
+
 ### SSH port forwarding
 
 ## Some notes on SSH configuration
