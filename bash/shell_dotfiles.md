@@ -93,8 +93,14 @@ On OSX, `ssh-agent` is integrated with `launchd` such that `ssh-agent` is automa
 
 This means that the *usual approach* on OSX (i.e. within `.bash_profile` for a login interactive shell) for ssh identity management is to **take no explicit action**. 
 
-However, to provide a unified approach that works across platforms, shell types and terminal multiplexers (`screen`, `tmux`) identity management is made explicit by directly launching `ssh-agent` and telling it about keys using  `ssh-add`.   
+However, to provide a unified approach that works across platforms, shell types and terminal multiplexers (`screen`, `tmux`) identity management is made explicit by directly launching `ssh-agent` and telling it about keys using  `ssh-add`.
 
+To allow this approach to fallback gracefully in the cases where on-demand `ssh-agents` are available, this is done as follows:
+
+1. Perform a command (e.g. `ssh-add -l`) that would result in the auto-launching is an `ssh-agent`.
+2. If this succeeds then an `sss-agent` is running and the `$SSH_AUTH_SOCK` environment variable is set. Do nothing more.
+3. If this fais, then explicit creation of an `ssh-agent` is required. This is done in the usual fashion, with the addition of a `trap` to kill the agent when the shell exits.
+   
 ## Overview of `.bashrc` and `.bash_profile` structure
 
 > Due to the apporach of standardising on using interactive non-login shells, the `.bashrc` becomes the master dotfile
