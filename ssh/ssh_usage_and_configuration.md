@@ -1,19 +1,16 @@
 # SSH Usage and Configuration
 
-## Some notes on SSH usage
+## SSH agent forwarding
 
-### SSH agent forwarding
+**tl;dr;** Dont use SSH agent forwarding due to its associated security implications. Use `proxycommand` instead.
 
-SSH agent forwarding allows all SSH access to a group of servers to be centralised through a single bastion server. This has the following benefits:
+SSH agent forwarding allows you to access a chain of SSH servers without installing your private key onto any of them by chaining SSH authentication back to the originating SSH client.
 
-* It is only necessary to open up firewall access to the bastion server. The other servers are accessed via the bastion and hence do not require explicit external access.
-* It is only necessary (nor possible) to copy your public key to the bastion server. Without agent forwarding, to access server B from server A would required your public key to be added to both servers (which in turn would require you to add your private key to server A).
-
-With SSH agent forwarding, all authentication requests are forwarded back to the SSH client on your local machine. Agent forwarding creates a socket on the SSH server and sets its location in the `$SSH_AUTH_SOCK` environment variable. SSH access from the SSH server out to other machines is then authenticated via this socket back to the SSH client on your machine.
+With SSH agent forwarding, all authentication requests are forwarded back to the SSH client on your local machine. Agent forwarding creates a socket on each originating SSH server and sets its location in the `$SSH_AUTH_SOCK` environment variable. SSH access from tha SSH server out to other SSH servers is then authenticated via this socket back to the SSH client on your machine.
 
 **Note SSH agent forwarding presents a security risk in that if the remote server is compromised the intruder can use the socket to authenticate across machines**
 
-#### Limiting SSH agent forwarding
+### Limiting SSH agent forwarding
 
 Due to the risks associated with SSH agent forwarding, it should only be used when explicitly required and for trusted servers. Best practice is to disabled it system-wide, and then re-enable it per host.
 
@@ -25,6 +22,45 @@ AllowAgentForwarding no
 Host <my_trusted_host>
 	ForwardAgent yes
 ```
+
+### Using SSH agent
+
+To allows password-less logins, the public key of the originating user will need to be installed into the `~/.ssh/authorized_keys` of each host in the SSH chain.
+
+#### Command-line usage
+
+* Use the `-A` option to enable agent forwarding.
+* Use the `-t` option on all `ssh` commands that specify a command to be run to force a pseudo-tty to be attached and prevent it exiting after running the command.
+
+To SSH to **Server3** via **Server1** and then **Server2**:
+`ssh -A -t Server1 ssh -A -t Server2 ssh -A Server 3` 
+
+#### SSH config usage
+
+```shell
+Host Jump
+	HostName <some_ip> or <some_dns>
+	User <my_user>
+	ForwardAgent yes
+
+Host Destination
+	HostName <some_ip> or <some_dns>
+	User <my_user>
+
+# Use the -t option to prevent the SSH connection to Jump from exiting
+ssh -t Jump ssh Destination
+```
+
+## SSH `proxycommand`
+
+SSH `proxycommand` offers the same functionality as SSH agent forwarding  of connecting to SSH servers via a series of intermediaries. However, it has none of the security risks that comes with agent forwarding associated with the `$SSH_AUTH_SOCK`.
+
+> As of OpenSSH version 5.4, the SSH `proxycommand` option can be run in a **netcat mode** that does not need the explicit use (nor installation) of the `netcat` utility.
+
+
+
+
+
 
 ### SSH port forwarding
 
