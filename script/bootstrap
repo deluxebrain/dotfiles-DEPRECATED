@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+#
+# bootstrap the dotfiles setup
+
+# exit immediately if a command returns non-zero
+set -e
+
+# printf colours
+NORMAL='\033[0m'
+BLUE='\033[34;01m'
+CYAN='\033[36;01m'
+GREEN='\033[32;01m'
+RED='\033[31m'
+GRAY='\033[37;01m'
+YELLOW='\033[33;01m'
+
+info () {
+	printf "  [ $GRAY..$NORMAL ] $1"
+
+user () {
+	printf "\r  [ $BLUE?$NORMAL ] $1 "
+}
+
+success () {
+	printf "\r [ $GREENOK$NORMAL ] $1\n"
+}
+
+
+
+
+file_exists () {
+	# check if destination exists (in one of various forms)
+	# note a function that ends without an explcit return statement
+	# returns the exit code of the last executed command
+	: <<:'EOF
+	[		| Use [ (as opposed to [[) so we get pathname expansion
+	"$1"		| Treat expanded path as a literal
+	-o		| OR the conditions together
+	-f 		| file exists
+	-d		| file exists and is a directory
+	-L		| file exists and is a symlink
+	'EOF'
+	[ -f "$1" -o -d "$1" -o -L "$1" ] 
+}
+
+dst_points_to_src () {
+	# check if dst is a symlink that points to src 
+	local target = "$(readlink $dst)"
+	[ "$target" == "$src" ]
+}
+
+prompt_for_file_overwrite_action () {
+	
+}
+
+link_file () {
+	# function (local) scoped variables
+	local src=$1 dst=$2
+	local overwrite backup skip
+	local action
+
+	if file_exists "$dst"
+	then
+
+	fi
+}
+
+main () {
+	# change into the directory above that holding the script
+	: <<'eof'
+	dirname		| convert full pathname to just a path
+	{0}		| name of current script
+	" 		| literal string except for e.g. $
+	'eof'
+	cd "$(dirname "$0")/.."
+}
