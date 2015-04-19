@@ -6,71 +6,125 @@
 set -e
 
 # printf colours
-NORMAL='\033[0m'
-BLUE='\033[34;01m'
-CYAN='\033[36;01m'
-GREEN='\033[32;01m'
-RED='\033[31m'
-GRAY='\033[37;01m'
-YELLOW='\033[33;01m'
+NORMAL_PEN='\033[0m'
+BLUE_PEN='\033[34;01m'
+CYAN_PEN='\033[36;01m'
+GREEN_PEN='\033[32;01m'
+RED_PEN='\033[31m'
+GRAY_PEN='\033[37;01m'
+YELLOW_PEN='\033[33;01m'
 
-info () {
-	printf "  [ $GRAY..$NORMAL ] $1"
+info_msg () {
+	printf " [ ${GRAY_PEN}..${NORMAL_PEN} ] $1\n"
 
-user () {
-	printf "\r  [ $BLUE?$NORMAL ] $1 "
+prompt_msg () {
+	printf " [ ${BLUE_PEN}?${NORMAL_PEN} ] $1\n"
 }
 
-success () {
-	printf "\r [ $GREENOK$NORMAL ] $1\n"
+success_msg () {
+	printf " [ ${GREEN_PEN}OK${NORMAL_PEN} ] $1\n"
 }
 
+fail_and_exit () {
+	printf " [ ${RED_PEN}FAIL${NORMAL_PEN} ] $1\n"
+	exit
+}
 
-
-
-file_exists () {
+if_file_exists () {
 	# check if destination exists (in one of various forms)
 	# note a function that ends without an explcit return statement
 	# returns the exit code of the last executed command
-	: <<:'EOF
-	[		| Use [ (as opposed to [[) so we get pathname expansion
-	"$1"		| Treat expanded path as a literal
-	-o		| OR the conditions together
-	-f 		| file exists
-	-d		| file exists and is a directory
-	-L		| file exists and is a symlink
-	'EOF'
+	#  [		
+	## Use [ (as opposed to [[) so we get pathname expansion
+	#  "$1"	: Treat expanded path as a literal
+	#  -o 	: OR the conditions together
+	# -f 	: file exists
+	# -d	: file exists and is a directory
+	# -L	: file exists and is a symlink
 	[ -f "$1" -o -d "$1" -o -L "$1" ] 
 }
 
+deal_with_existing_file () {
+	src=$1 dst=$2
+
+	if [ "$overwrite_all" == false ] && /
+		[ "$backup_all" == false ] && /
+		[ "$skip_all" == false ]; then
+		return 0
+	fi
+
+	if dst_points_to_src $src $dst; then
+		skip=true;
+		return 0
+	fi
+	
+	prompt_for_file_overwrite_action $src $dst
+}
+
 dst_points_to_src () {
-	# check if dst is a symlink that points to src 
+	src=$1 dst=$2	
+
+	# check if dst is a symlink that points to src
+	# readlink returns blank and error if not a symlink 
 	local target = "$(readlink $dst)"
 	[ "$target" == "$src" ]
 }
 
 prompt_for_file_overwrite_action () {
-	
+	local action
+	src=$1 dst=$2
+
+	#  ${string##substring}
+	## delete the longest match of $substring from from of $string
+	prompt_msg << EOF
+	File already exists: $dst (${src##*/}); what do you want todo?
+	[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?
+	EOF
+
+	# read one byte into $action 
+	read -n 1 action
+
+	case "$action" in
+	  o )
+	    overwrite=true;;
+	  O )
+	    overwrite_all=true;;
+	  b ) 
+	    backup=true;
+	  B )
+	    backup_all=true;
+	  s )
+	    skip=true;
+	  S )
+	    skip_all=true;
+	  * )
+	    ;;
+	esac	
 }
 
 link_file () {
-	# function (local) scoped variables
-	local src=$1 dst=$2
 	local overwrite backup skip
-	local action
+	src=$1 dst=$2
 
-	if file_exists "$dst"
-	then
-
+	if file_exists "$dst"; then
+		deal_with_existing_file $src Â$dst
 	fi
+
+	if_file_exists "$dst" && deal_with_existing_file "$src" "$dst"
+}
+
+get_script_directory () {
+	#  BASH_SOURCE		
+	## internal bash variable containing array of pathnames
+	## expand as string ( e.g. $"BASH_SOURE" ) to get the first element
+	## which is the pathname of the currently executing script
+	#  ${string%substring}
+	## delete the shortest match of $substring from back of $string
+	script_dir="${BASH_SOURCE%/*}"	
+
+	# use echo to allow the output to be captured 
+	echo $script_dir
 }
 
 main () {
-	# change into the directory above that holding the script
-	: <<'eof'
-	dirname		| convert full pathname to just a path
-	{0}		| name of current script
-	" 		| literal string except for e.g. $
-	'eof'
-	cd "$(dirname "$0")/.."
 }
