@@ -31,48 +31,51 @@ fail_and_exit () {
 }
 
 if_file_exists () {
-	# check if destination exists (in one of various forms)
+	local path=$1
+
+	# check if paths  exists (in one of various forms)
 	# note a function that ends without an explcit return statement
 	# returns the exit code of the last executed command
-	#  [		
-	## Use [ (as opposed to [[) so we get pathname expansion
-	#  "$1"	: Treat expanded path as a literal
-	#  -o 	: OR the conditions together
-	# -f 	: file exists
-	# -d	: file exists and is a directory
-	# -L	: file exists and is a symlink
-	[ -f "$1" -o -d "$1" -o -L "$1" ] 
+	#  [		: Test with pathname expansion (as opposed to [[)
+	#  "$path"	: Treat expanded path as a literal
+	#  -o 		: OR the conditions together
+	# -f 		: file exists
+	# -d		: file exists and is a directory
+	# -L		: file exists and is a symlink
+	[ -f "$path" -o -d "$path" -o -L "$path" ] 
 }
 
 deal_with_existing_file () {
-	src=$1 dst=$2
+	local src=$1 dst=$2
 
-	if [ "$overwrite_all" == false ] && /
-		[ "$backup_all" == false ] && /
-		[ "$skip_all" == false ]; then
+	if /
+		[ "$g_overwrite_all" == false ] && /
+		[ "$g_backup_all" == false ] && /
+		[ "$g_skip_all" == false ]; then
 		return 0
 	fi
 
-	if dst_points_to_src $src $dst; then
-		skip=true;
+	if dst_points_to_src "$src" "$dst"; then
+		g_skip=true;
 		return 0
 	fi
 	
-	prompt_for_file_overwrite_action $src $dst
+	prompt_for_file_overwrite_action "$src" "$dst"
 }
 
 dst_points_to_src () {
-	src=$1 dst=$2	
+	local src=$1 dst=$2	
+	local target
 
 	# check if dst is a symlink that points to src
 	# readlink returns blank and error if not a symlink 
-	local target = "$(readlink $dst)"
+	target = "$(readlink $dst)"
 	[ "$target" == "$src" ]
 }
 
 prompt_for_file_overwrite_action () {
+	local src=$1 dst=$2
 	local action
-	src=$1 dst=$2
 
 	#  ${string##substring}
 	## delete the longest match of $substring from from of $string
@@ -86,29 +89,25 @@ prompt_for_file_overwrite_action () {
 
 	case "$action" in
 	  o )
-	    overwrite=true;;
+	    g_overwrite=true;;
 	  O )
-	    overwrite_all=true;;
+	    g_overwrite_all=true;;
 	  b ) 
-	    backup=true;
+	    g_backup=true;
 	  B )
-	    backup_all=true;
+	    g_backup_all=true;
 	  s )
-	    skip=true;
+	    g_skip=true;
 	  S )
-	    skip_all=true;
+	    g_skip_all=true;
 	  * )
 	    ;;
 	esac	
 }
 
 link_file () {
-	local overwrite backup skip
-	src=$1 dst=$2
-
-	if file_exists "$dst"; then
-		deal_with_existing_file $src Â$dst
-	fi
+	local src=$1 dst=$2
+	g_overwrite=false g_backup=false g_skip=false
 
 	if_file_exists "$dst" && deal_with_existing_file "$src" "$dst"
 }
