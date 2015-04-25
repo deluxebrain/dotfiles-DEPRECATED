@@ -114,13 +114,42 @@ prompt_for_file_overwrite_action () {
 link_file () {
 	local src=$1 dst=$2
 	local overwrite backup skip
+	local dst_backup
 	g_overwrite=false g_backup=false g_skip=false
 
 	# work out what todo when source points to an existing destination
 	if_file_exists "$dst" && deal_with_existing_file "$src" "$dst"
 
-	if [[ $g_overwrite || $overwrite ]] ; then
-	
+	if [[ $g_overwrite || $overwrite ]]; then
+		info_msg "removing $dst"
+		rm -rf "$dst"
+		success_msg "removed $dst"
+	if
+
+	if [[ $g_backup || $backup ]]; then
+		dst_backup=$(file_backup_strategy "$dst")
+		info_msg "backing up $dst to $dst_backup" 
+		mv "$dst" "$dst_backup"
+		success_msg "moved $dst to $dst_backup"
+	fi
+
+	if [[ $g_skip || $skip ]]; then
+		info_msg "skipping $src"
+		return 0;
+	fi
+
+	# link target to point at source
+	# -s	: create a symbolic link
+	# -f	: unlink the target if it exists
+	# -n	: if target is already a symlink, dont follow it
+	info_msg "linking $src to $dst" 
+	ln -sfn
+	success_msg "linked $src to $dst"
+}
+
+file_backup_strategy () {
+	local path=$1
+	echo "${dst}.backup"
 }
 
 get_script_directory () {
@@ -134,6 +163,14 @@ get_script_directory () {
 
 	# use echo to allow the output to be captured 
 	echo $script_dir
+}
+
+link_dotfiles () {
+	g_overwrite_all=false backup_all=false skip_all=false
+
+	info_msg "linking dotfiles ..."
+
+
 }
 
 main () {
