@@ -129,38 +129,33 @@ The `-f` options allows a specific shell to be specified (in this case `/bin/bas
 3. Profile ...
 4. General ...
 5. Command: `/usr/bin/login -l -f <user> /bin/bash`
-
-## Cross platform `ssh` identity management
-On OS X, `ssh-agent` is integrated with `launchd` such that `ssh-agent` is automatically started on demand. In addition, `ssh-add` (with the `-K` option) adds the ssh identity and passphrase to Keychain, which is then used directly by `ssh-agent`. This prevents `ssh-add` from needing to be called again. 
-
-> The auto launch `ssh-agent` behaviour is implemented by creating a socket on a system-wide `ssh-agent` instance and pointing the ssh agent forwarding environment variable (`$SSH_AUTH_SOCK`) at this socket. This environment variable is set by default by e.g. Terminal when lauching login shells (e.g. `echo $SSH_AUTH_SOCK`). 
-
-This means that the *usual approach* on OSX (i.e. within `.bash_profile` for a login interactive shell) for ssh identity management is to **take no explicit action**. 
-
-However, to provide a unified approach that works across platforms, shell types and terminal multiplexers (`screen`, `tmux`) identity management is made explicit by directly launching `ssh-agent` and telling it about keys using  `ssh-add`.
-
-To allow this approach to fallback gracefully in the cases where on-demand `ssh-agents` are available, this is done as follows:
-
-1. Perform a command (e.g. `ssh-add -l`) that would result in the auto-launching is an `ssh-agent`.
-2. If this succeeds then an `sss-agent` is running and the `$SSH_AUTH_SOCK` environment variable is set. Do nothing more.
-3. If this fais, then explicit creation of an `ssh-agent` is required. This is done in the usual fashion, with the addition of a `trap` to kill the agent when the shell exits.
    
 ## Overview of `.bashrc` and `.bash_profile` structure
 > Due to the apporach of standardising on using interactive non-login shells, the `.bashrc` becomes the master dotfile
 
-Certain steps are not necessary under all certain circumstances. I.e. these form a superset of commong steps across all platforms. 
+Certain steps are not necessary under all circumstances. I.e. these form a superset of common steps across all platforms. 
 
 1. Split `.bashrc` into interactive and non-interactive sections. 
 	* The interactive session will be used for e.g. terminal sessions. 
 	* The non-interactive sessions will use used for e.g. `cron` jobs in conjunction with the `$BASH_ENV`
-2. Spawn (or attach to an existing) `ssh-agent`. As noted, this is not required under OSX when using the default login shell. 
-3. Add ssh identities to `ssh-agent` using `ssh-add`. Note that certain display managers have hooks to automatically perform this step.
+2. Spawn (or attach to an existing) `ssh-agent`. As noted, this is not required under OS X when using the default login shell. 
+3. Add ssh identities to `ssh-agent` using `ssh-add`. 
 4. Source the `.bashrc` file from the `.bash_profile` file to ensure environment is setup for e.g. remote connections.
 5. Check in `.bash_profile` if the file is being executed within an interactive login shell. Warn (`echo` to `stderr`) if so as this implies that the terminal emulator has not been configured correctly.
 
 Note that the warning in the `.bash_profile` file will not affect desktop environment login as Linux windows systems execute the `~/.profile` file at login.
 
-## Use of `$BASH_ENV` in non-interactive shells
-When bash is started non-interactively (e.g. to run a shell script) it looks for the `$BASH_ENV` environment variable, expands its value and uses the expanded value as the name of a file to read and execute.
+## Cross-platform `ssh` identity management
+On OS X, `ssh-agent` is integrated with `launchd` such that `ssh-agent` is automatically started on demand. In addition, `ssh-add` (with the `-K` option) adds the ssh identity and passphrase to Keychain, which is then used directly by `ssh-agent`. This prevents `ssh-add` from needing to be called again. 
 
-The `$BASH_ENV` variable is commonly set in shell scripts and `crontab` files to ensure that the shell environment is configured at time of execution. One common approach is point `$BASH_ENV` at a file that links to `.bash_rc`. Inturn, `.bash_rc` then detects whether it is being run interactively (or non-interactively) and configures the environment accordingly.
+> The auto launch `ssh-agent` behaviour is implemented by creating a socket on a system-wide `ssh-agent` instance and pointing the ssh agent forwarding environment variable (`$SSH_AUTH_SOCK`) at this socket. This environment variable is set by default by e.g. Terminal when lauching login shells (e.g. `echo $SSH_AUTH_SOCK`). 
+
+This means that the *usual approach* on OS X (i.e. within `.bash_profile` for a login interactive shell) for ssh identity management is to **take no explicit action**. 
+
+However, to provide a unified approach that works across platforms, shell types and terminal multiplexers (`screen`, `tmux`) identity management is made explicit by directly launching `ssh-agent` and telling it about keys using  `ssh-add`.
+
+To allow this approach to fallback gracefully in the cases where on-demand `ssh-agents` are available, this is done as follows:
+
+1. Perform a command (e.g. `ssh-add -l`) that would result in the auto-launching of an `ssh-agent`.
+2. If this succeeds then an `sss-agent` is running and the `$SSH_AUTH_SOCK` environment variable is set. Do nothing more.
+3. If this fais, then explicit creation of an `ssh-agent` is required. This is done in the usual fashion, with the addition of a `trap` to kill the agent when the shell exits.
