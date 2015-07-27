@@ -1,7 +1,7 @@
-# Linux and OSX (via `/usr/bin/launch -l` Terminal options) spawn interactive non-login shells
+# Linux and OS X (via `/usr/bin/launch -l` terminal options) spawn interactive non-login shells
 # `.bash_profile` is read as part of spawning interactive login shells (for example via `ssh`)
 
-# Check if we are being run from a login shell. Warn accordingly.
+# check if we are being run from a login shell and warn accordingly;
 shopt -q login_shell && >&2 echo <<EOF
 WARN: .bash_profile is running within a *login* shell.
 This could mean that your terminal emulator is incorrectly configured to spawn login shells

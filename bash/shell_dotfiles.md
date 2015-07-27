@@ -86,7 +86,7 @@ snippet		| description
 `login_shell`	| read-only shell descriptor set by the shell when it is a login shell
 
 ## Linux vs OS X terminal sessions
-* Linux terminal sessions execute as an interactive non-login shell. This is because Linux windowing system will have already executed the `.profile` dotfile as part of login.
+* Linux terminal sessions execute as an interactive non-login shell. This is because Linux windowing systems will have already executed the `.profile` dotfile as part of login.
 * OS X terminal sessions execute as an interactive login shell. This is because OS X has a different approach to handling user environments and hence has not executed any dotfiles.
 
 ### A note on Linux desktop environment and dotfiles

@@ -1,11 +1,10 @@
-# Linux and OSX (via `/usr/bin/launch -l` Terminal options) spawn interactive non-login shells
+# Linux and OS X (via `/usr/bin/launch -l` terminal options) spawn interactive non-login shells
 # `.bashrc` is therefore the main dotfile for environment configuration
 
-# start ssh-agent, using existing agent if available
+# start ssh-agent, using existing agent if available;
 # note this is not absolutely necessary if the window manager is set to 
-# auto-start ssh-agent on first use (e.g. as with OSX ssh-agent launchd integration)
+# auto-start ssh-agent on first use (e.g. as with OS X ssh-agent launchd integration);
 start_ssh_agent () {
-
 	# detect if ssh-agent is running
 	# &> redirects stdout and stderr
 	# (equivalent to > /dev/null 2>&1)
@@ -13,9 +12,10 @@ start_ssh_agent () {
 		
 	# test (with expansion) the exit status (2 means actual error)
 	if [ "$?" == 2 ]; then
-		# test exists and is readable
-		# if so, eval the contents
+		# test exists and is readable ( -r )
 		[[ -r ~/.ssh-agent ]] && \
+			# "	--> so we get expansion
+			# $()	--> command substitution 
 			eval "$(< ~/.ssh-agent)" > /dev/null
 		
 		ssh-add -l &> /dev/null
@@ -46,5 +46,5 @@ interactive_shell () {
 }
 
 # `.bashrc` is pointed to by $BASH_ENV for non-interactive shells
-# Hence this file is split into interactive (Terminal) and non-interfactive (e.g. Cron) sections
+# Hence this file is split into interactive (e.g terminal) and non-interfactive (e.g. Cron) sections
 [[ $- == *i* ]] && interactive || non_interactive
