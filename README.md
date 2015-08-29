@@ -4,10 +4,10 @@
 
 ### Homebrew
 
-Homebrew``` is a dependendy in the following ways:
+```Homebrew``` is a dependendy in the following ways:
 
-1. As the runner for the package and application ```Brewfile``` and ```Caskfile``` that can optionally be run as part of installation
-2. One of the packages in the ```Brewfile``` (`bash-completion`) adds auto-completion to various Bash commands. This is configured in the symlinked ```.bash_profile```
+1. As the runner for the package and application ```Brewfile``` and ```Caskfile``` that can optionally be run as part of installation;
+2. One of the packages in the ```Brewfile``` (`bash-completion`) adds auto-completion to various Bash commands. This is configured in the symlinked ```.bash_profile```;
 
 ``` shell
 # Install Homebew
@@ -18,19 +18,20 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 ### SSH key management
 
-1. Create a new key
+1. Create a new ssh key pair:
 
 	``` shell
-	ssh-keygen -trsa -C "email@example.com"
+	ssh-keygen -t rsa -C "email@example.com"
 	```
 
-2. Add the new to the authentication agent (```sss-agent```) and store the passphrase in your keychain (```-K```)
+2. Add the new to the authentication agent (```sss-agent```):
 
 	``` shell
+	# Use the -K switch to store your passphrase
 	ssh-add -K ~/.ssh/id.rsa
 	```
 
-3. Verify the key was added successfull
+3. Verify the key was added successfully;
 
 	``` shell
 	ssh-add -l
@@ -38,14 +39,14 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 ### Adding your key to GitHib
 
-1. Copy your public key to the clipboard
+1. Copy your public key to the clipboard:
 
 	``` shell 
 	pbcopy < ~/.ssh/id_rsa.pub 
 	```
 
-2. Manually register the public key with your GitHub account
-3. Verify ssh connectivity to GitHub
+2. Manually register your public key with your GitHub account;
+3. Verify ssh connectivity to GitHub:
 
 	``` shell
 	# Use the -T switch so that a text terminal (tty) is not requested)
