@@ -1,10 +1,13 @@
-# longboatharry's dotfiles
+# @longboatharry's dotfiles
 
 ## Prerequisites
+
 ### Homebrew
-**Homebrew** is a dependendy in the following ways:
-1. As the runner for the package and application `Brewfile` and `Caskfile` that can optionally be run as part of installation
-2. One of the packages in the `Brewfile` (`bash-completion`) adds auto-completion to various Bash commands. This is configured in the symlinked `.bash_profile`
+
+Homebrew``` is a dependendy in the following ways:
+
+1. As the runner for the package and application ```Brewfile``` and ```Caskfile``` that can optionally be run as part of installation
+2. One of the packages in the ```Brewfile``` (`bash-completion`) adds auto-completion to various Bash commands. This is configured in the symlinked ```.bash_profile```
 
 ``` shell
 # Install Homebew
@@ -12,10 +15,42 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 ```
 
 ## Pre-installation considerations
-### SSH key pairs
-The `bootstrap.sh` Bash script creates a symlink to `~/.ssh' from the repository file `ssh.symlink`. 
-This has the side afffect of overwriting any existing `~/.ssh` directory and hence any pre-existing SSH key pairs.
-The script will backup any existing `~/.ssh` directory to `~/.ssh_backup`, which in turn will be overwritten on subsequent runs of the bootstrapper.
+
+### SSH key management
+
+1. Create a new key
+
+	``` shell
+	ssh-keygen -trsa -C "email@example.com"
+	```
+
+2. Add the new to the authentication agent (```sss-agent```) and store the passphrase in your keychain (```-K```)
+
+	``` shell
+	ssh-add -K ~/.ssh/id.rsa
+	```
+
+3. Verify the key was added successfull
+
+	``` shell
+	ssh-add -l
+	```
+
+### Adding your key to GitHib
+
+1. Copy your public key to the clipboard
+
+	``` shell 
+	pbcopy < ~/.ssh/id_rsa.pub 
+	```
+
+2. Manually register the public key with your GitHub account
+3. Verify ssh connectivity to GitHub
+
+	``` shell
+	# Use the -T switch so that a text terminal (tty) is not requested)
+	ssh -T git@github.com
+	```
 
 ## Installation
 Clone dotfiles repositoy, e.g. to `~/Projects/dotfiles` and fork the `bootstrap.sh` script.
