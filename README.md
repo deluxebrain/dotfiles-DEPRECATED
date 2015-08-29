@@ -3,19 +3,47 @@
 ## Prerequisites
 
 ### Homebrew
+
 ```Homebrew``` is a dependendy in the following ways:
 
 1. As the runner for the package and application ```Brewfile``` and ```Caskfile``` that can optionally be run as part of installation;
 2. One of the packages in the ```Brewfile``` (`bash-completion`) adds auto-completion to various Bash commands. This is configured in the symlinked ```.bash_profile```;
 
-``` shell
-# Install Homebew
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-```
+#### Installing Homebrew
+
+1. Run the installer:
+
+	``` shell
+	# Install Homebew
+	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	```
+
+2. Check everything works by running the self-dianoser:
+
+	``` shell
+	brew doctor
+	```
+
+#### Maintaining Homebrew
+
+1. Update Homebrew and bring down new formulae:
+
+	``` shell
+	# This updates Homebrew - it **doe not** udpate any software installed via Homebrew
+	brew update
+	```
+
+2. Updgrade software installed via Homebrew:
+	
+	``` shell
+	# This upgrades all software in the Homebrew Cellar
+	brew upgrade
+	```
 
 ## Getting ready to install
 
 ### Creating an ssh key pair
+
 1. Create a new ssh key pair:
 
 	``` shell
