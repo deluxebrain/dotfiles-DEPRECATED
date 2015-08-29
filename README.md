@@ -3,7 +3,6 @@
 ## Prerequisites
 
 ### Homebrew
-
 ```Homebrew``` is a dependendy in the following ways:
 
 1. As the runner for the package and application ```Brewfile``` and ```Caskfile``` that can optionally be run as part of installation;
@@ -14,30 +13,31 @@
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
-## Pre-installation considerations
+## Getting ready to install
 
-### SSH key management
-
+### Creating an ssh key pair
 1. Create a new ssh key pair:
 
 	``` shell
 	ssh-keygen -t rsa -C "email@example.com"
 	```
 
-2. Add the new to the authentication agent (```sss-agent```):
+2. Add the new to the authentication agent (```ssh-agent```):
+
+	> Note that on OS X, ```ssh-agent``` is integrated with ```launchd``` such that ```ssh-agent``` is automatically started on demand.
 
 	``` shell
 	# Use the -K switch to store your passphrase
 	ssh-add -K ~/.ssh/id.rsa
 	```
 
-3. Verify the key was added successfully;
+3. Verify the key was added successfully:
 
 	``` shell
 	ssh-add -l
 	```
 
-### Adding your key to GitHib
+### Adding your public key to GitHib
 
 1. Copy your public key to the clipboard:
 
@@ -52,6 +52,12 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 	# Use the -T switch so that a text terminal (tty) is not requested)
 	ssh -T git@github.com
 	```
+
+### Moving to a better terminal
+
+
+
+
 
 ## Installation
 Clone dotfiles repositoy, e.g. to `~/Projects/dotfiles` and fork the `bootstrap.sh` script.
