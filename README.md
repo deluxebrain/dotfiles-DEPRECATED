@@ -18,11 +18,18 @@
 	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	```
 
-2. Check everything works by running the self-dianoser:
+2. Check everything works by running the self-diagnoser:
 
 	``` shell
 	brew doctor
 	```
+
+### Homebrew minimum to know to get going
+
+1. ``` brew help```, or ```man brew``` to get some help
+2. Type ```brew search``` for a list
+3. Type ```brew search [package]``` to search for a specific package
+
 
 #### Maintaining Homebrew
 
@@ -33,7 +40,7 @@
 	brew update
 	```
 
-2. Updgrade software installed via Homebrew:
+2. Updgrade all software installed via Homebrew:
 	
 	``` shell
 	# This upgrades all software in the Homebrew Cellar
