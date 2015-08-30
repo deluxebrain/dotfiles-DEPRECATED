@@ -5,32 +5,46 @@
 # This installs some of the common dependencies needed (or at least desired)
 # using Homebrew.
 
-# Check for Homebrew 
-: <<'EOF'
-:		| no-op (can take arguments)
-here 		| ensure that the delimiter word must be quoted to avoid expansion within the here document
-command -v 	| describe a command without executing it, exit 1 if doesn't exist
-> /dev/null 	| redirect stdout to null device
-2>&1		| redirect stderr to stdout
-|| 		| run command on right if command on left returns with exit 1
-{ } 		| multi-line command group, use ; to delimit commands if on single line
-'EOF'
-command -v brew > /dev/null 2>&1 || {
-	echo "Installing Homebrew ..."
-	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+app_exists? () {
+	local app=$1
+	# command-v | describe a command without executing it, exit 1 if doesn't exist
+	command -v $($app) &> /dev/null
 }
 
-# Update Homebrew
-brew update
+install_brew () {
+	app_exists? "brew" || {
+        	echo "Installing Homebrew ..."
+        	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	}
 
-# Upgrade any existing formulae
-brew upgrade
+	app_exists? "brew cask" || {
+		echo "Installing Cask ..."
+		brew install caskroom/cask/brew-cask
 
+	}
 
+	echo "Updating Homebrew ..."
+	brew update
 
+	echo "Checking for updates to any pre-existing formulae ..."
+	brew upgrade
+}
 
+install_brew_packages () {
+	brew install grc coreutils spark
+	brew install wget
+}
 
-# Install homebrew packages
-brew install grc coreutils spark
+install_cask_packages () {
+	brew cask install iterm2
+}
 
-exit 0
+main () {
+	install_brew
+	install_brew_packages
+	install_cask_packages
+	
+	exit 0
+}
+
+main
