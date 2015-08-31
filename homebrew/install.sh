@@ -7,6 +7,7 @@
 
 load_dependencies() {
         local script_dir="${BASH_SOURCE%/*}"
+	# source the scripts into the current shell process
         source "${script_dir}/../functions/pretty-print.sh"
         source "${script_dir}/../functions/if-exists.sh"
 }
@@ -33,6 +34,7 @@ install_brew () {
 install_brew_packages () {
 	brew install grc coreutils spark
 	brew install wget
+	brew install pstree
 }
 
 install_cask_packages () {
