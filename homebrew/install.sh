@@ -5,14 +5,33 @@
 # This installs some of the common dependencies needed (or at least desired)
 # using Homebrew.
 
-load_dependencies() {
+CWD="${BASH_SOURCE%/*}" # path to executing script
+DEPENDS_ON=(../functions/pretty-print.sh \
+	../functions/if-exists.sh)
+
+__main () (
+
+	# load dependencies
+	for FILE in $DEPENDS_ON; do source "${CWD}/${FILE}"; done
+
+
+	exit 0
+
+	__install_brew
+        __install_brew_packages
+        __install_cask_packages
+
+        exit 0
+)
+
+__load_dependencies() {
         local script_dir="${BASH_SOURCE%/*}"
 	# source the scripts into the current shell process
         source "${script_dir}/../functions/pretty-print.sh"
         source "${script_dir}/../functions/if-exists.sh"
 }
 
-install_brew () {
+__install_brew () {
 	app_exists? "brew" || {
         	print_info "Installing Homebrew ..."
         	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -31,29 +50,23 @@ install_brew () {
 	brew upgrade
 }
 
-install_brew_packages () {
+__install_brew_packages () {
 	brew install grc coreutils spark
 	brew install wget
 	brew install pstree
 }
 
-install_cask_packages () {
+__install_cask_packages () {
 	brew cask install iterm2
 }
 
-main () (
-	load_dependencies
+__main "$@"
 
-	install_brew
-	install_brew_packages
-	install_cask_packages
-	
-	exit 0
-)
+unset CWD
+unset DEPENDS_ON
 
-main
-unset -f load_dependencies
-unset -f install_brew
-unset -f install_brew_packages
-unset -f install_cask_packages
-unset -f main
+unset -f __main
+unset -f __load_dependencies
+unset -f __install_brew
+unset -f __install_brew_packages
+unset -f __install_cask_packages
