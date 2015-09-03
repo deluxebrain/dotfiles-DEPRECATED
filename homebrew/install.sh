@@ -10,10 +10,8 @@ DEPENDS_ON=(../functions/pretty-print.sh \
 	../functions/if-exists.sh)
 
 __main () (
-
 	# load dependencies
-	for FILE in $DEPENDS_ON; do source "${CWD}/${FILE}"; done
-
+	for FILE in "${DEPENDS_ON[@]}"; do source "${CWD}/${FILE}"; done
 
 	exit 0
 
