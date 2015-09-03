@@ -13,8 +13,6 @@ __main () (
 	# load dependencies
 	for FILE in "${DEPENDS_ON[@]}"; do source "${CWD}/${FILE}"; done
 
-	exit 0
-
 	__install_brew
         __install_brew_packages
         __install_cask_packages
