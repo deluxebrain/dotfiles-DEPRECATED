@@ -6,8 +6,8 @@
 # using Homebrew.
 
 CWD="${BASH_SOURCE%/*}" # path to executing script
-DEPENDS_ON=(~/bin/pretty-print.sh \
-	~/bin/if-exists.sh)
+DEPENDS_ON=(~/lib/pretty-print.sh \
+	~/lib/if-exists.sh)
 
 __main () (
 	# load dependencies
