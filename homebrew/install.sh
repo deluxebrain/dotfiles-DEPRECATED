@@ -16,7 +16,8 @@ __main () (
 	__install_brew
         __install_brew_packages
         __install_cask_packages
-
+	
+	# Report success status back to parent shell
         exit 0
 )
 

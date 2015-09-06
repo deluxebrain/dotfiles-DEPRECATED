@@ -1,5 +1,18 @@
 # @longboatharry's dotfiles
 
+## File organization
+
+``` shell
+\bash	
+\bin		| Standalone scripts
+\homebrew	| Homebrew
+\install	| Bootstrapper and top-level installer script for all functional areas
+\lib		| Collections of Bash functions that provide a library of functionality to scripts
+\ssh
+\systems
+
+```
+
 ## Prerequisites
 
 ### Homebrew
