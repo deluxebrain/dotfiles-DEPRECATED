@@ -4,12 +4,12 @@
 
 ``` shell
 \bash	
-\bin		| Standalone scripts
-\homebrew	| Homebrew
+\bin		| Standalone scripts that are intended to be executed within a new shell or subshell
+\homebrew	| (functional area) Homebrew
 \install	| Bootstrapper and top-level installer script for all functional areas
-\lib		| Collections of Bash functions that provide a library of functionality to scripts
-\ssh
-\systems
+\lib		| Re-usable Bash functions intended to be sourced into scripts within the bin directory
+\ssh		|
+\system		|
 
 ```
 
