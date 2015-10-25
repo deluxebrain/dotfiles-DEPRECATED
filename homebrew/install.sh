@@ -16,6 +16,8 @@ __main () (
 	__install_brew
         __install_brew_packages
         __install_cask_packages
+
+	brew cleanup && brew cask cleanup
 	
 	# Report success status back to parent shell
         exit 0
@@ -37,8 +39,8 @@ __install_brew () {
 	app_exists? "brew cask" || {
 		print_info "Installing Cask ..."
 		brew install caskroom/cask/brew-cask
-
 	}
+	brew tap caskroom/versions
 
 	print_info "Updating Homebrew ..."
 	brew update
@@ -54,7 +56,8 @@ __install_brew_packages () {
 }
 
 __install_cask_packages () {
-	brew cask install iterm2
+	brew cask install iterm2-beta
+	brew cask install alfred
 }
 
 __main "$@"

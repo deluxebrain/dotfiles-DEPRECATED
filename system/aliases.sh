@@ -14,3 +14,7 @@ alias rck="compgen -k" # shell reserved key words.
 # script helpers
 alias ped="echo ${BASH_SOURCE%/*}" # path to the directory of the executing script 
 alias ped2="echo $BASH_SOURCE"
+
+# brew
+alias bu="brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup"
+
