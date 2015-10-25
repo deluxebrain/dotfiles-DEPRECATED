@@ -49,7 +49,7 @@
 1. Update Homebrew and bring down new formulae:
 
 	``` shell
-	# This updates Homebrew - it **doe not** udpate any software installed via Homebrew
+	# This updates Homebrew - it **does not** udpate any software installed via Homebrew
 	brew update
 	```
 
