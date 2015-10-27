@@ -1,0 +1,32 @@
+# Install GNU tools (OS X ships with the BSD versions)
+# https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/
+
+# GNU core (e.g. ls, cat)
+coreutils
+
+# Others - prefixed with a "g" unless --with-default-names
+binutils
+diffutils
+ed --with-default-names
+findutils --with-default-names
+gawk
+gnu-indent --with-default-names
+gnu-sed --with-default-names
+gnu-tar --with-default-names
+gnu-which --with-default-names
+gnutls
+grep --with-default-names
+gzip
+screen
+watch
+wdiff
+wget
+
+# OS X replacements
+bash
+emacs
+gdb
+gpatch
+m4
+make
+nano

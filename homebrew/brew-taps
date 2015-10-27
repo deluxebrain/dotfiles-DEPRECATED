@@ -1,0 +1,5 @@
+# https://github.com/Homebrew/homebrew-completions
+homebrew/completions
+
+# more recent versions of OS X tools
+homebrew/dupes

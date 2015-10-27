@@ -1,0 +1,27 @@
+# Complementary non-GNU packages
+file-formula
+git
+less
+openssh
+perl518
+python
+rsync
+unzip
+vim --override-system-vi 
+macvim --override-system-vim --custom-system-icons
+
+# Powertools
+install spark
+install pstree
+
+# completions
+bash-completion
+brew-cask-completion
+docker-completion
+docker-machine-completion
+grunt-completion
+pip-completion
+rake-completion
+ruby-completion
+tmuxinator-completion
+vagrant-completion
