@@ -16,5 +16,5 @@ alias ped="echo ${BASH_SOURCE%/*}" # path to the directory of the executing scri
 alias ped2="echo $BASH_SOURCE"
 
 # brew
-alias bu="brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup"
-
+alias brewup="brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup"
+alias brewupall="brew update && brew upgrade && brew cleanup && brew cask cleanup"
