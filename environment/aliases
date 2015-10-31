@@ -1,9 +1,111 @@
+#-------------------------------------------------------------
+# Navigation
+#-------------------------------------------------------------
+
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ~="cd ~"
+
+#-------------------------------------------------------------
+# File system
+#-------------------------------------------------------------
+
+# request confirmation 
+alias rm="rm -i"
+alias cp="cp -i"
+alias mv="mv -i"
+alias mkdir="mkdir -p"
+
+# Trim new lines and copy to clipboard
+alias c="tr -d '\n' | pbcopy"
+
+# Recursively delete `.DS_Store` files
+alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
+
+#-------------------------------------------------------------
+# Networking
+#-------------------------------------------------------------
+
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias localip="ipconfig getifaddr en0"
+
+# Flush DNS cache
+alias flush="dscacheutil -flushcache && killall -HUP mDNSReponder"
+
+# View HTTP traffic
+alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+
+# URL-encode strings
+alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
+
+#-------------------------------------------------------------
+# Cryptography
+#-------------------------------------------------------------
+
+# OS X has no `md5sum`, so use `md5` as a fallback
+command -v md5sum > /dev/null || alias md5sum="md5"
+
+# OS X has no `sha1sum`, so use `shasum` as a fallback
+command -v sha1sum > /dev/null || alias sha1sum="shasum"
+
+
+#-------------------------------------------------------------
+# Shortcuts
+#-------------------------------------------------------------
+
+alias h="history"
+alias j="jobs -l" # + process ids
+alias g="git"
+
+#-------------------------------------------------------------
+# Overrides
+#-------------------------------------------------------------
+
+alias which="type -a" # list all instances
+
+# Allow aliases to be used with sudo
+# http://askubuntu.com/a/22043/306785
+# "If the last character of the alias value is a space or tab
+# character then the next command word following the alias is
+# also checked for alias expansion"
+alias sudu="sudo "
+
+alias grep="grep --color=auto"	# Always use color
+
+#-------------------------------------------------------------
+# ls (requires recent GNU ls)
+#-------------------------------------------------------------
+
+# Add colors for filetypes and human-readable sizes by default on 'ls'
+alias ls="ls -h --color"
+alias lx="ls -XB"		# Sort by extension
+alias lk="ls -lSr"		# Sort by size, asc order
+alias lt="ls -ltr"		# Sort by date, desc order
+alias lc="ls -ltcr"		# Sort by change time, desc order
+alias lu="ls -ltur"		# Sort by access time, desc order
+
+# directories first, with alphanumeric sorting
+alias ll="ls -lv --group-directories-first"
+alias lm="ll |more"
+alias lr="ll -R"		# Recursive
+alias la="ll -A"		# SHow hidden files
+alias tree="tree -Csuh"		# Alternative to recursive ls
+
+
+#-------------------------------------------------------------
 # ssh config concatenation
+#-------------------------------------------------------------
+
 # https://serverfault.com/questions/375525/can-you-have-more-than-one-ssh-config-file
 alias complile-ssh-config="cat ~/.ssh/*.config > ~/.ssh/config-compiled"
 alias ssh="compile-ssh-config && ssh -F ~/.ssh/config-compiled"
 
+#-------------------------------------------------------------
 # roll calls (rc)
+#-------------------------------------------------------------
 alias rcv="compgen -v" # names of all shell variables
 alias rcf="compgen -A function" # names of all shell functions
 alias rca="compgen -a" # names of all shell aliases
@@ -11,10 +113,16 @@ alias rch="compgen -A hostname" # hostnames as taken from the file specified by 
 alias rcj="compgen -j" # job names (if job control is active)
 alias rck="compgen -k" # shell reserved key words.
 
+#-------------------------------------------------------------
 # script helpers
+#-------------------------------------------------------------
+
 alias ped="echo ${BASH_SOURCE%/*}" # path to the directory of the executing script 
 alias ped2="echo $BASH_SOURCE"
 
+#-------------------------------------------------------------
 # brew
+#-------------------------------------------------------------
+
 alias brewup="brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup"
 alias brewupall="brew update && brew upgrade && brew cleanup && brew cask cleanup"

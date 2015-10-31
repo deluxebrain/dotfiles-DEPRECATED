@@ -1,7 +1,11 @@
 # http://linuxcommand.org/lc3_adv_tput.php
 
 # Example usages
+# To set for all subsequent output
 # $ echo -n ${FG_WHITE}${BG_RED}
+
+# To output text in specific ped
+# $ echo ${FG_WHITE}${BG_RED}...${PEN_RESET}
 
 BG_BLACK="$(tput setab 0)"
 BG_RED="$(tput setab 1)"
@@ -25,4 +29,8 @@ FG_RESET="$(tput setaf 9)"
 
 PEN_BOLD="$(tput bold)"
 PEN_REV="$(tput rev)"
+PEN_UNDERLINE_START="$(tput smul)"
+PEN_UNDERLINE_STOP="$(tput rmul)"
+PEN_STANDOUT_START="$(tput smso)"
+PEN_STANDOUT_END="$(tput rmso)"
 PEN_RESET="$(tput sgr0)"
