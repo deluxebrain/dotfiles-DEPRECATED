@@ -1,36 +1,124 @@
-# http://linuxcommand.org/lc3_adv_tput.php
+#-------------------------------------------------------------
+# Pens
+#+ http://linuxcommand.org/lc3_adv_tput.php
+#-------------------------------------------------------------
 
 # Example usages
-# To set for all subsequent output
-# $ echo -n ${FG_WHITE}${BG_RED}
+#+ To set for all subsequent output
+#$ echo -en ${WHITE}${ON_RED}
 
-# To output text in specific ped
-# $ echo ${FG_WHITE}${BG_RED}...${PEN_RESET}
+#+ To output text in specific ped
+#$ echo ${WHITE}${ON_RED}...${PEN_RESET}
 
-BG_BLACK="$(tput setab 0)"
-BG_RED="$(tput setab 1)"
-BG_GREEN="$(tput setab 2)"
-BG_YELLOW="$(tput setab 3)"
-BG_BLUE="$(tput setab 4)"
-BG_MAGENTA="$(tput setab 5)"
-BG_CYAN="$(tput setab 6)"
-BG_WHITE="$(tput setab 7)"
-BG_RESET="$(tput setab 9)"
+STYLE_BOLD="$(tput bold)"
+STYLE_REV="$(tput rev)"
+SYTLE_UNDERLINE_START="$(tput smul)"
+STYLE_UNDERLINE_STOP="$(tput rmul)"
+STYLE_STANDOUT_START="$(tput smso)"
+STYLE_STANDOUT_END="$(tput rmso)"
+STYLE_RESET="$(tput sgr0)"
 
-FG_BLACK="$(tput setaf 0)"
-FG_RED="$(tput setaf 1)"
-FG_GREEN="$(tput setaf 2)"
-FG_YELLOW="$(tput setaf 3)"
-FG_BLUE="$(tput setaf 4)"
-FG_MAGENTA="$(tput setaf 5)"
-FG_CYAN="$(tput setaf 6)"
-FG_WHITE="$(tput setaf 7)"
-FG_RESET="$(tput setaf 9)"
+ON_BLACK="$(tput setab 0)"
+ON_RED="$(tput setab 1)"
+ON_GREEN="$(tput setab 2)"
+ON_YELLOW="$(tput setab 3)"
+ON_BLUE="$(tput setab 4)"
+ON_MAGENTA="$(tput setab 5)"
+ON_CYAN="$(tput setab 6)"
+ON_WHITE="$(tput setab 7)"
+ON_NC="$(tput setab 9)"
 
-PEN_BOLD="$(tput bold)"
-PEN_REV="$(tput rev)"
-PEN_UNDERLINE_START="$(tput smul)"
-PEN_UNDERLINE_STOP="$(tput rmul)"
-PEN_STANDOUT_START="$(tput smso)"
-PEN_STANDOUT_END="$(tput rmso)"
-PEN_RESET="$(tput sgr0)"
+BLACK="$(tput setaf 0)"
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+BLUE="$(tput setaf 4)"
+MAGENTA="$(tput setaf 5)"
+CYAN="$(tput setaf 6)"
+WHITE="$(tput setaf 7)"
+NC="$(tput setaf 9)"
+
+BBLACK=${STYLE_BOLD}${BLACK}
+BRED=${STYLE_BOLD}${RED}
+BGREEN=${STYLE_BOLD}${GREEN}
+BYELLOW=${STYLE_BOLD}${YELLOW}
+BBLUE=${STYLE_BOLD}${BLUE}
+BMAGENTA=${STYLE_BOLD}${MAGENTA}
+BCYAN=${STYLE_BOLD}${CYAN}
+BWHITE=${STYLE_BOLD}${WHITE}
+
+PEN_RESET=${NC}${STYLE_RESET}
+PEN_WARN=${BWHITE}${ON_YELLOW}
+PEN_ALERT=${BWHITE}${ON_RED}
+PEN_HIGHLIGHT=${BYELLOW}${ON_BLUE}
+
+#-------------------------------------------------------------
+# Prompt
+#-------------------------------------------------------------
+
+# USER:
+#	BCYAN		== normal user
+#	BRED		== SU to user
+#	RED		== root
+# HOST:
+#	BCYAN		== local session
+#	GREEN		== secured remote connection (via ssh)
+#	ALERT		== unsecured remote connection
+# >:
+#	WHITE		== no background or suspended jobs in this shell
+#	CYAN		== at least one background job in this shell
+#	RED		== at least one suspended job in this shell
+
+# Test user
+function user_color()
+{
+	if [[ ${USER} == "root" ]]; then
+		echo -en ${RED}
+	elif [[ ${USER} != $(logname) ]]; then		# logged in name
+		echo -en ${BRED}			# not logged in user
+	else
+		echo -en ${BCYAN}			# user is normal
+	fi
+}
+
+# Test connection type
+#+ http://www.xfree86.org/current/X.7.html#sect4
+function connection_color() 
+{
+	if [[ -n "${SSH_CONNECTION}" ]]; then
+		echo -en ${GREEN}			# ssh
+	elif [[ -n "${DISPLAY%%:0*}" ]] ; then
+		echo -en ${PEN_ALERT}			# remote, not ssh
+	else
+		echo -en ${BCYAN}
+	fi
+}
+
+# Test jobs
+function job_color()
+{
+	if [ $(jobs -s | wc -l) -gt "0" ]; then
+		echo -en ${BRED}
+	elif [ $(jobs -r | wc -l) -gt "0" ]; then
+		echo -en ${BCYAN}
+	else
+		echo -en ${WHITE}	
+	fi
+}
+
+# Build prompt
+#+ This is executed before displaying the prompt
+#+ Append history from this session to the history file
+PROMPT_COMMAND="history -a"
+
+PS1=""
+
+# User@Host (with connection type info):
+PS1=${PS1}"\[$(user_color)\]\u\[${PEN_RESET}\]@\[$(connection_color)\]\h\[${PEN_RESET}\] "
+
+# Prompt (with 'job' info):
+PS1=${PS1}"\[\$(job_color)\]>\[${PEN_RESET}\] "
+
+# Set title of current xterm:
+PS1=${PS1}"\[\e]0;[\u@\h] \w\a\]"
+
