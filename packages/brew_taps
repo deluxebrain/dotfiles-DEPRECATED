@@ -3,3 +3,6 @@ homebrew/completions
 
 # more recent versions of OS X tools
 homebrew/dupes
+
+# fonts
+caskroom/fonts

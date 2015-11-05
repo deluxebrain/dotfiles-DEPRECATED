@@ -46,6 +46,7 @@ macvim --override-system-vim --custom-system-icons
 install spark
 install pstree
 install tree
+install tmux
 
 # Development
 python		# includes pip

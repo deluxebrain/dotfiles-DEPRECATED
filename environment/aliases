@@ -186,7 +186,7 @@ alias rck="compgen -k" # shell reserved key words.
 alias ped="echo ${BASH_SOURCE%/*}"  
 
 #-------------------------------------------------------------
-# Updating
+# Package managers
 #-------------------------------------------------------------
 
 alias brewup="brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup"
