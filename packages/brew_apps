@@ -37,7 +37,6 @@ git
 less
 openssh
 perl518
-python
 rsync
 unzip
 vim --override-system-vi 
@@ -46,6 +45,12 @@ macvim --override-system-vim --custom-system-icons
 # Powertools
 install spark
 install pstree
+install tree
+
+# Development
+python		# includes pip
+python3		# includes pip3
+node
 
 # completions
 bash-completion

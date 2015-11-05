@@ -1,0 +1,23 @@
+# Locate a specific file or directory in parent directories
+function fup() 
+{
+	local cwd=$(pwd -P 2>/dev/null || command pwd)
+	while [ ! -e "${cwd}/$1" ]; do	
+		# ${string%substring}
+		#+ Deletes the shortest match of $substring
+		#+ from the back of $string
+		cwd=${cwd%/*}
+		if [ ! "$cwd" ]; then break; fi
+	done
+	echo "$cwd"
+}
+
+# Change to root  directory of current git repository
+function cdg()
+{
+	local git_root=$(fup .git)
+	if [ "${git_root}" -a -d "${git_root}" ]
+	then 
+		cd "${git_root}"
+	fi
+}

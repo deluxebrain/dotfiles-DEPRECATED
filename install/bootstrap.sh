@@ -174,4 +174,7 @@ link_dotfiles () {
 }
 
 main () {
+	# Ensure xcode command line tools are installed
+	sudo xcode-select --install
+
 }

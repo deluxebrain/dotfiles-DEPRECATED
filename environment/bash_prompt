@@ -114,10 +114,10 @@ PROMPT_COMMAND="history -a"
 PS1=""
 
 # User@Host (with connection type info):
-PS1=${PS1}"\[$(user_color)\]\u\[${PEN_RESET}\]@\[$(connection_color)\]\h\[${PEN_RESET}\] "
+PS1=${PS1}"\[$(user_color)\]\u\[${PEN_RESET}\]@\[$(connection_color)\]\h\[${PEN_RESET}\]"
 
 # Prompt (with 'job' info):
-PS1=${PS1}"\[\$(job_color)\]>\[${PEN_RESET}\] "
+PS1=${PS1}"\[\$(job_color)\]\$\[${PEN_RESET}\] "
 
 # Set title of current xterm:
 PS1=${PS1}"\[\e]0;[\u@\h] \w\a\]"

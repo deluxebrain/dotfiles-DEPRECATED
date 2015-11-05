@@ -6,10 +6,15 @@
 # using Homebrew.
 
 CWD="${BASH_SOURCE%/*}" # path to executing script
-DEPENDS_ON=(~/lib/pretty-print.sh \
-	~/lib/if-exists.sh)
+DEPENDS_ON=(
+	~/lib/pretty_print.sh		\
+	~/lib/if_exists.sh		\
+	~/lib/sudo_keepalive.sh)
 
 __main () (
+	# Ask for administrator password upfront
+	sudo_keepalive
+	
 	# load dependencies
 	for FILE in "${DEPENDS_ON[@]}"; do source "${CWD}/${FILE}"; done
 
