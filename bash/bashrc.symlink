@@ -4,7 +4,8 @@
 # start ssh-agent, using existing agent if available;
 # note this is not absolutely necessary if the window manager is set to 
 # auto-start ssh-agent on first use (e.g. as with OS X ssh-agent launchd integration);
-start_ssh_agent () {
+function start_ssh_agent() 
+{
 	# detect if ssh-agent is running
 	# &> redirects stdout and stderr
 	# (equivalent to > /dev/null 2>&1)
@@ -36,13 +37,24 @@ start_ssh_agent () {
 	fi
 }
 
+function start_powerline()
+{
+	powerline-daemon -q
+	POWERLINE_BASH_CONTINUATION=1
+	POWERLINE_BASH_SELECT=1
+	. "$(piproot powerline-status)"/powerline/bindings/bash/powerline.sh
+}
+
 # called when run from an non-interactive shell
-non_interactive_shell () {
+function when_non_interactive_shell() 
+{
 }
 
 # called when run from an interactive shell
-interactive_shell () {
+function when_interactive_shell()
+{
 	start_ssh_agent
+	start_powerline
 }
 
 # `.bashrc` is pointed to by $BASH_ENV for non-interactive shells

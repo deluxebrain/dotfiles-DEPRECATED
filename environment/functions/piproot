@@ -1,0 +1,5 @@
+# Find the installation directory of a pip package
+function piproot()
+{
+	pip show $1 | grep Location | awk {'print $2'} | ( read x; echo "${x%/}" )
+}
