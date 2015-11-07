@@ -1,23 +1,33 @@
 #!/bin/bash
 
-print_info () {
+function msg_info() 
+{
         printf " [ ${PEN_YELLOW}..${PEN_RESET} ] $1\n"
 }
 
-print_prompt () {
+function msg_prompt() 
+{
         printf " [ ${PEN_BLUE}?${PEN_RESET} ] $1\n"
 }
 
-print_success () {
+function msg_ok() 
+{
         printf " [ ${PEN_GREEN}OK${PEN_RESET} ] $1\n"
 }
 
-fail_and_exit () {
-        printf " [ ${PEN_RED}FAIL${PEN_RESET} ] $1\n"
+function msg_warn()
+{
+	printf " [ ${PEN_WARN}WARNING${PEN_RESET} ] $1\n"
+}
+
+function msg_fail() 
+{
+        printf " [ ${PEN_ALERT}FAIL${PEN_RESET} ] $1\n"
         exit
 }
 
-export -f print_info && readonly -f print_info
-export -f print_prompt && readonly -f print_prompt
-export -f print_success && readonly -f print_success
-export -f fail_and_exit && readonly -f fail_and_exit
+export -f msg_info && readonly -f msg_info
+export -f msg_prompt && readonly -f msg_prompt
+export -f msg_success && readonly -f msg_success
+export -f msg_warn && readonly -f msg_warn
+export -f msg_fail && readonly -f msg_fail

@@ -18,37 +18,43 @@ STYLE_STANDOUT_START="$(tput smso)"
 STYLE_STANDOUT_END="$(tput rmso)"
 STYLE_RESET="$(tput sgr0)"
 
-ON_BLACK="$(tput setab 0)"
-ON_RED="$(tput setab 1)"
-ON_GREEN="$(tput setab 2)"
-ON_YELLOW="$(tput setab 3)"
-ON_BLUE="$(tput setab 4)"
-ON_MAGENTA="$(tput setab 5)"
-ON_CYAN="$(tput setab 6)"
-ON_WHITE="$(tput setab 7)"
-ON_NC="$(tput setab 9)"
-
 BLACK="$(tput setaf 0)"
+BLUE="$(tput setaf 33)"
+CYAN="$(tput setaf 37)"
+GREEN="$(tput setaf 64)"
+ORANGE="$(tput setaf 166)"
+PURPLE="$(tput setaf 125)"
 RED="$(tput setaf 1)"
-GREEN="$(tput setaf 2)"
-YELLOW="$(tput setaf 3)"
-BLUE="$(tput setaf 4)"
-MAGENTA="$(tput setaf 5)"
-CYAN="$(tput setaf 6)"
-WHITE="$(tput setaf 7)"
+VIOLET="$(tput setaf 61)"
+WHITE="$(tput setaf 15)"
+YELLOW="$(tput setaf 136)"
 NC="$(tput setaf 9)"
 
 BBLACK=${STYLE_BOLD}${BLACK}
-BRED=${STYLE_BOLD}${RED}
-BGREEN=${STYLE_BOLD}${GREEN}
-BYELLOW=${STYLE_BOLD}${YELLOW}
 BBLUE=${STYLE_BOLD}${BLUE}
-BMAGENTA=${STYLE_BOLD}${MAGENTA}
 BCYAN=${STYLE_BOLD}${CYAN}
+BGREEN=${STYLE_BOLD}${GREEN}
+BORANGE=${STYLE_BOLD}${ORANGE}
+BPURPLE=${STYLE_BOLD}${PURPLE}
+BRED=${STYLE_BOLD}${RED}
+BVIOLET=${STYLE_BOLD}${VIOLET}
 BWHITE=${STYLE_BOLD}${WHITE}
+BYELLOW=${STYLE_BOLD}${YELLOW}
+
+ON_BLACK="$(tput setab 0)"
+ON_BLUE="$(tput setab 33)"
+ON_CYAN="$(tput setab 37)"
+ON_GREEN="$(tput setab 64)"
+ON_ORANGE="$(tput setab 166)"
+ON_PURPLE="$(tput setab 125)"
+ON_RED="$(tput setab 1)"
+ON_VIOLET="$(tput setab 61)"
+ON_WHITE="$(tput setab 15)"
+ON_YELLOW="$(tput setab 136)"
+ON_NC="$(tput setab 9)"
 
 PEN_RESET=${NC}${STYLE_RESET}
-PEN_WARN=${BWHITE}${ON_YELLOW}
+PEN_WARN=${BWHITE}${ON_ORANGE}
 PEN_ALERT=${BWHITE}${ON_RED}
 PEN_HIGHLIGHT=${BYELLOW}${ON_BLUE}
 
@@ -56,18 +62,56 @@ PEN_HIGHLIGHT=${BYELLOW}${ON_BLUE}
 # Prompt
 #-------------------------------------------------------------
 
-# USER:
-#	BCYAN		== normal user
-#	BRED		== SU to user
-#	RED		== root
-# HOST:
-#	BCYAN		== local session
-#	GREEN		== secured remote connection (via ssh)
-#	ALERT		== unsecured remote connection
-# >:
-#	WHITE		== no background or suspended jobs in this shell
-#	CYAN		== at least one background job in this shell
-#	RED		== at least one suspended job in this shell
+function prompt_git() 
+{
+    local s='';
+    local branchName='';
+
+    # Check if the current directory is in a Git repository.
+    #+ Returns 0 if in git repository, otherwise error code ( $? != 0 )
+    git rev-parse --is-inside-work-tree &>/dev/null || return;
+
+    # check if the current directory is in .git before running git checks
+    #+ Return true or false if in git working directory and .git directory accordingly
+    #+ Returns error code if not in git working directory
+    if [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == 'false' ]; then
+
+        # Ensure the index is up to date.
+        git update-index --really-refresh -q &>/dev/null;
+
+        # Check for uncommitted changes in the index.
+        if ! $(git diff --quiet --ignore-submodules --cached); then
+            s+='+';
+        fi;
+
+        # Check for unstaged changes.
+        if ! $(git diff-files --quiet --ignore-submodules --); then
+            s+='!';
+        fi;
+
+        # Check for untracked files.
+        if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+            s+='?';
+        fi;
+
+        # Check for stashed files.
+        if $(git rev-parse --verify refs/stash &>/dev/null); then
+            s+='$';
+        fi;
+
+    fi;
+
+    # Get the short symbolic ref.
+    #+ If HEAD isn’t a symbolic ref, get the short SHA for the latest commit
+    #+  Otherwise, just give up.
+    branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
+        git rev-parse --short HEAD 2> /dev/null || \
+        echo '(unknown)')";
+
+    [ -n "${s}" ] && s=" [${s}]";
+
+    echo -e "${1}${branchName}${blue}${s}";
+}
 
 # Test user
 function user_color()
@@ -111,6 +155,8 @@ function job_color()
 #+ Append history from this session to the history file
 PROMPT_COMMAND="history -a"
 
+# Reset
+echo -en ${PEN_RESET}
 PS1=""
 
 # User@Host (with connection type info):

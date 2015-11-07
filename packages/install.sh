@@ -12,6 +12,11 @@ DEPENDS_ON=(
 	~/lib/sudo_keepalive.sh)
 
 __main () (
+
+	# Check for github api token and warn if missing
+	[ ! "${HOMEBREW_GITHUB_API_TOKEN}" ] && \
+		msg_warn "HOMEBREW_GITHUB_API_TOKEN environment variable is not set"
+
 	# Ask for administrator password upfront
 	sudo_keepalive
 	
