@@ -43,10 +43,13 @@ vim --override-system-vi
 macvim --override-system-vim --custom-system-icons
 
 # Powertools
-install spark
-install pstree
-install tree
-install tmux
+spark
+pstree
+tree
+tmux
+
+# Security
+yubikey-personalization 
 
 # Development
 python		# includes pip

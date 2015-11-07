@@ -1,8 +1,19 @@
+# Terminal and related
 iterm2-beta
 alfred
+
+# Browsers and related
 google-chrome
+
+# Virtualisation and packaging
 vagrant
 virtualbox
+
+# Graphics
 inkscape
+
+# Security
 macpass
 yubikey-neo-manager
+yubikey-personalization-gui
+gpgtools
