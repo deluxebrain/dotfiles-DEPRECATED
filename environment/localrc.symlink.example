@@ -4,4 +4,4 @@
 # Github API token for homebrew
 #+ https://github.com/settings/tokens
 #+ Remove ALL scopes
-export HOMEBREW_GITHUB_API_TOKEN=2a7837a6a5dcf194c7f94eccec87f07fda3b9b96
+export HOMEBREW_GITHUB_API_TOKEN=
