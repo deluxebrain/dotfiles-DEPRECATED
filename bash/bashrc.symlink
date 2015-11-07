@@ -1,6 +1,18 @@
 # Linux and OS X (via `/usr/bin/launch -l` terminal options) spawn interactive non-login shells
 # `.bashrc` is therefore the main dotfile for environment configuration
 
+function set_shelloptions()
+{
+	# Case-insensitive globbing (used in pathname expansion)
+	shopt -s nocaseglob;
+
+	# Append to the Bash history file, rather than overwriting it
+	shopt -s histappend;
+
+	# Autocorrect typos in path names when using `cd`
+	shopt -s cdspell;
+}
+
 # start ssh-agent, using existing agent if available;
 # note this is not absolutely necessary if the window manager is set to 
 # auto-start ssh-agent on first use (e.g. as with OS X ssh-agent launchd integration);
@@ -37,6 +49,26 @@ function start_ssh_agent()
 	fi
 }
 
+function start_completions()
+{
+	# enable bash completion
+	if [ -f $(brew --prefix)/etc/bash_completion ]; then
+		. $(brew --prefix)/etc/bash_completion
+	fi
+
+	# Enable tab completion for `g` by marking it as an alias for `git`
+	if type _git &> /dev/null && [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
+    		complete -o default -o nospace -F _git g;
+	fi;   
+
+	# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
+	[ -e "$HOME/.ssh/config" ] && \
+		complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | \
+		grep -v "[?*]" | \
+		cut -d " " -f2- | \
+		tr ' ' '\n')" scp sftp ssh;
+}
+
 function start_powerline()
 {
 	powerline-daemon -q
@@ -53,7 +85,9 @@ function when_non_interactive_shell()
 # called when run from an interactive shell
 function when_interactive_shell()
 {
+	set_shelloptions
 	start_ssh_agent
+	start_completions
 	start_powerline
 }
 

@@ -62,6 +62,24 @@ PEN_HIGHLIGHT=${BYELLOW}${ON_BLUE}
 # Prompt
 #-------------------------------------------------------------
 
+function prompt_git_timer()
+{
+	local g="$(__gitdir)"
+  	if [ -n "$g" ]; then
+    		local split=$(git_split)
+    		if [ "$split" -gt 120 ]; then
+        		local color=${RED}
+    		elif [ "$split" -gt 30 ]; then
+        		local color=${ORANGE}
+    		else
+        		local color=${GREEN}
+    		fi
+    		local prompt="|${color}${split}m${PEN_RESET}|${color}$(git_histogram) ${PEN_RESET}"
+    		echo ${prompt}
+  	fi
+}
+
+
 function prompt_git() 
 {
     local s='';

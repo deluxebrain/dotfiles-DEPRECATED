@@ -1,0 +1,3 @@
+[submodule "bin/ngincat"]
+	path = bin/ngincat
+	url = git@github.com:jaburns/ngincat.git

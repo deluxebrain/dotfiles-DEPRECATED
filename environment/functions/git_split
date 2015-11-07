@@ -1,0 +1,8 @@
+function git_split() 
+{
+  local now=$(date +%s)
+  local last_commit=$(git log --pretty=format:'%at' -1)
+  local seconds_since_last_commit=$((now-last_commit))
+  local minutes_since_last_commit=$((seconds_since_last_commit/60))
+  echo ${minutes_since_last_commit}
+}

@@ -1,0 +1,12 @@
+function git_histogram() 
+{
+	local author=$(git config user.name)
+  	for hour in $(seq 8 -1 0)
+	do 
+		git log --author "${autor}" \
+			--before="${hour} hours" \
+			--after="$[${hour}+1] hours" \
+			--format=oneline | \
+			wc -l; 
+	done | spark
+}
