@@ -64,35 +64,27 @@ PEN_HIGHLIGHT=${BYELLOW}${ON_BLUE}
 
 function prompt_git_timer()
 {
-	local g="$(__gitdir)"
-  	if [ -n "$g" ]; then
-    		local split=$(git_split)
-    		if [ "$split" -gt 120 ]; then
-        		local color=${RED}
-    		elif [ "$split" -gt 30 ]; then
-        		local color=${ORANGE}
-    		else
-        		local color=${GREEN}
-    		fi
-    		local prompt="|${color}${split}m${PEN_RESET}|${color}$(git_histogram) ${PEN_RESET}"
-    		echo ${prompt}
-  	fi
+	! ingit && return;
+    	local split=$(git_split)
+    	if (( $split > $GIT_COMMIT_ALERT )); then
+        	local color=${RED}
+    	elif (( $split" > GIT_COMMIT_WARN )); then
+        	local color=${ORANGE}
+    	else
+        	local color=${GREEN}
+    	fi
+    	local prompt="|${color}${split}m${PEN_RESET}|${color}$(git_histogram) ${PEN_RESET}"
+    	echo ${prompt}
 }
-
 
 function prompt_git() 
 {
     local s='';
     local branchName='';
 
-    # Check if the current directory is in a Git repository.
-    #+ Returns 0 if in git repository, otherwise error code ( $? != 0 )
-    git rev-parse --is-inside-work-tree &>/dev/null || return;
+    ! ingit && return;
 
-    # check if the current directory is in .git before running git checks
-    #+ Return true or false if in git working directory and .git directory accordingly
-    #+ Returns error code if not in git working directory
-    if [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == 'false' ]; then
+    if ! ingitd; then
 
         # Ensure the index is up to date.
         git update-index --really-refresh -q &>/dev/null;

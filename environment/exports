@@ -60,3 +60,12 @@ export LESS_TERMCAP_se=${PEN_RESET} # stop standout
 export LESS_TERMCAP_us=${STYLE_UNDERLINE_START}${BWHITE} # start underline
 export LESS_TERMCAP_ue=${PEN_RESET}
 
+#-------------------------------------------------------------
+# Environment tailoring
+#-------------------------------------------------------------
+
+# Used by bash prompt to configure warnings around
+#+ time (in minutes) since last commit
+#+ Can be overriden at the repository level using a .gitprompt file
+export GIT_COMMIT_ALERT=120
+export GIT_COMMIT_WARN=30
