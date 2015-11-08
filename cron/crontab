@@ -1,0 +1,18 @@
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/Users/${user}/bin:$PATH
+
+# * (entire range of values)
+# list (1,2) or range (1-3)
+# / (interval) e.g. hour: 0-23/2 (every two hours)
+# minute (0-59)
+# |     hour (0-23)
+# |     |       day of the month (1-31)
+# |     |       |       month of the year (jan-dec or 1-12)
+# |     |       |       |       day of the week (mon-sun or 1-7)
+# |     |       |       |       |       commnd
+# |     |       |       |       |       |
+#0	23	*	*	*	crontab -l > ~/bin/crontab.bak 2> /dev/null
+#@reboot	crontab -l > ~/bin/crontab.bak 2> /dev/null
+*/5	*	*	*	*	mkdir -p "/Users/${USER}/tmp" && updatedb --localpaths="/Users/${USER}" --output="/Users/${USER}/tmp/locatedb"
+@reboot	mkdir -p "/Users/${USER}/tmp" && updatedb --localpaths="/Users/${USER}" --output="/Users/${USER}/tmp/locatedb"
+

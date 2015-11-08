@@ -1,0 +1,30 @@
+function ggo() 
+{
+	local repos_name="$1"
+	local repos_user="${2:-$(git config user.name)}"
+	[ ! "${repos_name}" -o ! "${repos_user}" ] && { false; return; }
+
+        while read path
+        do
+		echo "$path"
+		local found_repos=false
+                local this_repos_path="$path"
+                cd "$path" 2&> /dev/null || continue;
+                local this_repos_name=$(basename "$(pwd)")
+                cd "$path/.." 2&> /dev/null || continue;
+                local this_repos_user=$(basename "$(pwd)")
+                if [ "${this_repos_name}" == "${repos_name}" -a \
+                        "${this_repos_user}" == "${repos_user}" ]; then
+                        local found_repos=true
+                        break
+                fi
+        done <<< "$(locate ".git"  | \
+	while read path
+	do 
+		echo ${path%/.git*}; 
+	done | sort -u)"
+
+	echo "$this_repos_path"
+	$found_repos && { cd "${this_repos_path}"; return; }
+	false
+}
