@@ -1,0 +1,9 @@
+# check if the current directory is in .git before running git checks
+#$ ingitd && { do_something; do_something_else; }
+function ingitd() 
+{
+	# Return true or false if in git working directory and .git directory accordingly
+	# Returns error code if not in git working directory
+	[ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == 'true' ] && { true; return; }
+	false;
+}

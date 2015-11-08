@@ -1,0 +1,8 @@
+# Check if the current directory is in a Git repository.
+#$ ingit && { do_something; do_something_else; }
+function ingit() 
+{
+	# Returns 0 if in git repository, otherwise error code ( $? != 0 )
+	git rev-parse --is-inside-work-tree &>/dev/null && { true; return; }
+	false;
+}
