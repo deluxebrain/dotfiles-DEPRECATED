@@ -1,4 +1,4 @@
-# @longboatharry's dotfiles
+# @deluxebrain does dotfiles
 
 ## File organization
 
