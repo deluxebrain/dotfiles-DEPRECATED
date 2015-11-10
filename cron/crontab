@@ -11,8 +11,8 @@ PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/Users/${user}/bin:$PATH
 # |     |       |       |       day of the week (mon-sun or 1-7)
 # |     |       |       |       |       commnd
 # |     |       |       |       |       |
-#0	23	*	*	*	crontab -l > ~/bin/crontab.bak 2> /dev/null
-#@reboot	crontab -l > ~/bin/crontab.bak 2> /dev/null
-*/5	*	*	*	*	mkdir -p "/Users/${USER}/tmp" && updatedb --localpaths="/Users/${USER}" --output="/Users/${USER}/tmp/locatedb"
-@reboot	mkdir -p "/Users/${USER}/tmp" && updatedb --localpaths="/Users/${USER}" --output="/Users/${USER}/tmp/locatedb"
+0	23	*	*	*	/Users/${USER}/bin/backup_cron.sh &> /dev/null
+@reboot	/Users/${USER}/bin/backup_cron.sh &> /dev/null
+0	23	*	*	*	/Users/${USER}/bin/create_locate_indices.sh &> /dev/null
+@reboot	/Users/${USER}/bin/create_locate_indices.sh &> /dev/null
 

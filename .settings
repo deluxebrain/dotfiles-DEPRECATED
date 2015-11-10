@@ -1,0 +1,3 @@
+export GIT_COMMIT_ALERT=120
+export GIT_COMMIT_WARN=30
+

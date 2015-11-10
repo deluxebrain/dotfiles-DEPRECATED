@@ -13,7 +13,7 @@ fi;
 #-------------------------------------------------------------
 
 export LC_ALL=C
-export LOCATE_PATH="/Users/${USER}/tmp/locatedb"
+export LOCATE_PATH="/Users/${USER}/tmp/user_locatedb"
 
 #-------------------------------------------------------------
 # Editors
@@ -70,6 +70,8 @@ export LESS_TERMCAP_ue=${PEN_RESET}
 #-------------------------------------------------------------
 # Environment tailoring
 #-------------------------------------------------------------
+
+export GIT_REPOS_ROOT="/Users/${USER}/Repos"
 
 # Used by bash prompt to configure warnings around
 #+ time (in minutes) since last commit

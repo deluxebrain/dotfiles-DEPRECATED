@@ -19,8 +19,26 @@ function ggo()
                         local found_repos=true
                         break
                 fi
-        done <<< "$(locate ".git" | while read path; do echo "${path%/.git*}"; done | sort -u)"
+        done <<< "$( \
+		if [ -f "/Users/${USER}/tmp/repos_locatedb" ]; then
+			LOCATE_PATH="/Users/${USER}/tmp/repos_locatedb"
+		else
+			LOCATE_PATH="/Users/${USER}/tmp/user_locatedb"
+		fi
+		locate ".git" | \
+		while read path 
+		do 
+			echo "${path%/.git*}" 
+		done | \
+		sort -u)"
 
-	$found_repos && { cd "${this_repos_path}"; return; }
-	false
+	if $found_repos; then
+		cd "${this_repos_path}"
+		[ -f ".settings" ] && source .settings
+		true
+	else
+		false
+	fi
+
+	return
 }
