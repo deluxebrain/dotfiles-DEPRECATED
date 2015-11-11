@@ -1,5 +1,8 @@
+#!/bin/bash
+
 # Locate a specific file or directory in parent directories
-function fup() 
+
+function main() 
 {
 	local cwd=$(pwd -P 2>/dev/null || command pwd)
 	while [ ! -e "${cwd}/$1" ]; do	
@@ -12,12 +15,6 @@ function fup()
 	echo "$cwd"
 }
 
-# Change to root  directory of current git repository
-function cdg()
-{
-	local git_root=$(fup .git)
-	if [ "${git_root}" -a -d "${git_root}" ]
-	then 
-		cd "${git_root}"
-	fi
-}
+cwd=$(main) || exit 1
+
+echo $cwd

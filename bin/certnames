@@ -1,10 +1,13 @@
+#!/bin/bash
+
 # Show all the names (CNs and SANs) listed in the SSL certificate
 # for a given domain
-function certnames() 
+
+function main() 
 {
     if [ -z "${1}" ]; then
         echo "ERROR: No domain specified.";
-        return 1;
+        false && return;
     fi;
 
     local domain="${1}";
@@ -26,9 +29,12 @@ function certnames()
         echo ""; # newline
         echo "${certText}" | grep -A 1 "Subject Alternative Name:" \
             | sed -e "2s/DNS://g" -e "s/ //g" | tr "," "\n" | tail -n +2;
-        return 0;
+        true && return;
     else
         echo "ERROR: Certificate not found.";
-        return 1;
+        false && return
     fi;
 }
+
+main
+exit %?

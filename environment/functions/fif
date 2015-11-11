@@ -1,6 +1,0 @@
-# Find all occurences of the supplied text recursively from current directory
-function fif() 
-{
-	grep -Rnw . -e "${@}"
-}
-

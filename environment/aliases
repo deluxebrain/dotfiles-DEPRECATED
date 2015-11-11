@@ -16,6 +16,13 @@ alias ~="cd ~"
 alias reload="exec $SHELL -l"
 
 #-------------------------------------------------------------
+# Finding stuff
+#-------------------------------------------------------------
+
+# Find all occurences of the supplied text recursively from current directory
+alias fif="grep -Rnw . -e"
+
+#-------------------------------------------------------------
 # File system
 #-------------------------------------------------------------
 

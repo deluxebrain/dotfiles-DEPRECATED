@@ -1,8 +1,10 @@
+#!/bin/bash
+
 # Change to the specified git repository
 # Source the .settings file if it exists
 #+ If the locate index becomes corrupt try:
 #$ sudo rm /var/db/locate.database
-function ggo() 
+function main() 
 {
 	local repos_name="$1"
 	local repos_user="${2:-$(git config user.name)}"
@@ -46,3 +48,6 @@ function ggo()
 
 	return
 }
+
+main
+exit $?
