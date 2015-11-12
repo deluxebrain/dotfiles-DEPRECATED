@@ -1,10 +1,23 @@
+#!/bin/bash
+
 # Create a git.io short URL
-function gitio() 
+
+function main() 
 {
     if [ -z "${1}" ]; then
         echo "Usage: \`gitio url (slug)\`";
-        return 1;
+        false
+	return
     fi;
-    if [ ${2} ]; then local slug="-F \"code=${2}\""; fi
+    [ ${2} ] && local slug="-F \"code=${2}\""
     curl -s -i http://git.io/ -F "url=${1}" ${slug} | grep Location | awk {'print $2'} 
 }
+
+result="$(main "$@")"
+if [ $? -eq 0 -a "$result" ]; then
+	echo "$result"
+	exit 0
+fi
+
+exit 1
+
