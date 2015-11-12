@@ -15,6 +15,10 @@ function main()
 	echo "$cwd"
 }
 
-cwd=$(main) || exit 1
+cwd=$(main $@)
+if [ $? -eq 0 -a "${cwd}" ]; then
+	echo "${cwd}"
+	exit 0
+fi
 
-echo $cwd
+exit 1 
