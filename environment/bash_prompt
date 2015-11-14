@@ -62,102 +62,99 @@ PEN_HIGHLIGHT=${BYELLOW}${ON_BLUE}
 # Prompt
 #-------------------------------------------------------------
 
-function prompt_git_timer()
+function prompt_git_minutes()
 {
 	! ingit && return;
-    	local split=$(git_split)
-    	if (( $split > $GIT_COMMIT_ALERT )); then
+    	local mins=$(git_min 2> /dev/null)
+	[ $? -eq 0 ] && echo "adsdf"
+
+    	if [ "$mins" -gt "$GIT_COMMIT_ALERT" ]; then
         	local color=${RED}
-    	elif (( $split" > GIT_COMMIT_WARN )); then
+    	elif [ "$mins" -gt "$GIT_COMMIT_WARN" ]; then
         	local color=${ORANGE}
     	else
         	local color=${GREEN}
     	fi
-    	local prompt="|${color}${split}m${PEN_RESET}|${color}$(git_histogram) ${PEN_RESET}"
-    	echo ${prompt}
+    	echo "\[${color}\]${mins}m $(git_histogram)\[${PEN_RESET}\]"
 }
 
-function prompt_git() 
+function prompt_git_branch() 
 {
-    local s='';
-    local branchName='';
+	! ingit && return;
+	local s branchname
 
-    ! ingit && return;
+    	if ! ingitd; then
 
-    if ! ingitd; then
+        	# Ensure the index is up to date.
+        	git update-index --really-refresh -q &>/dev/null;
 
-        # Ensure the index is up to date.
-        git update-index --really-refresh -q &>/dev/null;
+        	# Check for uncommitted changes in the index.
+        	if ! $(git diff --quiet --ignore-submodules --cached); then
+           		 s+='+';
+        	fi;
 
-        # Check for uncommitted changes in the index.
-        if ! $(git diff --quiet --ignore-submodules --cached); then
-            s+='+';
-        fi;
+        	# Check for unstaged changes.
+        	if ! $(git diff-files --quiet --ignore-submodules --); then
+            		s+='!';
+        	fi;
 
-        # Check for unstaged changes.
-        if ! $(git diff-files --quiet --ignore-submodules --); then
-            s+='!';
-        fi;
+        	# Check for untracked files.
+        	if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+            		s+='?';
+        	fi;
 
-        # Check for untracked files.
-        if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-            s+='?';
-        fi;
+        	# Check for stashed files.
+        	if $(git rev-parse --verify refs/stash &>/dev/null); then
+            		s+='$';
+        	fi;
 
-        # Check for stashed files.
-        if $(git rev-parse --verify refs/stash &>/dev/null); then
-            s+='$';
-        fi;
+    	fi;
 
-    fi;
+	# Get the short symbolic ref.
+	#+ If HEAD isn’t a symbolic ref, get the short SHA for the latest commit
+    	#+  Otherwise, just give up.
+    	branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
+        	git rev-parse --short HEAD 2> /dev/null || \
+        	echo '(unknown)')";
 
-    # Get the short symbolic ref.
-    #+ If HEAD isn’t a symbolic ref, get the short SHA for the latest commit
-    #+  Otherwise, just give up.
-    branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
-        git rev-parse --short HEAD 2> /dev/null || \
-        echo '(unknown)')";
+	[ -n "${s}" ] && s=" [${s}]";
 
-    [ -n "${s}" ] && s=" [${s}]";
-
-    echo -e "${1}${branchName}${blue}${s}";
+	echo "\[${VIOLET}\]${branchName}\[${BLUE}\]${s}\[${PEN_RESET}\]";
 }
 
-# Test user
-function user_color()
+function prompt_user()
 {
+	local color
 	if [[ ${USER} == "root" ]]; then
-		echo -en ${RED}
-	elif [[ ${USER} != $(logname) ]]; then		# logged in name
-		echo -en ${BRED}			# not logged in user
+		color=${RED}
 	else
-		echo -en ${BCYAN}			# user is normal
+		color=${ORANGE}
 	fi
+	echo -e "\[${color}\]\u\[${PEN_RESET}\]"
 }
 
-# Test connection type
-#+ http://www.xfree86.org/current/X.7.html#sect4
-function connection_color() 
+function prompt_connection() 
 {
-	if [[ -n "${SSH_CONNECTION}" ]]; then
-		echo -en ${GREEN}			# ssh
-	elif [[ -n "${DISPLAY%%:0*}" ]] ; then
-		echo -en ${PEN_ALERT}			# remote, not ssh
+	local color
+	if [[ "${SSH_TTY}" ]]; then
+		color=${BRED}
 	else
-		echo -en ${BCYAN}
+		color=${YELLOW}
 	fi
+	echo -e "\[${color}\]\h\[${PEN_RESET}\]"
 }
 
-# Test jobs
-function job_color()
+function prompt_jobs()
 {
+	local color
 	if [ $(jobs -s | wc -l) -gt "0" ]; then
-		echo -en ${BRED}
+		color=${BRED}
 	elif [ $(jobs -r | wc -l) -gt "0" ]; then
-		echo -en ${BCYAN}
+		color=${BORANGE}
 	else
-		echo -en ${WHITE}	
+		color=${WHITE}	
 	fi
+	echo -e "\[${color}\]\$ \[${PEN_RESET}]"
 }
 
 # Build prompt
@@ -170,11 +167,24 @@ echo -en ${PEN_RESET}
 PS1=""
 
 # User@Host (with connection type info):
-PS1=${PS1}"\[$(user_color)\]\u\[${PEN_RESET}\]@\[$(connection_color)\]\h\[${PEN_RESET}\]"
-
-# Prompt (with 'job' info):
-PS1=${PS1}"\[\$(job_color)\]\$\[${PEN_RESET}\] "
+PS1+="$(prompt_jobs)"
+PS1+="$(prompt_git_minutes)"
+PS1+="$(prompt_user)"
+PS1+="\[${WHITE}\] @ $(prompt_connection)"
+PS1+="\[${WHITE}\] in \[${GREEN}\]\w"
+PS1+="\[${WHITE}\] on $(prompt_git_branch)"
+PS1+="\n"
+PS1+="$(prompt_jobs)"
 
 # Set title of current xterm:
 PS1=${PS1}"\[\e]0;[\u@\h] \w\a\]"
+
+# Set title of lines 2 and above for multiline statements
+PS2="\[${YELLO}\]→ \[${PEN_RESET}\]"
+
+unset -f prompt_git_minutes
+unset -f prompt_git_branch
+unset -f prompt_user
+unset -f prompt_connection
+unset -f prompt_jobs
 
