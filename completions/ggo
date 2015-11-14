@@ -1,0 +1,35 @@
+_ggo()
+{
+        local repos_user="$(git config user.name)"
+        local repos_names=()
+
+        while read a_repos_path
+        do
+                local this_repos_name=$(basename "${a_repos_path}")
+                local this_repos_user=$(basename "${a_repos_path%/*}")
+                if [ "${this_repos_user}" == "${repos_user}" ]; then
+                        repos_names+=("${this_repos_name}")
+                fi
+        done <<< "$( \
+        if [ -f "/Users/${USER}/tmp/repos_locatedb" ]; then
+                LOCATE_PATH="/Users/${USER}/tmp/repos_locatedb"
+        else
+                LOCATE_PATH="/Users/${USER}/tmp/user_locatedb"
+        fi
+
+        locate ".git" | \
+        while read path
+        do
+                echo "${path%/.git*}"
+        done | \
+        sort -u)"
+
+	local cur prev opts
+	COMPREPLY=()
+	cur="${COMP_WORDS[COMP_CWORD]}"
+ 	prev="${COMP_WORDS[COMP_CWORD-1]}"
+	opts="${repos_names[@]}"
+	COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+}
+
+complete -F _ggo ggo
