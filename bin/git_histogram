@@ -1,12 +1,28 @@
-function git_histogram() 
+#!/bin/bash
+
+function main() 
 {
-	local author=$(git config user.name)
-  	for hour in $(seq 8 -1 0)
+	local seq_period seq_top seq_step seq_name seq_counter
+	seq_period="${1:-day}"
+	case "$seq_period" in
+		hour) seq_name=minutes; seq_top=60; seq_step=5;;
+		day) seq_name=hours; seq_top=24; seq_step=1;;
+		week) seq_name=days; seq_top=7; seq_step=1;;
+		month) seq_name=days; seq_top=28; seq_step=1;;
+		year) seq_name=days; seq_top=365; seq_step=10;;
+	esac
+
+	local author="$(git config user.name)"
+	for seq_counter in $(seq $seq_top $((seq_step*-1)) 0)
 	do 
-		git log --author "${autor}" \
-			--before="${hour} hours" \
-			--after="$[${hour}+1] hours" \
+		git log --author "${author}" \
+			--before="${seq_counter} ${seq_name}" \
+			--after="$((seq_counter+seq_step)) ${seq_name}" \
 			--format=oneline | \
 			wc -l; 
-	done | spark
+	done | spark | echo "$seq_period: $(cat -)"
 }
+
+main $@ && exit 0
+exit 1
+
