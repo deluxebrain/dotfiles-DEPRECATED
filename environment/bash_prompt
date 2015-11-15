@@ -3,6 +3,8 @@
 #+ http://linuxcommand.org/lc3_adv_tput.php
 #-------------------------------------------------------------
 
+ERRORS=$?
+
 # Example usages
 #+ To set for all subsequent output
 #$ echo -en ${WHITE}${ON_RED}
@@ -67,7 +69,7 @@ function prompt_git_minutes()
 	! ingit && return;
     	
 	local mins 
-	mins=$(git_min 2> /dev/null)
+	mins=$(git_mins 2> /dev/null)
 	[ $? -ne 0 ] && { false; return; }
 
     	if [ $mins -gt $GIT_COMMIT_ALERT ]; then
@@ -78,7 +80,7 @@ function prompt_git_minutes()
         	local color=${GREEN}
     	fi
 
-    	echo "\[${color}\]${mins}m $(git_histogram)\[${PEN_RESET}\]"
+    	echo "\[${color}\]${mins}m\[${PEN_RESET}\]"
 }
 
 function prompt_git_branch() 
@@ -120,9 +122,9 @@ function prompt_git_branch()
         	git rev-parse --short HEAD 2> /dev/null || \
         	echo '(unknown)')";
 
-	[ -n "${s}" ] && s=" [${s}]";
+	[ -n "${s}" ] && s="[${s}]";
 
-	echo "\[${VIOLET}\]${branchName}\[${BLUE}\]${s}\[${PEN_RESET}\]";
+	echo "\[${WHITE}\] on \[${VIOLET}\]${branchName}\[${BLUE}\] ${s}\[${PEN_RESET}\]";
 }
 
 function prompt_user()
@@ -133,7 +135,7 @@ function prompt_user()
 	else
 		color=${ORANGE}
 	fi
-	echo -e "\[${color}\]\u\[${PEN_RESET}\]"
+	echo "\[${color}\]\u\[${PEN_RESET}\]"
 }
 
 function prompt_connection() 
@@ -144,7 +146,7 @@ function prompt_connection()
 	else
 		color=${YELLOW}
 	fi
-	echo -e "\[${color}\]\h\[${PEN_RESET}\]"
+	echo "\[${color}\]\h\[${PEN_RESET}\]"
 }
 
 function prompt_jobs()
@@ -157,7 +159,18 @@ function prompt_jobs()
 	else
 		color=${WHITE}	
 	fi
-	echo -e "\[${color}\]\$ \[${PEN_RESET}]"
+	echo "\[${color}\]\$ \[${PEN_RESET}\]"
+}
+
+function prompt_history()
+{
+	local color
+	if [ $ERRORS -eq 0 ]; then
+		color=${GREEN}
+	else
+		color=${RED}
+	fi
+	echo "\[${color}\]hist:\!\[${PEN_RESET}\]"
 }
 
 # Build prompt
@@ -165,29 +178,29 @@ function prompt_jobs()
 #+ Append history from this session to the history file
 PROMPT_COMMAND="history -a"
 
-# Reset
-echo -en ${PEN_RESET}
+# Build up the prompt line 1
+#+ Dont forget to escape function calls to prevent
+#+ them evaluating immeditely!
 PS1=""
-
-# User@Host (with connection type info):
-PS1+="$(prompt_jobs)"
-PS1+="$(prompt_git_minutes)"
-PS1+="$(prompt_user)"
-PS1+="\[${WHITE}\] @ $(prompt_connection)"
-PS1+="\[${WHITE}\] in \[${GREEN}\]\w"
-PS1+="\[${WHITE}\] on $(prompt_git_branch)"
+PS1+="\$(prompt_jobs)"
+PS1+="\$(prompt_git_minutes) "
+PS1+="\$(prompt_user)"
+PS1+="\[${WHITE}\]@\$(prompt_connection)"
+PS1+="\[${WHITE}\]: \[${GREEN}\]\w"
+PS1+="\$(prompt_git_branch)"
 PS1+="\n"
-PS1+="$(prompt_jobs)"
+PS1+="\$(prompt_history)"
+PS1+="\$(prompt_jobs)"
 
 # Set title of current xterm:
 PS1=${PS1}"\[\e]0;[\u@\h] \w\a\]"
 
 # Set title of lines 2 and above for multiline statements
-PS2="\[${YELLO}\]→ \[${PEN_RESET}\]"
+PS2="\[${YELLOW}\]→ \[${PEN_RESET}\]"
 
-unset -f prompt_git_minutes
-unset -f prompt_git_branch
-unset -f prompt_user
-unset -f prompt_connection
-unset -f prompt_jobs
+# unset -f prompt_git_minutes
+# unset -f prompt_git_branch
+# unset -f prompt_user
+# unset -f prompt_connection
+# unset -f prompt_jobs
 
