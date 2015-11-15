@@ -65,16 +65,19 @@ PEN_HIGHLIGHT=${BYELLOW}${ON_BLUE}
 function prompt_git_minutes()
 {
 	! ingit && return;
-    	local mins=$(git_min 2> /dev/null)
-	[ $? -eq 0 ] && echo "adsdf"
+    	
+	local mins 
+	mins=$(git_min 2> /dev/null)
+	[ $? -ne 0 ] && { false; return; }
 
-    	if [ "$mins" -gt "$GIT_COMMIT_ALERT" ]; then
+    	if [ $mins -gt $GIT_COMMIT_ALERT ]; then
         	local color=${RED}
-    	elif [ "$mins" -gt "$GIT_COMMIT_WARN" ]; then
+    	elif [ $mins" -gt "$GIT_COMMIT_WARN ]; then
         	local color=${ORANGE}
     	else
         	local color=${GREEN}
     	fi
+
     	echo "\[${color}\]${mins}m $(git_histogram)\[${PEN_RESET}\]"
 }
 
