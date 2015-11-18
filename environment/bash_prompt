@@ -80,7 +80,7 @@ function prompt_git_minutes()
         	local color=${GREEN}
     	fi
 
-    	echo "\[${color}\]${mins}m\[${PEN_RESET}\]"
+    	echo "${color}${mins}m${PEN_RESET}"
 }
 
 function prompt_git_branch() 
@@ -135,7 +135,7 @@ function prompt_user()
 	else
 		color=${ORANGE}
 	fi
-	echo "\[${color}\]\u\[${PEN_RESET}\]"
+	echo "${color}"
 }
 
 function prompt_connection() 
@@ -146,7 +146,7 @@ function prompt_connection()
 	else
 		color=${YELLOW}
 	fi
-	echo "\[${color}\]\h\[${PEN_RESET}\]"
+	echo "${WHITE}@${color}"
 }
 
 function prompt_jobs()
@@ -159,7 +159,7 @@ function prompt_jobs()
 	else
 		color=${WHITE}	
 	fi
-	echo "\[${color}\]\$ \[${PEN_RESET}\]"
+	echo "${color}\$${PEN_RESET}"
 }
 
 function prompt_history()
@@ -170,7 +170,7 @@ function prompt_history()
 	else
 		color=${RED}
 	fi
-	echo "\[${color}\]hist:\!\[${PEN_RESET}\]"
+	echo "\[${color}\]hist:"
 }
 
 # Build prompt
@@ -182,15 +182,15 @@ PROMPT_COMMAND="history -a"
 #+ Dont forget to escape function calls to prevent
 #+ them evaluating immeditely!
 PS1=""
-PS1+="\$(prompt_jobs)"
-PS1+="\$(prompt_git_minutes) "
-PS1+="\$(prompt_user)"
-PS1+="\[${WHITE}\]@\$(prompt_connection)"
+PS1+='$(prompt_jobs)'
+PS1+='$(prompt_git_minutes) '
+PS1+='$(prompt_user)'"\u\[${PEN_RESET}\]"
+PS1+='$(prompt_connection)'"\h\[${PEN_RESET}\]"
 PS1+="\[${WHITE}\]: \[${GREEN}\]\w"
-PS1+="\$(prompt_git_branch)"
+PS1+='$(prompt_git_branch)'
 PS1+="\n"
-PS1+="\$(prompt_history)"
-PS1+="\$(prompt_jobs)"
+PS1+='$(prompt_history)'"\!\[${PEN_RESET}\]"
+PS1+='$(prompt_jobs)'
 
 # Set title of current xterm:
 PS1=${PS1}"\[\e]0;[\u@\h] \w\a\]"
