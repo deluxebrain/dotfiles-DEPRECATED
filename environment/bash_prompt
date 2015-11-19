@@ -64,8 +64,6 @@ PEN_HIGHLIGHT=${BYELLOW}${ON_BLUE}
 
 function prompt_git_minutes()
 {
-	! ingit && return;
-    	
 	local mins 
 	mins=$(git_mins 2> /dev/null)
 	[ $? -ne 0 ] && { false; return; }
@@ -83,7 +81,6 @@ function prompt_git_minutes()
 
 function prompt_git_branch() 
 {
-	! ingit && return;
 	local s branchname
 
     	if ! ingitd; then
@@ -122,7 +119,12 @@ function prompt_git_branch()
 
 	[ -n "${s}" ] && s="[${s}]";
 
-	echo "${WHITE} on ${VIOLET}${branchName}${BLUE} ${s}${PEN_RESET}";
+	echo "${VIOLET}${branchName}${BLUE}${s}${PEN_RESET}";
+}
+
+function prompt_git()
+{
+	echo " ($(prompt_git_minutes)|$(prompt_git_branch))"
 }
 
 function prompt_user()
@@ -157,7 +159,7 @@ function prompt_jobs()
 	else
 		color=${WHITE}	
 	fi
-	echo "${color}\$${PEN_RESET}"
+	echo "${color} \$${PEN_RESET}"
 }
 
 function prompt_history()
@@ -168,7 +170,7 @@ function prompt_history()
 	else
 		color=${RED}
 	fi
-	echo "${color}hist:\!${PEN_RESET}"
+	echo "[${color}\!${PEN_RESET}]"
 }
 
 function prompt_path()
@@ -178,16 +180,16 @@ function prompt_path()
 
 function prompt_build()
 {
+	local is_root=$([ ${USER} == "root" ]; echo $?)
+	local in_git_repos=$(ingit; echo $?)
 	local ps1=""
-	ps1+="$(prompt_jobs)"
-	ps1+="$(prompt_git_minutes) "
 	ps1+="$(prompt_user)"
 	ps1+="$(prompt_connection)"
 	ps1+="$(prompt_path)"
-	ps1+="$(prompt_git_branch)"
+	[ $in_git_repos -eq 0 ] && ps1+="$(prompt_git)"
 	ps1+="\n"
 	ps1+="$(prompt_history $1)"
-	ps1+="$(prompt_jobs)"
+	ps1+="$(prompt_jobs) "
 
 	# Set title of current xterm:
 	ps1+="\[\e]0;[\u@\h] \w\a\]"
