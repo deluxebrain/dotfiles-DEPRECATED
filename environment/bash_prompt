@@ -168,7 +168,12 @@ function prompt_history()
 	else
 		color=${RED}
 	fi
-	echo "${color}hist:"
+	echo "${color}hist:\!${PEN_RESET}"
+}
+
+function prompt_path()
+{
+	echo "${WHITE}: ${GREEN}\w"
 }
 
 function prompt_build()
@@ -178,10 +183,10 @@ function prompt_build()
 	ps1+="$(prompt_git_minutes) "
 	ps1+="$(prompt_user)"
 	ps1+="$(prompt_connection)"
-	ps1+="\[${WHITE}\]: \[${GREEN}\]\w"
+	ps1+="$(prompt_path)"
 	ps1+="$(prompt_git_branch)"
 	ps1+="\n"
-	ps1+="$(prompt_history $1)\!\[${PEN_RESET}\]"
+	ps1+="$(prompt_history $1)"
 	ps1+="$(prompt_jobs)"
 
 	# Set title of current xterm:
