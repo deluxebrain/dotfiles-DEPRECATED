@@ -133,7 +133,7 @@ function prompt_user()
 	else
 		color=${ORANGE}
 	fi
-	echo "${color}"
+	echo "${color}\u${PEN_RESET}"
 }
 
 function prompt_connection() 
@@ -144,7 +144,7 @@ function prompt_connection()
 	else
 		color=${YELLOW}
 	fi
-	echo "${WHITE}@${color}"
+	echo "${WHITE}@${color}\h${PEN_RESET}"
 }
 
 function prompt_jobs()
@@ -176,8 +176,8 @@ function prompt_build()
 	local ps1=""
 	ps1+="$(prompt_jobs)"
 	ps1+="$(prompt_git_minutes) "
-	ps1+="$(prompt_user)\u\[${PEN_RESET}\]"
-	ps1+="$(prompt_connection)\h\[${PEN_RESET}\]"
+	ps1+="$(prompt_user)"
+	ps1+="$(prompt_connection)"
 	ps1+="\[${WHITE}\]: \[${GREEN}\]\w"
 	ps1+="$(prompt_git_branch)"
 	ps1+="\n"
