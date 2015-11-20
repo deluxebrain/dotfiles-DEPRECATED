@@ -62,7 +62,7 @@ PEN_HIGHLIGHT=${BYELLOW}${ON_BLUE}
 # Prompt
 #-------------------------------------------------------------
 
-function prompt_git_minutes()
+function _prompt_git_minutes()
 {
 	local mins 
 	mins=$(git_mins 2> /dev/null)
@@ -79,7 +79,7 @@ function prompt_git_minutes()
     	echo "${color}${mins}m${PEN_RESET}"
 }
 
-function prompt_git_branch() 
+function _prompt_git_branch() 
 {
 	local s branchname
 
@@ -122,15 +122,16 @@ function prompt_git_branch()
 	echo "${VIOLET}${branchName}${BLUE}${s}${PEN_RESET}";
 }
 
-function prompt_git()
+function _prompt_git()
 {
 	echo " ($(prompt_git_minutes)|$(prompt_git_branch))"
 }
 
-function prompt_user()
+function _prompt_user()
 {
+	local is_root=$1
 	local color
-	if [[ ${USER} == "root" ]]; then
+	if [ $is_root -eq 0 ]; then
 		color=${RED}
 	else
 		color=${ORANGE}
@@ -138,7 +139,7 @@ function prompt_user()
 	echo "${color}\u${PEN_RESET}"
 }
 
-function prompt_connection() 
+function _prompt_connection() 
 {
 	local color
 	if [[ "${SSH_TTY}" ]]; then
@@ -149,8 +150,10 @@ function prompt_connection()
 	echo "${WHITE}@${color}\h${PEN_RESET}"
 }
 
-function prompt_jobs()
+function _prompt_caret()
 {
+	local is_root=$1
+	
 	local color
 	if [ $(jobs -s | wc -l) -gt "0" ]; then
 		color=${BRED}
@@ -159,10 +162,18 @@ function prompt_jobs()
 	else
 		color=${WHITE}	
 	fi
-	echo "${color} \$${PEN_RESET}"
+
+	local caret
+	if [ $is_root -eq 0 ]; then
+		caret="#"
+	else
+		caret="$"
+	fi
+
+	echo "${color} ${caret}${PEN_RESET}"
 }
 
-function prompt_history()
+function _prompt_history()
 {
 	local color
 	if [ "$1" = "0" ]; then
@@ -173,23 +184,24 @@ function prompt_history()
 	echo "[${color}\!${PEN_RESET}]"
 }
 
-function prompt_path()
+function _prompt_path()
 {
 	echo "${WHITE}: ${GREEN}\w"
 }
 
-function prompt_build()
+function _prompt_build()
 {
 	local is_root=$([ ${USER} == "root" ]; echo $?)
 	local in_git_repos=$(ingit; echo $?)
+	
 	local ps1=""
-	ps1+="$(prompt_user)"
-	ps1+="$(prompt_connection)"
-	ps1+="$(prompt_path)"
-	[ $in_git_repos -eq 0 ] && ps1+="$(prompt_git)"
+	ps1+="$(_prompt_user ${is_root})"
+	ps1+="$(_prompt_connection)"
+	ps1+="$(_prompt_path)"
+	[ $in_git_repos -eq 0 ] && ps1+="$(_prompt_git)"
 	ps1+="\n"
-	ps1+="$(prompt_history $1)"
-	ps1+="$(prompt_jobs) "
+	ps1+="$(_prompt_history $1)"
+	ps1+="$(_prompt_caret $is_root) "
 
 	# Set title of current xterm:
 	ps1+="\[\e]0;[\u@\h] \w\a\]"
@@ -204,5 +216,5 @@ function prompt_build()
 	export PS2="\[${YELLOW}\]→ \[${PEN_RESET}\]"
 }
 
-PROMPT_COMMAND="prompt_build \$?"
+PROMPT_COMMAND="_prompt_build \$?"
 
