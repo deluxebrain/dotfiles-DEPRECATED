@@ -71,6 +71,12 @@ export LESS_TERMCAP_ue=${PEN_RESET}
 # Environment tailoring
 #-------------------------------------------------------------
 
+# Needed by Powerline on Linux
+#+ (defaults to $HOME/.config on OS X)
+export XDG_CONFIG_HOME="$HOME/.config"
+
+# Root directory for all git repositories
+#+ Used by ggo
 export GIT_REPOS_ROOT="/Users/${USER}/Repos"
 
 # Used by bash prompt to configure warnings around
