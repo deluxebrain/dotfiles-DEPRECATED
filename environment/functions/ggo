@@ -1,6 +1,6 @@
 # Change to the specified git repository
 # Source the .settings file if it exists
-#+ If the locate index becomes corrupt try:
+# >>> If the locate index becomes corrupt try:
 #$ sudo rm /var/db/locate.database
 function ggo() 
 {

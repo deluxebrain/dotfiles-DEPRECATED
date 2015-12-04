@@ -1,4 +1,4 @@
-# Change to root  directory of current git repository
+# Change to root directory of current git repository
 function cdg()
 {
 	local git_root=$(findup .git)
