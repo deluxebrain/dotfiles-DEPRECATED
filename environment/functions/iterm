@@ -1,4 +1,6 @@
 # https://www.iterm2.com/documentation-escape-codes.html
+# iTerm2 supports several non-standard escape codes.
+# Note these may not work properly in tmux or screen.
 
 # Set cursor shape
 function set_iterm_cursor()

@@ -1,0 +1,31 @@
+# interactive login shells
+#+ /etc/profile
+#+ /etc/profile.d/
+#+ ~/.bash_profile
+
+# interactive non-login shells
+#+ /etc/bashrc
+#+ ~/.bashrc
+
+# non-interactive shells
+#+ $BASH_ENV (if set, usually points to ~/.bashrc)
+
+# Simple test for interactive shell
+#$ is_interactive && echo 'interactive shell'
+function is_interactive()
+{
+	# $-	| current options set for the shell
+	[[ $- == *i* ]] 
+	return
+}
+
+# Simple test for login shell
+#$ is_login && echo 'login shell'
+function is_login()
+{
+	# shopt		| bash set options
+	# login_shell	| read-only shell descriptor set by then shell when is login shell
+	shopt -q login_shell
+	return
+}
+
