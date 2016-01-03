@@ -1,0 +1,13 @@
+# Executed for new terminal windows (inc. new tabs and splits)
+# ( not executed for new shells created using `bash` )
+
+# Interactive login shell configuration files:
+#+ /etc/profile, then the first of:
+#- ~/.bash_profile
+#- ~/.bash_login
+#- ~/.profile
+
+[[ -s ${HOME}/.bashrc ]] && source ${HOME}/.bashrc
+
+# Set environment variables, etc, that are inherited by child processes
+

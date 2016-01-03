@@ -1,0 +1,106 @@
+# Executed by non-login shells:
+#- new shell created using `bash`
+#- executing a script
+#- cron
+
+function __set_shelloptions()
+{
+        # Case-insensitive globbing (used in pathname expansion)
+        shopt -s nocaseglob;
+
+        # Append to the Bash history file, rather than overwriting it
+        shopt -s histappend;
+
+        # Autocorrect typos in path names when using `cd`
+        shopt -s cdspell;
+}
+
+# start ssh-agent, using existing agent if available;
+# note this is not absolutely necessary if the window manager is set to
+# auto-start ssh-agent on first use (e.g. as with OS X ssh-agent launchd integration);
+function __start_ssh_agent()
+{
+        # detect if ssh-agent is running
+        # &> redirects stdout and stderr
+        # (equivalent to > /dev/null 2>&1)
+        ssh-add -l &> /dev/null
+
+        # test (with expansion) the exit status (2 means actual error)
+        if [ "$?" == 2 ]; then
+                # test exists and is readable ( -r )
+                [[ -r ~/.ssh-agent ]] && \
+                        # "     --> so we get expansion
+                        # $()   --> command substitution
+                        eval "$(< ~/.ssh-agent)" > /dev/null
+
+                ssh-add -l &> /dev/null
+                if [ "$?" == 2 ]; then
+                        # scope the umask to the file using subshell
+                        # u=rwx,go=e,
+                        # ssh-agent prints the necessary shell commands
+                        # to launch ssh-agent
+                        (umask 066; ssh-agent > ~/.ssh-agent)
+                        eval "$(< ~/.ssh-agent)" > /dev/null
+                        ssh-add
+
+                        # kill ssh-agent on shell exit (EXIT)
+                        # note $SSH_AGENT_PID is not set for system ssh-agent
+                        # so this will only kill shell launched agents
+                        trap "kill $SSH_AGENT_PID" EXIT
+                fi
+        fi
+}
+
+function __start_completions()
+{
+        # enable bash completion
+        if [ -f $(brew --prefix)/etc/bash_completion ]; then
+                . $(brew --prefix)/etc/bash_completion
+        fi
+
+        # Enable tab completion for `g` by marking it as an alias for `git`
+        if type _git &> /dev/null && [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
+                complete -o default -o nospace -F _git g;
+        fi;
+
+        # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
+        [ -e "$HOME/.ssh/config" ] && \
+                complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | \
+                grep -v "[?*]" | \
+                cut -d " " -f2- | \
+                tr ' ' '\n')" scp sftp ssh;
+}
+
+function __start_powerline()
+{
+        powerline-daemon -q
+        POWERLINE_BASH_CONTINUATION=1
+        POWERLINE_BASH_SELECT=1
+        . "$(piproot powerline-status)"/powerline/bindings/bash/powerline.sh
+}
+
+# called when run from an non-interactive shell
+function __when_non_interactive() 
+{
+}
+
+# called when run from an interactive shell
+function __when_interactive()
+{
+	set_shelloptions
+	start_ssh_agent
+	start_completions
+	start_powerline
+}
+
+# `.bashrc` is pointed to by $BASH_ENV for non-interactive shells
+# Hence this file is split into interactive (e.g terminal) and non-interfactive (e.g. Cron) sections
+[[ $- == *i* ]] && __when_interactive || __when_non_interactive
+
+unset -f __set_shell_options
+unset -f __start_ssh_agent
+unset -f __start_completions
+unset -f __start_powerline
+unset -f __when_non_interactive
+unset -f __when_interactive
+
