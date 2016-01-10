@@ -1,13 +1,22 @@
-# Executed for new terminal windows (inc. new tabs and splits)
-# ( not executed for new shells created using `bash` )
-
 # Interactive login shell configuration files:
-#+ /etc/profile, then the first of:
+#- /etc/profile, then the first of:
 #- ~/.bash_profile
 #- ~/.bash_login
 #- ~/.profile
 
+# Sourced for interactive login sessions
+# - New terminal windows (inc. new tabs and splits)
+
+# Note - new shells created using e.g. `bash` are interactive non-login sessions
+# and inherit the environment of the parent shell
+
 [[ -s ${HOME}/.bashrc ]] && source ${HOME}/.bashrc
 
-# Set environment variables, etc, that are inherited by child processes
+# The bash_profile should contain any configuration that you want to add to the
+# shell environment to be available to the current shell and all child processes
+# This includes:
+# - Environment variables ( those that are exported )
+# - Functions ( those that are exported )
+
+# The rest ( e.g. aliases ) should live in the .bashrc
 

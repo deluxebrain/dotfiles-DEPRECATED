@@ -97,6 +97,7 @@ function __when_interactive()
 # Hence this file is split into interactive (e.g terminal) and non-interfactive (e.g. Cron) sections
 [[ $- == *i* ]] && __when_interactive || __when_non_interactive
 
+# prevent pollution of shell by deleting all local variables and functions
 unset -f __set_shell_options
 unset -f __start_ssh_agent
 unset -f __start_completions
