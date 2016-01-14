@@ -44,6 +44,7 @@ vim --override-system-vi
 macvim --override-system-vim --custom-system-icons
 
 # Powertools
+ossp-uuid # uuid's
 spark
 pstree
 tree
