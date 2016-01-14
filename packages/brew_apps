@@ -43,6 +43,10 @@ unzip
 vim --override-system-vi 
 macvim --override-system-vim --custom-system-icons
 
+# Image manipulation
+imagemagick	# e.g. convert between file formats
+jp2a		# convert jpgs to ascii art
+
 # Powertools
 ossp-uuid # uuid's
 spark
