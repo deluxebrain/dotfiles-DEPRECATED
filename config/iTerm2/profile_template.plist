@@ -2,7 +2,7 @@
 	"Profiles": [
 		{
 			"Name": "${_PROFILE_NAME}",
-			"Guid": "${_PROFILE_ID}
+			"Guid": "${_PROFILE_ID}"
 		}
 	]
 }
