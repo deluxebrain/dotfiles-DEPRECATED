@@ -21,6 +21,7 @@ screen
 watch
 wdiff
 wget
+gettext, link --force gettext  # envsubst
 
 # OS X replacements
 bash

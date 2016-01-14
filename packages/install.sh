@@ -40,6 +40,15 @@ __load_dependencies() {
         source "${script_dir}/../functions/if-exists.sh"
 }
 
+# If dependencies don't wire up try this:
+# https://polymake.org/doku.php/howto/mac_homebrew
+__install_perlbrew () {
+	app_exists? "perlbrew" || {
+		print_info "Installing Perlbrew ..."
+		\curl -L http://install.perlbrew.pl | bash	
+	}
+}
+	
 __install_brew () {
 	app_exists? "brew" || {
         	print_info "Installing Homebrew ..."

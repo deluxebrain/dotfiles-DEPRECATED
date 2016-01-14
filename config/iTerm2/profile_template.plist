@@ -1,0 +1,8 @@
+{
+	"Profiles": [
+		{
+			"Name": "${_PROFILE_NAME}",
+			"Guid": "${_PROFILE_ID}
+		}
+	]
+}
