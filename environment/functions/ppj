@@ -1,0 +1,5 @@
+# pretty print json
+function ppj()
+{
+	< $1 jq '.'
+}

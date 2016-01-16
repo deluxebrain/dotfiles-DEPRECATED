@@ -50,6 +50,7 @@ jp2a		# convert jpgs to ascii art
 # Powertools
 ossp-uuid # uuid's
 spark
+jq		# e.g. < my_json.json jq '.' to pretty print
 pstree
 tree
 tmux
