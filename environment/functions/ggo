@@ -9,7 +9,7 @@ function ggo()
 	[ ! "${repos_name}" -o ! "${repos_user}" ] && { false; return; }
 
 	# Execute main while loop in the main shell process so that
-	#+ it can set function level shell variable.s
+	#+ it can set function level shell variables
 	# <<< is a "here string" which allow the output from a subshell
 	#+ to be redirected to the main while loop. 
         local found_repos=false
