@@ -10,14 +10,21 @@ function _file_exists?()
 	[ -n "$1" -a -f "$1" ]
 }
 
+function _form_path()
+{
+	local path_root="${1%/}"
+	local filename="$2"
+	echo "${path_root}/${filename}"
+}
+
 function _join()
 {
-	local IFS="$1"
+	local IFS=$1
 	shift
 	echo "$*"
 }
 
-function _form_path()
+function _form_path2()
 {
 	_join "/" "${@%/}"
 }
@@ -27,12 +34,18 @@ function _git_repos_root()
 	git rev-parse --show-toplevel
 }
 
+function _form_path_to_colorscheme()
+{
+	local scheme_name="$1"
+	local scheme_path="$(_git_repos_root)"
+}
+
 function main()
 {
 	local script_dir="${BASH_SOURCE%/*}"
         
 	# Load config
-        local config_path="$(_form_path "${script_dir}" "create_profile.conf")"
+        local config_path="${script_dir}/create_profile.conf"
         _file_exists? "${config_path}" || {
                 echo "ERROR: Unable to find config file ${config_path}"
                 false; return
@@ -55,7 +68,7 @@ function main()
 	}
 
 	# form path to template
-	local template_path="$(_form_path "${script_dir}" "profile_template.plist")"
+	local template_path="${script_dir}/profile_template.plist"
 	_file_exists? "${template_path}" || {
 		echo "ERROR: Unable to find profile template ${template_path}"
 		false; return
@@ -66,6 +79,7 @@ function main()
 	envsubst<"${template_path}" > "${profile_path}"
 }
 
-main
+# main
+_form_path2 a/ b c/
 exit $?
 
