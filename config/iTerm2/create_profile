@@ -1,5 +1,7 @@
 #!/bin/bash
 
+EXEC_PATH="${BASH_SOURCE%/*}"
+
 function _directory_exists?()
 {
 	[ -n "$1" -a -d "$1" ]
@@ -29,18 +31,13 @@ function _git_repos_root()
 
 function main()
 {
-	local script_dir="${BASH_SOURCE%/*}"
-        
 	# Load config
-        local config_path="$(_form_path "${script_dir}" "create_profile.conf")"
+        local config_path="$(_form_path "${EXEC_PATH}" "create_profile.conf")"
         _file_exists? "${config_path}" || {
                 echo "ERROR: Unable to find config file ${config_path}"
                 false; return
         }
-        source ${config_path} || {
-                echo "ERROR: Unable to load config file ${config_path}"
-                false; return
-        }
+        source ${config_path} || return
 
 	# Create placeholder profile plist file
 	_directory_exists? "${ITERM_PROFILE_DIR}" || {
@@ -55,15 +52,31 @@ function main()
 	}
 
 	# form path to template
-	local template_path="$(_form_path "${script_dir}" "profile_template.plist")"
+	local template_path="$(_form_path "${EXEC_PATH}" "profile_template.plist")"
 	_file_exists? "${template_path}" || {
 		echo "ERROR: Unable to find profile template ${template_path}"
 		false; return
 	}
 
-	# transform profile template to form profile
-	echo "INFO: Transforming ${template_path} to form profile"
-	envsubst<"${template_path}" > "${profile_path}"
+	# form path to colorscheme plist
+	local colorscheme_path="$(_form_path \
+		"$(_git_repos_root)" \
+		"themes" \
+		"${_PROFILE_COLORSCHEME_NAME}")"
+	_file_exists? "${colorscheme_path}" || {
+		echo "ERROR: Unable to find colorscheme referenced by ${_PROFILE_COLORSCHEME_NAME}"
+		false; return
+	}
+
+	# merge the following to form the profile:
+	# - The transformed template
+	# - The json converted colorscheme plist
+	# NB: Use subshells to pipe to multiple arguments of jq
+	echo "INFO; Transforming ${template_path} to form profile"
+	jq -s '.[0] * .[1]' \
+		<(envsubst < "${template_path}") \
+		<(plutil -convert json "${colorscheme_path}" -o -) \
+		> "${profile_path}"
 }
 
 main

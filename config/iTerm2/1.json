@@ -1,0 +1,8 @@
+{
+	"parent": [
+		{
+			"child_1": "value_1",
+			"child_2": "value_2"
+		}
+	]
+}
