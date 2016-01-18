@@ -71,7 +71,21 @@ function main()
 	# merge the following to form the profile:
 	# - The transformed template
 	# - The json converted colorscheme plist
-	# NB: Use subshells to pipe to multiple arguments of jq
+	# ---
+	# -s	
+	#	slurp; run entire stream into single array and run filters once
+	#	i.e. form single array from elements from all files
+	# .[0].Profiles[0]
+	#	select the first element of the Profiles field of the first outer array
+	# +=
+	#	append the rhs to the lhs
+	# .[1]
+	#	select the second element of the outer array
+	# | .[0]
+	#	run a second filter that only returns the first element
+	# <(...)	
+	#	use subshells to pipe multiple arguments to jq
+	# ---
 	echo "INFO; Transforming ${template_path} to form profile"
 	jq -s '.[0].Profiles[0] += .[1] | .[0]' \
 		<(envsubst < "${template_path}") \
