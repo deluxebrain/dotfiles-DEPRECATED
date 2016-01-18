@@ -1,6 +1,6 @@
-#!/bin/bash
-
-file_exists? () {
+# Collection of utility functions around testing for the existence of stuff
+function file_exists?() 
+{
         local path=$1
 
         # check if paths  exists (in one of various forms)
@@ -14,12 +14,13 @@ file_exists? () {
         # -L            : file exists and is a symlink
         [ -f "$path" -o -d "$path" -o -L "$path" ]
 }
+export -f file_exists? && readonly -f file_exists
 
-app_exists? () {
+function app_exists () 
+{
         local app=$1
         # command-v	: Describe a command without executing it, exit 1 if doesn't exist
         command -v $($app) &> /dev/null
 }
-
-export -f file_exists? && readonly -f file_exists?
 export -f app_exists? && readonly -f app_exists?
+
