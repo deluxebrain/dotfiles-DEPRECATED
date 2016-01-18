@@ -73,10 +73,21 @@ function main()
 	# - The json converted colorscheme plist
 	# NB: Use subshells to pipe to multiple arguments of jq
 	echo "INFO; Transforming ${template_path} to form profile"
-	jq -s '.[0] * .[1]' \
+	jq -s '.[0].Profiles[0] += .[1] | .[0]' \
 		<(envsubst < "${template_path}") \
 		<(plutil -convert json "${colorscheme_path}" -o -) \
 		> "${profile_path}"
+	[ ! $? -eq 0 ] && {
+		echo "ERROR: Unable to merge template and colorscheme"
+		false; return
+	}
+
+	set_iterm_profile "${_PROFILE_NAME}" || {
+		echo "WARN: Unable to set ${_PROFILE_NAME} as default profile"
+		false; return
+	}
+
+	do_iterm_growl "Profile ${_PROFILE_NAME} created and set as default"
 }
 
 main
