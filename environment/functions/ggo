@@ -47,3 +47,5 @@ function ggo()
 	return
 }
 
+export -f ggo && readonly -f ggo
+

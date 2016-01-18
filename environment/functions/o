@@ -8,3 +8,6 @@ function o()
 		open "$@";
 	fi;
 }
+
+export -f o && readonly -f o
+

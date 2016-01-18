@@ -8,3 +8,6 @@ function v()
 		vim "$@";
 	fi;
 }
+
+export -f v && readonly -f v
+

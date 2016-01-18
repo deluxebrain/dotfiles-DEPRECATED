@@ -17,6 +17,7 @@ function set_iterm_cursor()
 	fi
 	echo -ne "\033]50;CursorShape=$1\a"
 }
+export -f set_iterm_cursor && readonly -f set_iterm_cursor
 
 # Set profile
 function set_iterm_profile
@@ -27,12 +28,14 @@ function set_iterm_profile
 	fi
 	echo -ne "\033]50;SetProfile=$1\a"
 }
+export -f set_iterm_profile && readonly -f set_iterm_profile
 
 # Bring iTerm2 to the foreground
 function do_iterm_focus
 {
 	echo -ne "\033]50;StealFocus\a"
 }
+export -f do_iterm_focus && readonly -f do_iterm_focus
 
 # Post a Growl notification
 function do_iterm_growl
@@ -43,4 +46,5 @@ function do_iterm_growl
 	fi
 	echo -ne "\033]9;$1\a"
 }
+export -f do_iterm_growl && readonly -f do_iterm_growl
 

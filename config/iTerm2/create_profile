@@ -83,11 +83,11 @@ function main()
 	}
 
 	set_iterm_profile "${_PROFILE_NAME}" || {
-		echo "WARN: Unable to set ${_PROFILE_NAME} as default profile"
+		echo "WARN: Unable to set ${_PROFILE_NAME} as current profile"
 		false; return
 	}
 
-	do_iterm_growl "Profile ${_PROFILE_NAME} created and set as default"
+	do_iterm_growl "Profile ${_PROFILE_NAME} created and set as current profile"
 }
 
 main

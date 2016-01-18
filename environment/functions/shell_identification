@@ -18,6 +18,7 @@ function is_interactive()
 	[[ $- == *i* ]] 
 	return
 }
+export -f is_interactive && readonly -f is_interactive
 
 # Simple test for login shell
 #$ is_login && echo 'login shell'
@@ -28,4 +29,5 @@ function is_login()
 	shopt -q login_shell
 	return
 }
+export -f is_login && readonly -f is_login
 

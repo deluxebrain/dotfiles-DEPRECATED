@@ -17,6 +17,7 @@
 # This includes:
 # - Environment variables ( those that are exported )
 # - Functions ( those that are exported )
-
 # The rest ( e.g. aliases ) should live in the .bashrc
 
+# Set item to use the generated dynamic profile
+set_iterm_profile "${ITERM_PROFILE_NAME}"

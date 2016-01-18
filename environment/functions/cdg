@@ -9,3 +9,5 @@ function cdg()
 
 	false
 }
+
+export -f cdg && readonly -f cdg

@@ -1,6 +1,6 @@
 # Thanks to: http://stackoverflow.com/a/17841619/1638091
-# join , args
-function join()
+# j , args
+function j()
 {
 	# Set expansion character
 	local IFS="$1"
@@ -11,3 +11,6 @@ function join()
 	# Expand args to "$1c$2c..." where c is first character if IFS
 	echo "$*"
 }
+
+export -f j && readonly -f j
+
