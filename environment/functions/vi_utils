@@ -1,5 +1,6 @@
 # 'v' with no arguments opens the current directory in Vim
 # otherwise opens the given location
+unset v
 function v() 
 {
 	if [ $# -eq 0 ]; then
@@ -8,6 +9,5 @@ function v()
 		vim "$@";
 	fi;
 }
-
 export -f v && readonly -f v
 

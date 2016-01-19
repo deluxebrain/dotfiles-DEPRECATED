@@ -12,6 +12,9 @@ virtualbox
 # Graphics
 inkscape
 
+# Audio
+pd
+
 # Security
 macpass
 yubikey-neo-manager

@@ -1,0 +1,8 @@
+# pretty print json
+unset jpp
+function jpp()
+{
+	< $1 jq '.'
+}
+export -f jpp && readonly -f jpp
+

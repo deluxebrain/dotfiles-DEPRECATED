@@ -1,0 +1,19 @@
+unset PSD
+function PSD()
+{
+	echo "${BASH_SOURCE}%/*"
+}
+export -f PSD && readonly -f PSD
+
+unset sload
+function sload()
+{
+	local FILES=("$@")
+	local FILE 
+	for FILE in "$FILES[@]";
+	do
+		source "${LIB_PATH}/${FILE}.sh"
+	done
+}
+export -f sload && readonly -f sload
+

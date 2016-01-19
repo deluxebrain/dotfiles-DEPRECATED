@@ -75,3 +75,8 @@ rake-completion
 ruby-completion
 tmuxinator-completion
 vagrant-completion
+
+# clients
+irssi	# irc
+mutt
+

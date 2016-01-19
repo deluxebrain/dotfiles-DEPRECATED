@@ -3,6 +3,7 @@
 # Note these may not work properly in tmux or screen.
 
 # Set cursor shape
+unset set_iterm_cursor
 function set_iterm_cursor()
 {
 	# Use [[ which allows:
@@ -20,6 +21,7 @@ function set_iterm_cursor()
 export -f set_iterm_cursor && readonly -f set_iterm_cursor
 
 # Set profile
+unset set_iterm_profile
 function set_iterm_profile
 {
 	if [[ -z "$1" ]]; then
@@ -31,6 +33,7 @@ function set_iterm_profile
 export -f set_iterm_profile && readonly -f set_iterm_profile
 
 # Bring iTerm2 to the foreground
+unset do_iterm_focus
 function do_iterm_focus
 {
 	echo -ne "\033]50;StealFocus\a"
@@ -38,6 +41,7 @@ function do_iterm_focus
 export -f do_iterm_focus && readonly -f do_iterm_focus
 
 # Post a Growl notification
+unset do_iterm_growl
 function do_iterm_growl
 {
 	if [[ -z "$1" ]]; then

@@ -1,8 +1,0 @@
-# Create a new directory and enter it
-function mkd() 
-{
-    mkdir -p "$@" && cd "$_";
-}
-
-export -f mkd && readonly -f mkd
-

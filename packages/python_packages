@@ -2,3 +2,5 @@ pygments
 powerline-status
 pyinstaller		# dependency for yubikey-neo-manager
 pycrypto		# dependency for yubikey-neo-manager
+aws-shell
+

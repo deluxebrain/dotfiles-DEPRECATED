@@ -1,72 +1,47 @@
 #!/bin/bash
+#
+# CreateProfile
+#
+# This creates an iTerm2 dynamic profile based on the supplied template
+# and configuration
 
-EXEC_PATH="${BASH_SOURCE%/*}"
+PSD="${BASH_SOURCE%/*}"
 
-function _directory_exists?()
-{
-	[ -n "$1" -a -d "$1" ]
-}
-
-function _file_exists?()
-{
-	[ -n "$1" -a -f "$1" ]
-}
-
-function _join()
-{
-	local IFS="$1"
-	shift
-	echo "$*"
-}
-
-function _form_path()
-{
-	_join "/" "${@%/}"
-}
-
-function _git_repos_root()
-{
-	git rev-parse --show-toplevel
-}
+DEPENDS_ON=(
+	exists
+	prompt
+	path
+)
+sload "${DEPENDS_ON[@]}"
 
 function main()
 {
 	# Load config
-        local config_path="$(_form_path "${EXEC_PATH}" "create_profile.conf")"
-        _file_exists? "${config_path}" || {
-                echo "ERROR: Unable to find config file ${config_path}"
-                false; return
-        }
+        local config_path="$(path_combine "${PSD}" "create_profile.conf")"
+        file_exists? "${config_path}" || \
+                fail "Unable to find config file ${config_path}"
         source ${config_path} || return
 
 	# Create placeholder profile plist file
-	_directory_exists? "${ITERM_PROFILE_DIR}" || {
-		echo "ERROR: Export variable ITERM_PROFILE_DIR not set or not valid path"
-		false; return
-	}
-	local profile_path="$(_form_path "${ITERM_PROFILE_DIR}" "${_PROFILE_NAME}.plist")"
-	echo "INFO: Creating profile ${_PROFILE_NAME} as ${profile_path} ..."
-	cat /dev/null >| "${profile_path}" || {
-		echo "ERROR: Unable to create profile ${profile_path}"
-		false; return
-	}
+	dir_exists? "${ITERM_PROFILE_DIR}" || \
+		fail "Export variable ITERM_PROFILE_DIR not set or not valid path"
+	local profile_path="$(path_combine "${ITERM_PROFILE_DIR}" "${_PROFILE_NAME}.plist")"
+	msg_info "Creating profile ${_PROFILE_NAME} as ${profile_path} ..."
+	cat /dev/null >| "${profile_path}" || \
+		fail "Unable to create profile ${profile_path}"
 
 	# form path to template
-	local template_path="$(_form_path "${EXEC_PATH}" "profile_template.plist")"
-	_file_exists? "${template_path}" || {
-		echo "ERROR: Unable to find profile template ${template_path}"
-		false; return
-	}
+	local template_path="$(path_combine "${PSD}" "profile_template.plist")"
+	file_exists? "${template_path}" || \
+		fail "Unable to find profile template ${template_path}"
 
 	# form path to colorscheme plist
-	local colorscheme_path="$(_form_path \
-		"$(_git_repos_root)" \
+	local colorscheme_path="$(path_combine \
+		"$(gpath)" \
 		"themes" \
 		"${_PROFILE_COLORSCHEME_NAME}")"
-	_file_exists? "${colorscheme_path}" || {
-		echo "ERROR: Unable to find colorscheme referenced by ${_PROFILE_COLORSCHEME_NAME}"
-		false; return
-	}
+	file_exists? "${colorscheme_path}" || \
+		fail "Unable to find colorscheme referenced by ${_PROFILE_COLORSCHEME_NAME}"
 
 	# merge the following to form the profile:
 	# - The transformed template
@@ -86,20 +61,16 @@ function main()
 	# <(...)	
 	#	use subshells to pipe multiple arguments to jq
 	# ---
-	echo "INFO; Transforming ${template_path} to form profile"
+	msg_info "Transforming ${template_path} to form profile"
 	jq -s '.[0].Profiles[0] += .[1] | .[0]' \
 		<(envsubst < "${template_path}") \
 		<(plutil -convert json "${colorscheme_path}" -o -) \
 		> "${profile_path}"
-	[ ! $? -eq 0 ] && {
-		echo "ERROR: Unable to merge template and colorscheme"
-		false; return
-	}
+	[ ! $? -eq 0 ] && \
+		fail "Unable to merge template and colorscheme"
 
-	set_iterm_profile "${_PROFILE_NAME}" || {
-		echo "WARN: Unable to set ${_PROFILE_NAME} as current profile"
-		false; return
-	}
+	set_iterm_profile "${_PROFILE_NAME}" || \
+		fail "Unable to set ${_PROFILE_NAME} as current profile"
 
 	do_iterm_growl "Profile ${_PROFILE_NAME} created and set as current profile"
 }

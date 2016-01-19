@@ -1,8 +1,0 @@
-# pretty print json
-function ppj()
-{
-	< $1 jq '.'
-}
-
-export -f ppj && readonly -f ppj
-
