@@ -63,6 +63,7 @@ python		# includes pip
 python3		# includes pip3
 pyside 		# Python bindings for Qt - needed for yubikey-neo-manager
 node
+shunit2		# bash testing framework
 
 # completions
 bash-completion
