@@ -1,3 +1,7 @@
+#
+# Deprecated in favour of Powerline
+#
+
 function _prompt_git_minutes()
 {
 	local mins 
