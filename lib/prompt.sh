@@ -1,3 +1,5 @@
+[ -z ${__PROMPT+.} ] && readonly __PROMPT= || return
+
 function msg_info() 
 {
         printf " [ ${PEN_INFO}..${PEN_RESET} ] $1\n"

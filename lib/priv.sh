@@ -1,3 +1,5 @@
+[ -z ${__PRIV+.} ] && readonly __PRIV= || return
+
 # https://gist.github.com/cowboy/3118588
 function sudo_keepalive() 
 {
