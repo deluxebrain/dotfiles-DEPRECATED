@@ -1,3 +1,5 @@
+#!/bin/bash
+
 [ -z ${__PROMPT+.} ] && readonly __PROMPT= || return
 
 function msg_info() 

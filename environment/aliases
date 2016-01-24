@@ -203,6 +203,9 @@ alias rck="compgen -k" # shell reserved key words.
 #+ delete the shortest match of $substring from back of $string
 alias ped="echo ${BASH_SOURCE%/*}"  
 
+# Prints command traces before they execute
+alias debug="bash -x"
+
 #-------------------------------------------------------------
 # Package managers
 #-------------------------------------------------------------

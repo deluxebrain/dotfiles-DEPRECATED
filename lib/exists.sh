@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Collection of utility functions around testing for the existence of stuff
 
 [ -z ${__EXISTS+.} ] && readonly __EXISTS= || return
