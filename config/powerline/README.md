@@ -2,4 +2,5 @@
 
 ## Configuration
 
+$ power-daemon --replace
 

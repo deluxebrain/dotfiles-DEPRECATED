@@ -1,0 +1,40 @@
+unset tstart
+function tstart()
+{
+	[ -z "${TMUX}" ] || { false; return; }
+
+	local global_session="${1:-$USER}"
+
+	# does this session already exist?
+	# create it if not 
+	# -d	: detached from current terminal  
+	tmux has-session -t "${global_session}" || \
+		tmux new-session -d -s "${global_session}"
+
+	# does the session already have clients attached?
+	local clients_connected=$(tmux list-clients | wc -l)
+	if [[ ${client_count} > 0 ]]; then
+
+		# form session name for grouped session
+		local client_id=0
+		local grouped_session="${global_session}:${client_id}"
+		while tmux has-session -t "${grouped_session}" > /dev/null 2>&1
+		do
+			((client_id+1)) # shorthand for increment
+			grouped_session="${global_session}:${client_id}"
+
+		done
+
+		# -t    : grouped with named session so they share same set of windows 
+		# Destroy session when no clients attached to prevent orphans
+		tmux new-session -d -t "${global_session}" -s "${grouped_session}" \; set-option destroy-unattached
+		
+		# -2	: 256 color
+		tmux -2 attach-session -t "${grouped_session}"
+	else
+		tmux -2 attach-session -t "${global_session}"
+	fi
+		
+}
+export -f tstart && readonly -f tstart
+

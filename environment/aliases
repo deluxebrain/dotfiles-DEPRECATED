@@ -16,6 +16,16 @@ alias ~="cd ~"
 alias reload="exec $SHELL -l"
 
 #-------------------------------------------------------------
+# Tmux
+#-------------------------------------------------------------
+
+# -A flag makes new-session behave like attach-session if session pre-exists
+alias ta="tmux new-session -A -s "${USER}""
+
+# Get session name
+alias tname="tmux display-message -p '#S'"
+
+#-------------------------------------------------------------
 # Git
 #-------------------------------------------------------------
 
