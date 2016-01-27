@@ -3,7 +3,8 @@ iterm2-beta
 alfred
 
 # Powertools
-karabiner # keyboard mapping
+karabiner	# keyboard mapping
+seil		# capslock remapping
 
 # Browsers and related
 google-chrome
