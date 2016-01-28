@@ -1,0 +1,3 @@
+set -g default-terminal "screen-256color"
+source "$(piproot powerline-status)"/powerline/bindings/tmux/powerline.conf
+
