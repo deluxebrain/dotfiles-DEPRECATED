@@ -1,0 +1,64 @@
+# Changes to this file are not read by tmux automatically, either:
+# 1. Close down all tmux sessions, or
+# 2. Enter tmux command mode ( prefix : and enter: source-file ~/.tmux.conf
+# 3. Reload config current session using PREFIX r ( see below )
+
+# Notes:
+# \;		| Bind key to series of commands
+# setw		| Short-hand for set-window-option
+# bind -n	| keybinding doesnt require PREFIX
+# bind -r	| keybinding is repeatable  ( default 500ms repeat limit )
+
+# Tell tmux to use 256 color terminal
+set -g default-terminal "screen-256color"
+
+# Disable the mouse!
+setw -g mode-mouse off
+
+# Set the tmux prefix to CTRL-a and free up CTRL-b
+set -g prefix C-a
+unbind C-b
+
+# Configure tmux to send the CTRL-a through to applications as ( e.g. Vim )
+bind C-a send-prefix
+
+# Remove the delay when sending commands ( can interfere with some applications )
+set -s escape-time 1
+
+# Set the vase index for windows and panes to 1
+set -g base-index 1
+setw -g pane-base-index 1 
+
+# Enable vi keys
+setw -g mode-keys vi
+
+# Reload config for current session
+bind r source-file ~/.tmux.conf \; display "Configuration refreshed!"
+
+# Splitting panes
+bind | split-window -h
+bind - split-window -v
+
+# Moving between panes ( Vim mappings )
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+# Cycling between panes
+bind -r C-h select-window -t :-
+bind -r C-l select-window -t :+
+
+# Resizing panes
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5 
+
+# Enable activity monitoring so we get notified when something happens in other windows in session
+setw -g monitor-activity on
+set -g visual-activity on
+
+# Fire up Powerline integration
+source "$(piproot powerline-status)"/powerline/bindings/tmux/powerline.conf
+
