@@ -1,19 +1,17 @@
-unset PSD
-function PSD()
+unset DEPENDS_ON
+function DEPENDS_ON()
 {
-	echo "${BASH_SOURCE}%/*"
-}
-export -f PSD && readonly -f PSD
+	if [[ -z "${LIB_PATH}" || ! -d "${LIB_PATH}" ]]; then
+		echo "LIB_PATH not set or not valid path" 2>&1
+		return 1
+	fi  
 
-unset sload
-function sload()
-{
-	local FILES=("$@")
-	local FILE 
-	for FILE in "$FILES[@]";
+	local FILE
+	for FILE in $@;
 	do
-		source "${LIB_PATH}/${FILE}.sh"
+		source "${LIB_PATH}/${FILE}.sh" > /dev/null 2>&1  || \
+			echo "Failed to source ${FILE}.sh" 2>&1
+			return 1
 	done
 }
-export -f sload && readonly -f sload
-
+export -f DEPENDS_ON && readonly -f DEPENDS_ON

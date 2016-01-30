@@ -11,6 +11,12 @@ export ITERM_PROFILE_DIR="/Users/${USER}/Library/Application Support/iTerm2/Dyna
 export ITERM_PROFILE_NAME="${USER}"
 
 #-------------------------------------------------------------
+# Package managers
+#-------------------------------------------------------------
+
+export pip_root="/usr/local/lib/python3.5/site-packages"
+
+#-------------------------------------------------------------
 # Scripting
 #-------------------------------------------------------------
 

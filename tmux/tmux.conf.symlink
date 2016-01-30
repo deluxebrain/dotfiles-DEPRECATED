@@ -13,7 +13,7 @@
 set -g default-terminal "screen-256color"
 
 # Disable the mouse!
-setw -g mode-mouse off
+set -g mouse off
 
 # Set the tmux prefix to CTRL-a and free up CTRL-b
 set -g prefix C-a
@@ -29,7 +29,8 @@ set -s escape-time 1
 set -g base-index 1
 setw -g pane-base-index 1 
 
-# Enable vi keys
+# Enable vi mode for working with buffers
+# use h, j, k and l to move around the buffer
 setw -g mode-keys vi
 
 # Reload config for current session
@@ -59,6 +60,11 @@ bind -r L resize-pane -R 5
 setw -g monitor-activity on
 set -g visual-activity on
 
+# Install theme
+# This seems to actually REMOTE the theme!
+# Assuming its some interaction with powerline and just remove it for now ...
+# source "/Users/${USER}/.themes/solarized/tmux/tmuxcolors-dark.conf"
+
 # Fire up Powerline integration
-source "$(piproot powerline-status)"/powerline/bindings/tmux/powerline.conf
+source "${pip_root}"/powerline/bindings/tmux/powerline.conf
 

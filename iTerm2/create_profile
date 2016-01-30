@@ -7,12 +7,9 @@
 
 PSD="${BASH_SOURCE%/*}"
 
-DEPENDS_ON=(
-	exists
-	prompt
+DEPENDS_ON exists \
+	prompt \
 	path
-)
-sload "${DEPENDS_ON[@]}"
 
 function main()
 {

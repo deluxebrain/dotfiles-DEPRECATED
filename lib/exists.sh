@@ -2,7 +2,7 @@
 
 # Collection of utility functions around testing for the existence of stuff
 
-[ -z ${__EXISTS+.} ] && readonly __EXISTS= || return
+[ -z ${__EXISTS+.} ] && readonly __EXISTS= || return 0
 
 function dir_exists?()
 {

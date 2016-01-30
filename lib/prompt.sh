@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -z ${__PROMPT+.} ] && readonly __PROMPT= || return
+[ -z ${__PROMPT+.} ] && readonly __PROMPT= || return 0
 
 function msg_info() 
 {
