@@ -2,5 +2,5 @@
 	path = bin/ngincat
 	url = git@github.com:jaburns/ngincat.git
 [submodule "themes/solarized"]
-	path = themes/solarized
+	path = themes.symlink/solarized
 	url = https://github.com/altercation/solarized.git
