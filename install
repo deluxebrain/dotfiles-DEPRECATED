@@ -1,0 +1,8 @@
+#/bin/bash
+
+# Allow accessibility access to scripts run from iterm2
+sudo tccutil -i com.googlecode.iterm2
+
+# Allow accessibility access to Karabiner
+sudo tccutil -i org.pqrs.Karabiner-AXNotifier
+

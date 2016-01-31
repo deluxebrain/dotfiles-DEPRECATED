@@ -54,6 +54,7 @@ jq		# e.g. < my_json.json jq '.' to pretty print
 pstree
 tree
 tmux
+tccutil		# cli tool to modify os x's accessibility database
 
 # Security
 yubikey-personalization 
