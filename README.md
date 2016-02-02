@@ -3,7 +3,7 @@
 ## File organization
 
 ``` shell
-\bash	
+\shell
 \bin		| Standalone scripts that are intended to be executed within a new shell or subshell
 \homebrew	| (functional area) Homebrew
 \install	| Bootstrapper and top-level installer script for all functional areas
