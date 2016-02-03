@@ -13,7 +13,7 @@ function tstart()
 
 	# does the session already have clients attached?
 	local clients_connected=$(tmux list-clients | wc -l)
-	if [[ ${client_count} > 0 ]]; then
+	if (( ${client_count} > 0 )); then
 
 		# form session name for grouped session
 		local client_id=0
