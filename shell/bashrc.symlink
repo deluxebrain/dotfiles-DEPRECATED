@@ -79,6 +79,48 @@ function __start_powerline()
         . "$(piproot powerline-status)"/powerline/bindings/bash/powerline.sh
 }
 
+function __start_tmux()
+{
+	# Return if tmux has already been fired up
+	[ -z "${TMUX}" ] || return; 
+
+	# Create session identifier for the primary session
+	# Default to username if no explicit sesison name provided
+	local global_session="${1:-$USER}"
+
+	# does this session already exist?
+	# create it if not 
+	# -d	: detached from current terminal  
+	if ! tmux has-session -t "${global_session}"; then
+		tmux new-session -d -s "${global_session}"
+	fi
+
+	# does the session already have clients attached?
+	local clients_count=$(tmux list-clients | wc -l)
+	if (( ${client_count} > 0 )); then
+
+		# form session name for grouped session
+		local client_id=0
+		local grouped_session="${global_session}:${client_id}"
+		while tmux has-session -t "${grouped_session}" > /dev/null 2>&1
+		do
+			((client_id+1)) # shorthand for increment
+			grouped_session="${global_session}:${client_id}"
+
+		done
+
+		# -t    : grouped with named session so they share same set of windows 
+		tmux new-session -d -t "${global_session}" -s "${grouped_session}" 
+		
+		# -2	: 256 color
+		# Set to automatically destroy session when no more clients attached
+		tmux -2 attach-session -t "${grouped_session}" \; set-option destroy-unattached
+	else
+		tmux -2 attach-session -t "${global_session}"
+	fi
+		
+}
+
 # called when run from an non-interactive shell
 function __when_non_interactive() 
 {
@@ -91,6 +133,7 @@ function __when_interactive()
 	start_ssh_agent
 	start_completions
 	start_powerline
+	start_tmux
 }
 
 # `.bashrc` is pointed to by $BASH_ENV for non-interactive shells
@@ -102,6 +145,7 @@ unset -f __set_shell_options
 unset -f __start_ssh_agent
 unset -f __start_completions
 unset -f __start_powerline
+unset -f __start_tmux
 unset -f __when_non_interactive
 unset -f __when_interactive
 
