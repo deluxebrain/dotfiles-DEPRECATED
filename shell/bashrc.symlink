@@ -95,30 +95,21 @@ function __start_tmux()
 		tmux new-session -d -s "${global_session}"
 	fi
 
-	# does the session already have clients attached?
-	local clients_count=$(tmux list-clients | wc -l)
-	if (( ${client_count} > 0 )); then
+	# form session name for grouped session
+	local client_id=1
+	local grouped_session="${global_session}:${client_id}"
+	while tmux has-session -t "${grouped_session}" > /dev/null 2>&1
+	do
+		((client_id++)) # shorthand for increment
+		grouped_session="${global_session}:${client_id}"
+	done
 
-		# form session name for grouped session
-		local client_id=0
-		local grouped_session="${global_session}:${client_id}"
-		while tmux has-session -t "${grouped_session}" > /dev/null 2>&1
-		do
-			((client_id+1)) # shorthand for increment
-			grouped_session="${global_session}:${client_id}"
-
-		done
-
-		# -t    : grouped with named session so they share same set of windows 
-		tmux new-session -d -t "${global_session}" -s "${grouped_session}" 
+	# -t    : grouped with named session so they share same set of windows 
+	tmux new-session -d -t "${global_session}" -s "${grouped_session}" 
 		
-		# -2	: 256 color
-		# Set to automatically destroy session when no more clients attached
-		tmux -2 attach-session -t "${grouped_session}" \; set-option destroy-unattached
-	else
-		tmux -2 attach-session -t "${global_session}"
-	fi
-		
+	# -2	: 256 color
+	# Set to automatically destroy session when no more clients attached
+	tmux -2 attach-session -t "${grouped_session}" \; set-option destroy-unattached
 }
 
 # called when run from an non-interactive shell
