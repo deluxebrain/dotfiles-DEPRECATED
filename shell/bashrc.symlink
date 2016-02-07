@@ -101,11 +101,11 @@ function __start_tmux()
 
 		# form session name for grouped session
 		local client_id=1
-		local grouped_session="${global_session}":"${client_id}"
+		local grouped_session="${global_session}_${client_id}"
 		while tmux has-session -t "${grouped_session}" > /dev/null 2>&1
 		do
 			((client_id++)) # shorthand for increment
-			grouped_session="${global_session}":"${client_id}"
+			grouped_session="${global_session}_${client_id}"
 		done
 
 		# -2	: 256 color
