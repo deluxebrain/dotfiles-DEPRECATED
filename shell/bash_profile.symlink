@@ -21,3 +21,21 @@
 
 # Set item to use the generated dynamic profile
 set_iterm_profile "${ITERM_PROFILE_NAME}"
+
+# Override the exit command so that it:
+# - kills the current tmux session
+# - closes the window ( works because the tmux session was created via exec )
+function exit()
+{
+	if [ -z "${TMUX}" ]; then
+		builtin exit
+	else
+		local PANES=$(tmux list-panes | wc -l)
+		if (( $PANES > 1 )); then
+			builtin exit
+		else
+			tmux kill-window
+			tmux detach
+		fi
+	fi
+}
