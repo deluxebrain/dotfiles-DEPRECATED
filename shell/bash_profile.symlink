@@ -31,7 +31,7 @@ function exit()
 		builtin exit
 	else
 		local PANES=$(tmux list-panes | wc -l)
-		if (( $PANES > 1 )); then
+		if (( ${PANES} > 1 )); then
 			builtin exit
 		else
 			tmux kill-window
