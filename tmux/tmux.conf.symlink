@@ -25,9 +25,9 @@ bind C-a send-prefix
 # Remove the delay when sending commands ( can interfere with some applications )
 set -s escape-time 1
 
-# Set the vase index for windows and panes to 1
+# Set the base index for windows and panes to 1
 set -g base-index 1
-setw -g pane-base-index 1 
+setw -g pane-base-index 1	# needed for tmuxinator 
 
 # Enable vi mode for working with buffers
 # use h, j, k and l to move around the buffer
