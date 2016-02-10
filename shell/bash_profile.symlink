@@ -25,6 +25,7 @@ set_iterm_profile "${ITERM_PROFILE_NAME}"
 # Override the exit command so that it:
 # - kills the current tmux session
 # - closes the window ( works because the tmux session was created via exec )
+# If not in tmux sesison or if multiple panes then use builtin exit
 function exit()
 {
 	if [ -z "${TMUX}" ]; then

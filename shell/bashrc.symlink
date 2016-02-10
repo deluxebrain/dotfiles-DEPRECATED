@@ -111,7 +111,9 @@ function __start_tmux()
 		# -2	: 256 color
 		# -t    : grouped with named session so they share same set of windows 
 		# exec	: replace the current shell (needed to make exit work)
-		exec tmux -2 new-session -d -t "${global_session}" \
+		# set to automatically destroy the grouped session when last window closed
+		exec tmux -2 new-session -d \
+			-t "${global_session}" \
 			-s "${grouped_session}" \
 			\; set-option destroy-unattached \
 			\; new-window \
