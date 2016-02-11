@@ -53,6 +53,10 @@ spark
 jq		# e.g. < my_json.json jq '.' to pretty print
 pstree
 tree
+
+# Due to this bug in tmux 2.1:
+# https://github.com/tmux/tmux/issues/153
+# Use HEAD until version 2.2 is released
 tmux --HEAD
 tccutil		# cli tool to modify os x's accessibility database
 
