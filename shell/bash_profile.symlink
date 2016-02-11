@@ -35,8 +35,12 @@ function exit()
 		if (( ${PANES} > 1 )); then
 			builtin exit
 		else
-			tmux kill-window
-			tmux detach
+			# Close the current window and detach from the session
+			# NOTE this appears to be the only way to achieve this ...
+			# 1. As soon as you kill the window this function will stop running
+			# 2. If you just "detach" then session and iterm console are destroyed
+			#	but the window remains attached to the parent session
+			tmux kill-window \; detach
 		fi
 	fi
 }
