@@ -4,10 +4,7 @@ cli=/Applications/Seil.app/Contents/Library/bin/seil
 
 # Enable mapping of capslock
 $cli set enable_capslock 1
-/bin/echo -n .
 
 # Map capslock to left control
 # (which it turn will be remapped in Karabiner)
 $cli set keycode_capslock 59
-/bin/echo -n .
-

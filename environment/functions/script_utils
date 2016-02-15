@@ -7,11 +7,13 @@ function DEPENDS_ON()
 	fi  
 
 	local FILE
-	for FILE in $@;
+	for FILE in "$@"
 	do
-		source "${LIB_PATH}/${FILE}.sh" > /dev/null 2>&1  || \
+		source "${LIB_PATH}/${FILE}.sh" > /dev/null 2>&1  || 
+		{
 			echo "Failed to source ${FILE}.sh" 2>&1
 			return 1
+		}
 	done
 }
 export -f DEPENDS_ON && readonly -f DEPENDS_ON

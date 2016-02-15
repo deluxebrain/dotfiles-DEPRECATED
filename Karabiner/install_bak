@@ -2,10 +2,44 @@
 
 PSD="${BASH_SOURCE%/*}" 
 
+# Inherit traps on ERR within shell functions, command substitutions and subshells
+set -o errtrace
+
+# Cause any failure anywhere in a pipeline to cause the entire pipeline to fail
+set -o pipefail
+
+# Exit the script on any attempt to use an uninitialized variable
+set -o nounset
+
+# Exit the script if any statement returns a non-true return code
+set -o errexit
+
 DEPENDS_ON errors \
 	path \
 	exists \
 	prompt
+
+PIPE=$(mktemp -u)
+mkfifo $PIPE
+exec 3>&1
+exec > >(tee $PIPE) 2>&1 1>&3
+
+function exit_handler()
+{
+	rm $PIPE
+	exec 3>&-
+}
+trap 'exit_handler' EXIT
+
+function error_handler()
+{
+	local message=$(head -n1 < $PIPE) 
+	local line_no="$1"
+	local code="${2:-1}"
+	msg_error "Error on line ${line_no}: ${message}; exiting with status ${code}"
+	exit "${code}"
+}
+trap 'error_handler ${LINENO} $?' ERR
 
 form_and_verify_path()
 {
@@ -50,6 +84,5 @@ main()
 	/Applications/Seil.app/Contents/Library/bin/seil relaunch
 }
 
-enable_errors
 main 
 exit $?
