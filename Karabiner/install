@@ -1,6 +1,18 @@
 #!/bin/bash
 
+PSD="${BASH_SOURCE%/*}" 
+
+DEPENDS_ON path
+
 # As required by Seil when remapping the caps lock key:
 # Umap the caps lock key within OS X preferences
 osascript ./unmap_caps.scpt
+
+# Steps to create the plist in the first place:
+# plutil -convert xml1 -o ~/tmp/karabiner.plist ~/Library/Preferences/org.pqrs.Karabiner.plist
+plist_path=$(path_combine "$PSD" karabiner.plist)
+defaults import org.pqrs.Karabiner ${plist_path}
+
+# Restart kabarina
+/Applications/Karabiner.app/Contents/Library/bin/karabiner relaunch
 
