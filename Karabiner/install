@@ -2,9 +2,10 @@
 
 PSD="${BASH_SOURCE%/*}" 
 
-DEPENDS_ON errors \
-	path \
+DEPENDS_ON path \
 	exists 
+
+USE_GLOBAL_ERROR_HANDLER
 
 form_and_verify_path()
 {
@@ -49,6 +50,5 @@ main()
 	/Applications/Seil.app/Contents/Library/bin/seil relaunch
 }
 
-enable_errors
 main 
 exit $?

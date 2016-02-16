@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -z ${__ERRORS+.} ] && readonly __ERRORS= || return 0
+[ -z ${__CORE+.} ] && readonly __CORE= || return 0
 
 function __exit_handler()
 {
@@ -17,7 +17,7 @@ function __error_handler()
 	exit "${code}"
 }
 
-function enable_errors()
+function USE_GLOBAL_ERROR_HANDLER()
 {
 	# Inherit traps on ERR within shell functions, command substitutions and subshells
 	set -o errtrace
@@ -46,3 +46,45 @@ function enable_errors()
 	trap '__error_handler ${LINENO} $?' ERR
 }
 
+function msg_info() 
+{
+        printf " [ ${PEN_INFO}..${PEN_RESET} ] $1\n"
+}
+
+function msg_prompt() 
+{
+        printf " [ ${PEN_INFO}?${PEN_RESET} ] $1\n"
+}
+
+function msg_ok() 
+{
+        printf " [ ${PEN_OK}OK${PEN_RESET} ] $1\n"
+}
+
+function msg_warn()
+{
+	printf " [ ${PEN_WARN}WARNING${PEN_RESET} ] $1\n"
+}
+
+function msg_error()
+{
+	printf " [ ${PEN_ALERT}ERROR${PEN_RESET} ] $1\n"
+}
+
+function fail() 
+{
+        printf " [ ${PEN_ALERT}FAIL${PEN_RESET} ] $1\n"
+        exit 1
+}
+
+function _join()
+{
+	# Set expansion character
+	local IFS="$1"
+
+	# shift past the first argument (the separator)
+	shift
+
+	# Expand args to "$1c$2c..." where c is first character if IFS
+	echo "$*"
+}

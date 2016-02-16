@@ -6,8 +6,9 @@ function DEPENDS_ON()
 		return 1
 	fi  
 
+	local FILES=("$@" "core")
 	local FILE
-	for FILE in "$@"
+	for FILE in "${FILES[@]}"
 	do
 		source "${LIB_PATH}/${FILE}.sh" > /dev/null 2>&1  || 
 		{
