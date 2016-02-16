@@ -4,8 +4,7 @@ PSD="${BASH_SOURCE%/*}"
 
 DEPENDS_ON errors \
 	path \
-	exists \
-	prompt
+	exists 
 
 form_and_verify_path()
 {

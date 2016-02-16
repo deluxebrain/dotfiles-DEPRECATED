@@ -1,6 +1,7 @@
 # https://www.iterm2.com/documentation-escape-codes.html
 # iTerm2 supports several non-standard escape codes.
-# Note these may not work properly in tmux or screen.
+# Note these wont work in tmux or screen without them being sent to the underlying terminal
+# See: https://unix.stackexchange.com/questions/157911/whats-a-smart-way-to-use-maintain-two-separate-bash-profiles-and-vimrcs
 
 # Set cursor shape
 unset set_iterm_cursor
@@ -16,7 +17,12 @@ function set_iterm_cursor()
 		return 2
 
 	fi
-	echo -ne "\033]50;CursorShape=$1\a"
+	
+	if [ -n "${TMUX}" ]; then
+		echo -ne "\033Ptmux;\033\033]50;CursorShape=$1\007\033\\"
+	else
+		echo -ne "\033]50;CursorShape=$1\007"
+	fi
 }
 export -f set_iterm_cursor && readonly -f set_iterm_cursor
 
@@ -28,7 +34,12 @@ function set_iterm_profile
 		echo "Usage: set_iterm_profile profile"
 		return 2
 	fi
-	echo -ne "\033]50;SetProfile=$1\a"
+	
+	if [ -n "${TMUX}" ]; then
+		echo -ne "\033Ptmux;\033\033]50;SetProfile=$1\007\033\\"
+	else
+		echo -ne "\033]50;SetProfile=$1\007"
+	fi
 }
 export -f set_iterm_profile && readonly -f set_iterm_profile
 
@@ -36,7 +47,12 @@ export -f set_iterm_profile && readonly -f set_iterm_profile
 unset do_iterm_focus
 function do_iterm_focus
 {
-	echo -ne "\033]50;StealFocus\a"
+
+	if [ -n "${TMUX}" ]; then
+		echo -ne "\033Ptmux;\033\033]50;StealFocus\007\033\\"
+	else
+		echo -ne "\033]50;StealFocus\007"
+	fi
 }
 export -f do_iterm_focus && readonly -f do_iterm_focus
 
@@ -48,7 +64,12 @@ function do_iterm_growl
 		echo "Usage: do_iterm_growl message"
 		return 2
 	fi
-	echo -ne "\033]9;$1\a"
+
+	if [ -n "${TMUX}" ]; then
+		echo -ne "\033Ptmux;\033\033]9;$1\007\033\\"
+	else
+		echo -ne "\033]9;$1\007"
+	fi
 }
 export -f do_iterm_growl && readonly -f do_iterm_growl
-
+	

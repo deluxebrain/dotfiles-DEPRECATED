@@ -1,3 +1,77 @@
 #!/bin/bash
+#
+# CreateProfile
+#
+# This creates an iTerm2 dynamic profile based on the supplied template
+# and configuration
+#
 
-# TODO
+PSD="${BASH_SOURCE%/*}"
+
+DEPENDS_ON errors path exists
+
+form_and_verify_path()
+{
+	local path="$(path_combine "$@")"
+	file_exists? "${path}" ||
+	{
+		fail "Unable to find file ${path}"
+	}
+	echo "${path}"
+}
+
+main()
+{
+	# Load config
+        local config_path="$(form_and_verify_path "${PSD}" profile.conf)"
+	msg_info "Loading profile config from ${config_path} ..."
+        source ${config_path}
+
+	# form profile plist file path
+	dir_exists? "${ITERM_PROFILE_DIR}" || \
+		fail "Export variable ITERM_PROFILE_DIR not set or not valid path"
+	local profile_path="$(path_combine "${ITERM_PROFILE_DIR}" "${_PROFILE_NAME}".plist)"
+
+	# form path to template
+	local template_path="$(form_and_verify_path "${PSD}" profile_template.plist)"
+
+	# form path to colorscheme plist
+	local colorscheme_path="$(form_and_verify_path \
+		"/Users/${USER}" \
+		".themes" \
+		"${_PROFILE_COLORSCHEME_NAME}")"
+	msg_info "Using colorscheme from ${colorscheme_path}"
+
+	# merge the following to form the profile:
+	# - The transformed template
+	# - The json converted colorscheme plist
+	# ---
+	# -s	
+	#	slurp; run entire stream into single array and run filters once
+	#	i.e. form single array from elements from all files
+	# .[0].Profiles[0]
+	#	select the first element of the Profiles field of the first outer array
+	# +=
+	#	append the rhs to the lhs
+	# .[1]
+	#	select the second element of the outer array
+	# | .[0]
+	#	run a second filter that only returns the first element
+	# <(...)	
+	#	use subshells to pipe multiple arguments to jq
+	# ---
+	msg_info "Transforming ${template_path} to form profile at ${profile_path}"
+	jq -s '.[0].Profiles[0] += .[1] | .[0]' \
+		<(envsubst < "${template_path}") \
+		<(plutil -convert json "${colorscheme_path}" -o -) \
+		> "${profile_path}"
+
+	msg_info "Configuring iTerm to use ${_PROFILE_NAME}"
+	set_iterm_profile "${_PROFILE_NAME}"
+	do_iterm_growl "Profile ${_PROFILE_NAME} created and set as current profile"
+}
+
+enable_errors
+main
+exit $?
+
