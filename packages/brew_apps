@@ -53,11 +53,6 @@ spark
 jq		# e.g. < my_json.json jq '.' to pretty print
 pstree
 tree
-
-# Due to this bug in tmux 2.1:
-# https://github.com/tmux/tmux/issues/153
-# Use HEAD until version 2.2 is released
-tmux --HEAD
 tccutil		# cli tool to modify os x's accessibility database
 
 # Security
@@ -88,3 +83,7 @@ vagrant-completion
 irssi	# irc
 mutt
 
+# tmux and associated
+tmux
+# https://robots.thoughtbot.com/tmux-copy-paste-on-os-x-a-better-future
+reattach-to-user-namespace	# enable copy and paste
