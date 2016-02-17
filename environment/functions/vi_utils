@@ -15,10 +15,19 @@ unset vup
 function vup()
 (
 	cd "$HOME/.vim"
-	git submodule foreach git pull
-	git add bundle
-	git commit -m "Updated all vim plugins"
-	git push origin master
+	local d
+	for d in ./bundle/*
+	do
+	( 
+		echo "Updating $(basename "$d")"
+		cd "$d"
+		git pull origin master 
+	)
+	done
+
+	git add bundle > /dev/null
+	git commit -m "Updated all vim plugins" > /dev/null
+	git push origin master > /dev/null
 )
 export -f vup && readonly -f vup
 
