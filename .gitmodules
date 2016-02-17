@@ -4,3 +4,6 @@
 [submodule "themes/solarized"]
 	path = themes.symlink/solarized
 	url = https://github.com/altercation/solarized.git
+[submodule "vim.symlink/bundle/vim-pathogen"]
+	path = vim.symlink/bundle/vim-pathogen
+	url = git@github.com:tpope/vim-pathogen.git
