@@ -124,6 +124,9 @@ alias grep="grep --color=auto"	# Always use color
 alias python="python3"
 alias pip="pip3"
 
+# Vim
+alias vi="vim"
+
 #-------------------------------------------------------------
 # ls ( ***requires*** recent GNU ls)
 #-------------------------------------------------------------

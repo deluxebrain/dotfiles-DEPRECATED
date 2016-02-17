@@ -11,3 +11,14 @@ function v()
 }
 export -f v && readonly -f v
 
+unset vup
+function vup()
+(
+	cd "$HOME/.vim"
+	git submodule foreach git pull
+	git add bundle
+	git commit -m "Updated all vim plugins"
+	git push origin master
+)
+export -f vup && readonly -f vup
+

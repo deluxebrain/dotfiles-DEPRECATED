@@ -23,6 +23,6 @@ function main()
 	done | spark | echo "$seq_period: $(cat -)"
 }
 
-main $@ && exit 0
+main "$@" && exit 0
 exit 1
 
