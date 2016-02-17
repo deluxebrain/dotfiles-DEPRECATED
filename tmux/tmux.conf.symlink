@@ -79,5 +79,5 @@ set -g visual-activity on
 # source "/Users/${USER}/.themes/solarized/tmux/tmuxcolors-dark.conf"
 
 # Fire up Powerline integration
-source "${pip_root}"/powerline/bindings/tmux/powerline.conf
+source "${PIP_PATH}"/powerline/bindings/tmux/powerline.conf
 
