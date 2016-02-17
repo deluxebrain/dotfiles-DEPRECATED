@@ -10,3 +10,9 @@
 [submodule "vim.symlink/bundle/vim-sensible"]
 	path = vim.symlink/bundle/vim-sensible
 	url = git@github.com:tpope/vim-sensible.git
+[submodule "vim.symlink/bundle/vim-unimpaired"]
+	path = vim.symlink/bundle/vim-unimpaired
+	url = git@github.com:tpope/vim-unimpaired.git
+[submodule "vim.symlink/bundle/syntastic"]
+	path = vim.symlink/bundle/syntastic
+	url = git@github.com:scrooloose/syntastic.git
