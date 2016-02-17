@@ -1,4 +1,16 @@
+" Enable Pathogen
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 syntax on
 filetype plugin indent on
+
+" Enbable Powerline
+let pippath = $PIP_PATH . "/powerline/bindings/vim/"
+" Not sure this is right ... using exec to allow me to set rtp to a variable
+" Using rtp += pippath does not work
+exec "set rtp+=" . pippath
+" Ensure 256 color support is enabled
+set t_Co=256
+" Enable unicode symbols for Powerline
+let g:Powerline_symbols = "fancy"
+
