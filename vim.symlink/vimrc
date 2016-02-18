@@ -4,6 +4,13 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
+" Leader and leader actions
+let mapleader = "\<Space>"
+" Open a new file: <Leader>o
+nnoremap <Leader>o :CtrlP<CR>
+" Save file: <Leader>w
+nnoremap <Leader>w :w<CR>
+
 " Enbable Powerline
 let pippath = $PIP_PATH . "/powerline/bindings/vim/"
 " Not sure this is right ... using exec to allow me to set rtp to a variable
