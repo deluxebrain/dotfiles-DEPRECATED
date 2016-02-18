@@ -22,3 +22,6 @@
 [submodule "vim.symlink/bundle/vim-indent-guides"]
 	path = vim.symlink/bundle/vim-indent-guides
 	url = git@github.com:nathanaelkane/vim-indent-guides.git
+[submodule "vim.symlink/bundle/vim-sleuth"]
+	path = vim.symlink/bundle/vim-sleuth
+	url = git@github.com:tpope/vim-sleuth.git
