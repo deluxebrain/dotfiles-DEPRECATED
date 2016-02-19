@@ -31,3 +31,9 @@
 [submodule "vim.symlink/bundle/vim-polyglot"]
 	path = vim.symlink/bundle/vim-polyglot
 	url = git@github.com:sheerun/vim-polyglot.git
+[submodule "vim.symlink/bundle/jedi-vim"]
+	path = vim.symlink/bundle/jedi-vim
+	url = git@github.com:davidhalter/jedi-vim.git
+[submodule "vim.symlink/bundle/vim-go"]
+	path = vim.symlink/bundle/vim-go
+	url = git@github.com:fatih/vim-go.git
