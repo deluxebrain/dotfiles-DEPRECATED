@@ -37,3 +37,6 @@
 [submodule "vim.symlink/bundle/vim-go"]
 	path = vim.symlink/bundle/vim-go
 	url = git@github.com:fatih/vim-go.git
+[submodule "vim.symlink/bundle/apiblueprint.vim"]
+	path = vim.symlink/bundle/apiblueprint.vim
+	url = git@github.com:kylef/apiblueprint.vim.git
