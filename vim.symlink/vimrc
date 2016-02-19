@@ -1,4 +1,4 @@
-" Enable Pathogen
+" Enable Pathogent
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 syntax on
@@ -27,6 +27,17 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+" Show results from all syntax checkers when multiple are specified
+let g:syntastic_aggregate_errors = 1
+" Configure syntax checkers
+let g:syntastic_javascript_checkers = ['jshint', 'jscs']
+let g:syntastic_sh_checkers = ['shellcheck']
+" Use Node.js based markdownlint-cli for markdown linting
+let g:syntastic_markdown_mdl_exec = 'markdownlint'
+let g_syntastic_markdown_mdl_args = ''
+" Use Html5 tidy
+let g:syntastic_html_tidy_exec = '/usr/local/bin/tidy'
+let g:syntastic_css_checkers = ['csslint', 'prettycss']
 
 " Colorscheme
 syntax enable

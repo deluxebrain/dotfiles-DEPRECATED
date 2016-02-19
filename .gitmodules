@@ -28,3 +28,6 @@
 [submodule "vim.symlink/bundle/ctrlp"]
 	path = vim.symlink/bundle/ctrlp
 	url = git@github.com:ctrlpvim/ctrlp.vim.git
+[submodule "vim.symlink/bundle/vim-polyglot"]
+	path = vim.symlink/bundle/vim-polyglot
+	url = git@github.com:sheerun/vim-polyglot.git
