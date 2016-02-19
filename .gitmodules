@@ -40,3 +40,6 @@
 [submodule "vim.symlink/bundle/apiblueprint.vim"]
 	path = vim.symlink/bundle/apiblueprint.vim
 	url = git@github.com:kylef/apiblueprint.vim.git
+[submodule "vim.symlink/bundle/YouCompleteMe"]
+	path = vim.symlink/bundle/YouCompleteMe
+	url = git@github.com:Valloric/YouCompleteMe.git
