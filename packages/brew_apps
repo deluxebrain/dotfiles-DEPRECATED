@@ -67,6 +67,8 @@ shunit2		# bash testing framework
 roundup		# bash testing framework
 shellcheck	# static analyser for bash/sh shell scripts
 tidy-html5      # html5 linter
+# API Blueprint parser
+https://raw.github.com/apiaryio/drafter/master/tools/homebrew/drafter.rb --HEAD
 
 # completions
 bash-completion
