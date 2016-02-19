@@ -10,9 +10,9 @@ Starting from Vim 7.4 you can structure your Vim dotfiles as follows:
 
 Verified basic setup is working ok by issuing `:Helptags`
 
-List installed checkers via `:SyntasticInfo`
+List installed checkers for the detectec type of the current file via `:SyntasticInfo`
 
-Syntax checkers: https://github.com/scrooloose/syntastic/wiki/Syntax-Checkers
+Note that the underlying syntax checkers need to be installed and configured independently. For a list of supported syntax checkers see: Syntax checkers: https://github.com/scrooloose/syntastic/wiki/Syntax-Checkers
 
 ### vim-indent-guides
 
