@@ -31,6 +31,3 @@
 [submodule "vim.symlink/bundle/vim-polyglot"]
 	path = vim.symlink/bundle/vim-polyglot
 	url = git@github.com:sheerun/vim-polyglot.git
-[submodule "vim.symlink/bundle/vim-mustache-handlebars"]
-	path = vim.symlink/bundle/vim-mustache-handlebars
-	url = git@github.com:mustache/vim-mustache-handlebars.git
