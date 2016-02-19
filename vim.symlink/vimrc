@@ -6,8 +6,6 @@ filetype plugin indent on
 
 " Leader and leader actions
 let mapleader = "\<Space>"
-" Open a new file: <Leader>o
-nnoremap <Leader>o :CtrlP<CR>
 " Save file: <Leader>w
 nnoremap <Leader>w :w<CR>
 
@@ -42,4 +40,19 @@ set softtabstop=2
 " Configure vim-indent-guides
 let g:indent_guides_start_level=2
 let g:indent_guides_guide_size=1
+
+" Configure Ctrl-P
+" Map to <Leader>o
+nnoremap <Leader>o :CtrlP<CR>
+" Set local working directory
+" 'r' - the nearest ancestor of the current file that contains e.g. .git
+" 'a' - the directory of the current file
+let g:ctrlp_working_path_mode = 'ra' 
+" Exclude files and directories
+" wildignore - Vim setting
+" g:ctrlp_custom_ignore - Ctrl-P setting
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+" Ignore files in .gitignore
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 

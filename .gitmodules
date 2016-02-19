@@ -25,3 +25,6 @@
 [submodule "vim.symlink/bundle/vim-sleuth"]
 	path = vim.symlink/bundle/vim-sleuth
 	url = git@github.com:tpope/vim-sleuth.git
+[submodule "vim.symlink/bundle/ctrlp"]
+	path = vim.symlink/bundle/ctrlp
+	url = git@github.com:ctrlpvim/ctrlp.vim.git
