@@ -1,0 +1,25 @@
+#!/bin/bash
+
+DEPENDS_ON path \
+	exists 
+
+USE_GLOBAL_ERROR_HANDLER
+
+function main()
+{
+	local pathToBundles
+	pathToBundles="/Users/$USER/.vim/bundle"
+	dir_exists? "${pathToBundles}" || \
+		fail "Unable to location vim bundles at ${pathToBundles}"
+
+	local bundlePath
+	for bundlePath in ${pathToBundles}/*
+	do
+		cd "${bundlePath}" || continue
+		msg_info "Updating $(basename "${bundlePath}")"
+		git submodule update --recursive
+	done
+}
+
+main 
+exit $?
