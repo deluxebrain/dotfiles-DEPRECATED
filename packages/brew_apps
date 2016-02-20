@@ -59,6 +59,10 @@ tccutil		# cli tool to modify os x's accessibility database
 yubikey-personalization 
 
 # Development
+go
+rust
+mono
+cmake           # cmake compiler
 python		# includes pip
 python3		# includes pip3
 pyside 		# Python bindings for Qt - needed for yubikey-neo-manager

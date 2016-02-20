@@ -21,7 +21,7 @@ function vup()
 	( 
 		echo "Updating $(basename "$d")"
 		cd "$d"
-		git submodule update --init --recursive 
+		git submodule update --recursive 
 	)
 	done
 
