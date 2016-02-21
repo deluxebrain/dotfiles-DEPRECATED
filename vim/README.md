@@ -6,6 +6,9 @@ Starting from Vim 7.4 you can structure your Vim dotfiles as follows:
 
 ## Plugins
 
+Vim plugins are orchestrated using Pathogen and installed as git submodules into the bundle directory.
+For plugins that require post-installation steps (such as YouCompleteMe), author these steps in a script named the same as the repository (e.g. YouCompleteMe) and drop this script alongside the vim installer script.
+
 ### Syntastic
 
 Verified basic setup is working ok by issuing `:Helptags`

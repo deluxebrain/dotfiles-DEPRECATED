@@ -9,10 +9,10 @@ function main()
 	local reposPath
 	reposPath="$1"
 
-	directory_exists? "${reposPath}" ||\
+	dir_exists? "${reposPath}" ||\
 		fail "Unable to local repos with path ${reposPath}"
 
-	cd "${reposPath}" || false; return
+	cd "${reposPath}" || { false; return; }
 
 	msg_info "Performing custom install for ${reposPath}"
 	# https://valloric.github.io/YouCompleteMe/
@@ -24,6 +24,6 @@ function main()
 		--racer-completer
 }
 
-main "$@" && exit 0
-exit 1
+main "$@"
+exit $?
 

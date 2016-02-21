@@ -1,11 +1,11 @@
 #!/bin/bash
 
+PSD="$( cd "$( dirname "${BAS_SOURCE[0]}" )" && pwd )"
+
 DEPENDS_ON path \
 	exists 
 
 USE_GLOBAL_ERROR_HANDLER
-
-PSD="${BASH_SOURCE%/*}"
 
 function main()
 {
@@ -23,6 +23,7 @@ function main()
 	(
 		msg_info "Changing directory to ${reposPath}"
 		cd "${reposPath}" || { false; return; }
+		
 		reposName="$(git name)"
 		msg_info "Installing ${reposName}"
 		git submodule update --init --recursive
@@ -31,7 +32,7 @@ function main()
 		if [ -x "${customInstallerPath}" ]; then
 			msg_info "Found custom installer for ${reposName}"
 			msg_info "Running script: ${customInstallerPath}"
-			"${customInstallerPath}"
+			"${customInstallerPath}" "${reposPath}"
 		else
 			msg_info "No custom installer found for ${reposName}"
 		fi
