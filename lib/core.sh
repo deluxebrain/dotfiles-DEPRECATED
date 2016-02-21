@@ -1,18 +1,23 @@
 #!/bin/bash
 
-[ -z ${__CORE+.} ] && readonly __CORE= || return 0
+[ -z "${__CORE+.}" ] && readonly __CORE= || return 0
 
 function __exit_handler()
 {
-	rm $ERR_PIPE
+	rm "$ERR_PIPE"
 	exec 3>&-
 }
 
 function __error_handler()
 {
-	local message=$(head -n1 < $ERR_PIPE) 
-	local line_no="$1"
-	local code="${2:-1}"
+	echo "here"
+	local message
+	local line_no
+	local code
+
+	message="$(head -n1 < "$ERR_PIPE")" 
+	line_no="$1"
+	code="${2:-1}"
 	msg_error "Error on line ${line_no}: ${message}; exiting with status ${code}"
 	exit "${code}"
 }
@@ -32,14 +37,14 @@ function USE_GLOBAL_ERROR_HANDLER()
 	set -o errexit
 
 	# create a temporary named pipe
-	ERR_PIPE=$(mktemp -u)
-	mkfifo $ERR_PIPE
+	ERR_PIPE="$(mktemp -u)"
+	mkfifo "$ERR_PIPE"
 
 	# redirect file descriptor 3 to stdout
 	exec 3>&1
 
 	# redirect all stdout to the temporary named pipe, filtering on stderr
-	exec > >(tee $ERR_PIPE) 2>&1 1>&3
+	exec > >(tee "$ERR_PIPE") 2>&1 1>&3
 	
 	# wire up exit and error handlers
 	trap '__exit_handler' EXIT
