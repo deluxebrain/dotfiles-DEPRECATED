@@ -25,7 +25,7 @@ function main()
 		cd "${reposPath}" || { false; return; }
 		reposName="$(git name)"
 		msg_info "Installing ${reposName}"
-		git submodule update --recursive
+		git submodule update --init --recursive
 
 		customInstallerPath="$(path_combine "${PSD}" "${reposName}")"
 		if [ -x "${customInstallerPath}" ]; then

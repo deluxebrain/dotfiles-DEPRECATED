@@ -10,7 +10,6 @@ function __exit_handler()
 
 function __error_handler()
 {
-	echo "here"
 	local message
 	local line_no
 	local code
