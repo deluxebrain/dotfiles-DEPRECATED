@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -z ${__PRIV+.} ] && readonly __PRIV= || return 0
+[ -z "${__PRIV+.}" ] && readonly __PRIV= || return 0
 
 # https://gist.github.com/cowboy/3118588
 function sudo_keepalive() 

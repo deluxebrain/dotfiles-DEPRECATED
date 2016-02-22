@@ -52,32 +52,32 @@ function USE_GLOBAL_ERROR_HANDLER()
 
 function msg_info() 
 {
-        printf " [ ${PEN_INFO}..${PEN_RESET} ] $1\n"
+        printf " [ %s..%s ] %s\n" "${PEN_INFO}" "${PEN_RESET}" "$1"
 }
 
 function msg_prompt() 
 {
-        printf " [ ${PEN_INFO}?${PEN_RESET} ] $1\n"
+        printf " [ %s?%s ] %s\n" "${PEN_INFO}" "{PEN_RESET}" "$1"
 }
 
 function msg_ok() 
 {
-        printf " [ ${PEN_OK}OK${PEN_RESET} ] $1\n"
+        printf " [ %sOK%s ] %s\n" "${PEN_OK}" "${PEN_RESET}" "$1"
 }
 
 function msg_warn()
 {
-	printf " [ ${PEN_WARN}WARNING${PEN_RESET} ] $1\n"
+	printf " [ %sWARNING%s ] %s\n" "${PEN_WARN}" "${PEN_RESET}" "$1"
 }
 
 function msg_error()
 {
-	printf " [ ${PEN_ALERT}ERROR${PEN_RESET} ] $1\n"
+	printf " [ %sERROR%s ] %s\n" "${PEN_ALERT}" "${PEN_RESET}" "$1"
 }
 
 function fail() 
 {
-        printf " [ ${PEN_ALERT}FAIL${PEN_RESET} ] $1\n"
+        printf " [ %sFAIL%s ] %s\n" "${PEN_ALERT}" "${PEN_RESET}" "$1"
         exit 1
 }
 
