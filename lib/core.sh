@@ -4,6 +4,7 @@
 
 function __exit_handler()
 {
+	# Clean up the named pipe thats been used for storing stderr
 	rm "$ERR_PIPE"
 	exec 3>&-
 }

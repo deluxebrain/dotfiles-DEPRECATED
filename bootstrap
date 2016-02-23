@@ -2,8 +2,6 @@
 #
 # bootstrap the dotfiles setup
 
-# exit immediately if a command returns non-zero
-set -e
 
 # printf colours
 NORMAL_PEN='\033[0m'
@@ -93,7 +91,7 @@ prompt_for_file_overwrite_action () {
 	# read one byte into $action 
 	read -n 1 action
 
-	case "$action" in
+	case "${action}" in
 	  o )
 	    g_overwrite=true;;
 	  O )
