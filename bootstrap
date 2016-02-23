@@ -2,49 +2,66 @@
 #
 # bootstrap the dotfiles setup
 
+set -o errtrace	  # inherit ERR traps within functions, substs and subshells
+set -o pipefail	  # fail entire pipeline
+set -o nounset	  # exit on any attempt to use uninitialized variables
+set -o errexit	  # exit the script if any statement returns non-true
 
-# printf colours
-NORMAL_PEN='\033[0m'
-BLUE_PEN='\033[34;01m'
-CYAN_PEN='\033[36;01m'
-GREEN_PEN='\033[32;01m'
-RED_PEN='\033[31m'
-GRAY_PEN='\033[37;01m'
-YELLOW_PEN='\033[33;01m'
+# Wire up temporary named pipe to store stderr for use in ERR trap
+ERR_PIPE="$(mktemp -u)"
+mkfifo "${ERR_PIPE}"
 
-info_msg () {
-	printf " [ ${GRAY_PEN}..${NORMAL_PEN} ] $1\n"
+# Redirect file descriptor 3 to stdout
+# Tee stdout to named pipe, then get stderr to fd 3 
+exec 3>&1
+exec > >(tee "${ERR_PIPE}") 2>&1 1>&3
 
-prompt_msg () {
-	printf " [ ${BLUE_PEN}?${NORMAL_PEN} ] $1\n"
+# Wire up ERR and EXIT traps
+trap 'trap_err ${LINENO} $?' ERR
+trap 'trap_exit' EXIT
+
+function trap_err()
+{
+	local message
+	local code
+
+	message="$(head -n1 < "${ERR_PIPE}")"
+	code=${2:-1}
+	echo "${code}>Error on line $1: ${message}"
+	exit ${code}
 }
 
-success_msg () {
-	printf " [ ${GREEN_PEN}OK${NORMAL_PEN} ] $1\n"
+function trap_exit()
+{
+	# Clean up the named pipe
+	rm "${ERR_PIPE}"
+	exec 3>&-
 }
 
-fail_and_exit () {
-	printf " [ ${RED_PEN}FAIL${NORMAL_PEN} ] $1\n"
-	exit
-}
-
-if_file_exists () {
-	local path=$1
+function if_path_exists() 
+{
+	local path
+	path="$1"
 
 	# check if paths  exists (in one of various forms)
 	# note a function that ends without an explcit return statement
 	# returns the exit code of the last executed command
 	#  [		: Test with pathname expansion (as opposed to [[)
-	#  "$path"	: Treat expanded path as a literal
-	#  -o 		: OR the conditions together
+	# -n		: string has non-zero length
+	# -o 		: OR the conditions together
 	# -f 		: file exists
 	# -d		: file exists and is a directory
 	# -L		: file exists and is a symlink
-	[ -f "$path" -o -d "$path" -o -L "$path" ] 
+	[ -n "$path" ] && [ -f "$path" -o -d "$path" -o -L "$path" ] 
 }
 
-deal_with_existing_file () {
-	local src=$1 dst=$2
+function deal_with_existing_file()
+{
+	local src
+	local dst
+
+	src="$1"
+	dst="$2"
 
 	if /
 		[ "$g_overwrite_all" == false ] && /
@@ -55,7 +72,7 @@ deal_with_existing_file () {
 		return 0
 	fi
 
-	if dst_points_to_src "$src" "$dst"; then
+	if dst_points_to_src "${src}" "${dst}"; then
 		# destination points to source
 		# skip current file
 		g_skip=true;
@@ -63,65 +80,82 @@ deal_with_existing_file () {
 	fi
 	
 	# user intervention required
-	prompt_for_file_overwrite_action "$src" "$dst"
+	prompt_for_file_overwrite_action "${src}" "${dst}"
 }
 
-if_dst_points_to_src () {
-	local src=$1 dst=$2	
+function if_dst_points_to_src () 
+{
+	local src
+	local dst
 	local target
+
+	src="$1"
+	dst="$2"
 
 	# check if dst is a symlink that points to src
 	# readlink returns blank and error if not a symlink 
-	target = "$(readlink $dst)"
+	target="$(readlink $"dst")"
 	[ "$target" == "$src" ]
 }
 
-prompt_for_file_overwrite_action () {
-	local src=$1 dst=$2
+function prompt_for_file_overwrite_action() 
+{
+	local src
+	local dst
 	local action
 
-	#  ${string##substring}
-	## get file name from path
-	## (by deleting the longest match of $substring from front of $string)
+	src="$1"
+	dst="$2"
+
 	prompt_msg << EOF
-	File already exists: $dst (${src##*/}); what do you want todo?
+	File already exists: ${dst} $(basename $src); what do you want todo?
 	[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?
 	EOF
 
-	# read one byte into $action 
+	# read one byte into action 
 	read -n 1 action
 
 	case "${action}" in
-	  o )
-	    g_overwrite=true;;
-	  O )
-	    g_overwrite_all=true;;
-	  b ) 
-	    g_backup=true;
-	  B )
-	    g_backup_all=true;
-	  s )
-	    g_skip=true;
-	  S )
-	    g_skip_all=true;
-	  * )
+	  o)
+	    g_overwrite=true
+	    ;;
+	  O)
+	    g_overwrite_all=true
+	    ;;
+	  b) 
+	    g_backup=true
+	    ;;
+	  B)
+	    g_backup_all=true
+	    ;;
+	  s)
+	    g_skip=true
+	    ;;
+	  S)
+	    g_skip_all=true
+	    ;;
+	  *)
 	    ;;
 	esac	
 }
 
-link_file () {
-	local src=$1 dst=$2
-	local overwrite backup skip
-	local dst_backup
-	g_overwrite=false g_backup=false g_skip=false
+function link_file() 
+{
+	local src dst overwrite backup skip backup_path
+	
+	src="$1"
+	dst="$2"
+	g_overwrite=false 
+	g_backup=false 
+	g_skip=false
 
 	# work out what todo when source points to an existing destination
-	if_file_exists "$dst" && deal_with_existing_file "$src" "$dst"
+	if_path_exists "${dst}" && deal_with_existing_file "${src}" "${dst}"
 
-	if [[ $g_overwrite || $overwrite ]]; then
-		info_msg "removing $dst"
-		rm -rf "$dst"
-		success_msg "removed $dst"
+	if [[ ${g_overwrite} || ${overwrite} ]]; then
+		echo "removing ${dst}"
+		rm -rf "${dst}"
+		echo "removed ${dst}"
 	if
 
 	if [[ $g_backup || $backup ]]; then

@@ -4,6 +4,9 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
+" Personal stuff
+set number  " Show line numbers
+
 " Leader and leader actions
 let mapleader = "\<Space>"
 " Save file: <Leader>w
