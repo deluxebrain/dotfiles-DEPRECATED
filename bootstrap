@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 #
 # bootstrap the dotfiles setup
 
@@ -107,10 +107,10 @@ function prompt_for_file_overwrite_action()
 	src="$1"
 	dst="$2"
 
-	prompt_msg << EOF
-	File already exists: ${dst} $(basename $src); what do you want todo?
-	[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?
-	EOF
+	# -e : Enable interpretation of bashslash escapes ( to get the newline )
+	echo -e \
+		"File already exists: ${dst} $(basename $src); what do you want todo?\n"\
+		"[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
 
 	# read one byte into action 
 	read -n 1 action
@@ -145,6 +145,8 @@ function link_file()
 	
 	src="$1"
 	dst="$2"
+
+	# These are going to be global to the execution of the script ( g_ )
 	g_overwrite=false 
 	g_backup=false 
 	g_skip=false
@@ -179,34 +181,30 @@ function link_file()
 	success_msg "linked $src to $dst"
 }
 
-file_backup_strategy () {
-	local path=$1
+function file_backup_strategy() 
+{
+	local path
+	
+	path="$1"
 	echo "${dst}.backup"
 }
 
-get_script_directory () {
-	#  BASH_SOURCE		
-	## internal bash variable containing array of pathnames
-	## expand as string ( e.g. $"BASH_SOURE" ) to get the first element
-	## which is the pathname of the currently executing script
-	#  ${string%substring}
-	## delete the shortest match of $substring from back of $string
-	script_dir="${BASH_SOURCE%/*}"	
-
-	# use echo to allow the output to be captured 
-	echo $script_dir
-}
-
-link_dotfiles () {
-	g_overwrite_all=false backup_all=false skip_all=false
+function link_dotfiles() 
+{
+	g_overwrite_all=false 
+	backup_all=false 
+	skip_all=false
 
 	info_msg "linking dotfiles ..."
-
-
 }
 
-main () {
+function main() 
+{
 	# Ensure xcode command line tools are installed
 	sudo xcode-select --install
 
 }
+
+main 
+exit $?
+

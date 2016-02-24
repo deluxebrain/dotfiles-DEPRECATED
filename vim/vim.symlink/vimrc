@@ -34,7 +34,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1
 " Configure syntax checkers
 let g:syntastic_javascript_checkers = ['jshint', 'jscs']
-let g:syntastic_sh_checkers = ['shellcheck']
+let g:syntastic_sh_checkers = ['sh', 'shellcheck']
 " Use Node.js based markdownlint-cli for markdown linting
 let g:syntastic_markdown_mdl_exec = 'markdownlint'
 let g_syntastic_markdown_mdl_args = ''
