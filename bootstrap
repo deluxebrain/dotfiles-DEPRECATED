@@ -38,7 +38,7 @@ function trap_exit()
 	exec 3>&-
 }
 
-function if_path_exists() 
+function path_exists() 
 {
 	local path
 	path="$1"
@@ -83,7 +83,7 @@ function deal_with_existing_file()
 	prompt_for_file_overwrite_action "${src}" "${dst}"
 }
 
-function if_dst_points_to_src () 
+function dst_points_to_src() 
 {
 	local src
 	local dst
@@ -141,7 +141,7 @@ function prompt_for_file_overwrite_action()
 
 function link_file() 
 {
-	local src dst overwrite backup skip backup_path
+	local src dst overwrite backup backup_path
 	
 	src="$1"
 	dst="$2"
@@ -149,36 +149,34 @@ function link_file()
 	# These are going to be global to the execution of the script ( g_ )
 	g_overwrite=false 
 	g_backup=false 
-	g_skip=false
 
 	# work out what todo when source points to an existing destination
-	if_path_exists "${dst}" && deal_with_existing_file "${src}" "${dst}"
+	if path_exists "${dst}"; then
+		
+		deal_with_existing_file "${src}" "${dst}"
 
-	if [[ ${g_overwrite} || ${overwrite} ]]; then
-		echo "removing ${dst}"
-		rm -rf "${dst}"
-		echo "removed ${dst}"
-	if
-
-	if [[ $g_backup || $backup ]]; then
-		dst_backup=$(file_backup_strategy "$dst")
-		info_msg "backing up $dst to $dst_backup" 
-		mv "$dst" "$dst_backup"
-		success_msg "moved $dst to $dst_backup"
-	fi
-
-	if [[ $g_skip || $skip ]]; then
-		info_msg "skipping $src"
-		return 0;
+		if [[ "${g_overwrite}" || "${overwrite}" ]]; then
+			echo "removing ${dst}"
+			rm -rf "${dst}"
+			echo "removed ${dst}"
+		elif [[ "$g_backup" || "$backup" ]]; then
+			backup_path=$(file_backup_strategy "$dst")
+			echo "backing up $dst to $backup_path" 
+			mv "$dst" "$backup_path"
+			echo "moved $dst to $backup_path"
+		else
+			echo "skipping $src"
+			return 0;
+		fi
 	fi
 
 	# link target to point at source
 	# -s	: create a symbolic link
 	# -f	: unlink the target if it exists
 	# -n	: if target is already a symlink, dont follow it
-	info_msg "linking $src to $dst" 
+	echo "linking $src to $dst" 
 	ln -sfn
-	success_msg "linked $src to $dst"
+	echo "linked $src to $dst"
 }
 
 function file_backup_strategy() 
