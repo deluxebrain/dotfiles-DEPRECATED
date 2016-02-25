@@ -1,7 +1,12 @@
-underscore-cli -g	# JSON processor
-jshint -g               # Javascript linter
-jscs -g                 # JavaScript code style linter
-eslint -g               # ES6 linter
+underscore-cli -g	  # JSON processor
+jshint -g                 # Javascript linter
+jscs -g                   # JavaScript code style linter
+eslint -g                 # ES6 linter
+eslint-plugin-angular -g
+eslint-plugin-jasmine -g
+eslint-plugin-react -g
+eslint-config-defaults -g # Plugin for ESLint that provides sets of configuration
 jsonlint -g
-markdownlint-cli -g     # markdown linter
+markdownlint-cli -g       # markdown linter
+js-yaml -g
 
