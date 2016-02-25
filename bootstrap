@@ -9,15 +9,15 @@ set -o errexit	  # exit the script if any statement returns non-true
 
 # Wire up temporary named pipe to store stderr for use in ERR trap
 ERR_PIPE="$(mktemp -u)"
-mkfifo "${ERR_PIPE}"
+mkfifo "$ERR_PIPE"
 
 # Redirect file descriptor 3 to stdout
 # Tee stdout to named pipe, then get stderr to fd 3 
 exec 3>&1
-exec > >(tee "${ERR_PIPE}") 2>&1 1>&3
+exec > >(tee "$ERR_PIPE") 2>&1 1>&3
 
 # Wire up ERR and EXIT traps
-trap 'trap_err ${LINENO} $?' ERR
+trap 'trap_err $LINENO $?' ERR
 trap 'trap_exit' EXIT
 
 function trap_err()
@@ -25,16 +25,16 @@ function trap_err()
 	local message
 	local code
 
-	message="$(head -n1 < "${ERR_PIPE}")"
+	message="$(head -n1 < "$ERR_PIPE")"
 	code="${2:-1}"
-	echo "${code}>Error on line $1: ${message}"
-	exit "${code}"
+	echo "${code}>Error on line $1: $message"
+	exit "$code"
 }
 
 function trap_exit()
 {
 	# Clean up the named pipe
-	rm "${ERR_PIPE}"
+	rm "$ERR_PIPE"
 	exec 3>&-
 }
 
@@ -62,15 +62,15 @@ function deal_with_existing_file()
 	dst="$2"
 
 	if /
-		[ "$g_overwrite_all" == false ] && /
-		[ "$g_backup_all" == false ] && /
-		[ "$g_skip_all" == false ]; then
+		! $g_overwrite_all && /
+		! $g_backup_all && /
+		! $g_skip_all; then
 		# global strategy in place
 		# no more action required
 		return 0
 	fi
 
-	if dst_points_to_src "${src}" "${dst}"; then
+	if dst_points_to_src "$src" "$dst"; then
 		# destination points to source
 		# skip current file
 		g_skip=true;
@@ -78,7 +78,7 @@ function deal_with_existing_file()
 	fi
 	
 	# user intervention required
-	prompt_for_file_overwrite_action "${src}" "${dst}"
+	prompt_for_file_overwrite_action "$src" "$dst"
 }
 
 function dst_points_to_src() 
@@ -107,7 +107,7 @@ function prompt_for_file_overwrite_action()
 
 	# -e : Enable interpretation of bashslash escapes ( to get the newline )
 	echo -e \
-		"File already exists: ${dst} $(basename "$src"); what do you want todo?\n"\
+		"File already exists: $dst $(basename "$src"); what do you want todo?\n"\
 		"[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
 
 	# read one byte into action 
@@ -115,7 +115,7 @@ function prompt_for_file_overwrite_action()
 	# -n x	: read x bytes
 	read -r -n 1 action
 
-	case "${action}" in
+	case "$action" in
 	  o)
 	    g_overwrite=true
 	    ;;
@@ -141,29 +141,36 @@ function prompt_for_file_overwrite_action()
 
 function link_file() 
 {
-	local src dst overwrite backup backup_path
+	local src dst 
+	# Visible to all functions in the stack
+	local overwrite	      # Per file action 
+	local backup	      # Per file action
+	local backup_path     # Per back path
 	
 	src="$1"
 	dst="$2"
 
-	# These are going to be global to the execution of the script ( g_ )
-	g_overwrite=false 
-	g_backup=false 
+	# quasi-booleans ...
+	# true / false are just strings, but ...
+	overwrite=false 
+	backup=false 
 
 	# work out what todo when source points to an existing destination
-	if path_exists "${dst}"; then
+	if path_exists "$dst"; then
 		
-		deal_with_existing_file "${src}" "${dst}"
+		deal_with_existing_file "$src" "$dst"
 
-		if [[ "${g_overwrite}" || "${overwrite}" ]]; then
-			echo "removing ${dst}"
-			rm -rf "${dst}"
-			echo "removed ${dst}"
-		elif [[ "$g_backup" || "$backup" ]]; then
-			backup_path=$(file_backup_strategy "$dst")
-			echo "backing up $dst to $backup_path" 
+		# quasi-booleans ...
+		# Note the variables are NOT surrounded by quotes
+		# Hence they will be evaluated as commands
+		# Note it is possible to form complex expressions
+		if $g_overwrite || $overwrite; then
+			echo "removing $dst ..."
+			rm -rf "$dst"
+		elif $g_backup || $backup; then
+			backup_path="$(file_backup_strategy "$dst")"
+			echo "backing up $dst to $backup_path ..." 
 			mv "$dst" "$backup_path"
-			echo "moved $dst to $backup_path"
 		else
 			echo "skipping $src"
 			return 0;
@@ -174,9 +181,8 @@ function link_file()
 	# -s	: create a symbolic link
 	# -f	: unlink the target if it exists
 	# -n	: if target is already a symlink, dont follow it
-	echo "linking $src to $dst" 
-	ln -sfn
-	echo "linked $src to $dst"
+	echo "linking $src to $dst ..." 
+	ln -sfn "$src" "$dst" 
 }
 
 function file_backup_strategy() 
