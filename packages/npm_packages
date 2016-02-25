@@ -1,6 +1,7 @@
 underscore-cli -g	# JSON processor
-jshint -g
-jscs -g                 # JavaScript code style linter/formatter
+jshint -g               # Javascript linter
+jscs -g                 # JavaScript code style linter
+eslint -g               # ES6 linter
 jsonlint -g
 markdownlint-cli -g     # markdown linter
 
