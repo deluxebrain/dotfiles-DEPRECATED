@@ -7,14 +7,16 @@ set -o pipefail	  # fail entire pipeline
 set -o nounset	  # exit on any attempt to use uninitialized variables
 set -o errexit	  # exit the script if any statement returns non-true
 
+_ERR_PIPE="$(mktemp -u)"
+_DEBUG=true
+
 # Wire up temporary named pipe to store stderr for use in ERR trap
-ERR_PIPE="$(mktemp -u)"
-mkfifo "$ERR_PIPE"
+mkfifo "$_ERR_PIPE"
 
 # Redirect file descriptor 3 to stdout
 # Tee stdout to named pipe, then get stderr to fd 3 
 exec 3>&1
-exec > >(tee "$ERR_PIPE") 2>&1 1>&3
+exec > >(tee "$_ERR_PIPE") 2>&1 1>&3
 
 # Wire up ERR and EXIT traps
 trap 'trap_err $LINENO $?' ERR
@@ -25,7 +27,7 @@ function trap_err()
 	local message
 	local code
 
-	message="$(head -n1 < "$ERR_PIPE")"
+	message="$(head -n1 < "$_ERR_PIPE")"
 	code="${2:-1}"
 	echo "${code}>Error on line $1: $message"
 	exit "$code"
@@ -36,6 +38,17 @@ function trap_exit()
 	# Clean up the named pipe
 	rm "$ERR_PIPE"
 	exec 3>&-
+}
+
+function DEBUG()
+{
+	if $_DEBUG; then
+		echo "[DEBUG] $@"
+	else
+		set -x
+		$@
+		set +x
+	fi 
 }
 
 function path_exists() 
@@ -166,11 +179,11 @@ function link_file()
 		# Note it is possible to form complex expressions
 		if $g_overwrite || $overwrite; then
 			echo "removing $dst ..."
-			rm -rf "$dst"
+			DEBUG rm -rf "$dst"
 		elif $g_backup || $backup; then
 			backup_path="$(file_backup_strategy "$dst")"
 			echo "backing up $dst to $backup_path ..." 
-			mv "$dst" "$backup_path"
+			DEBUG mv "$dst" "$backup_path"
 		else
 			echo "skipping $src"
 			return 0;
@@ -182,7 +195,7 @@ function link_file()
 	# -f	: unlink the target if it exists
 	# -n	: if target is already a symlink, dont follow it
 	echo "linking $src to $dst ..." 
-	ln -sfn "$src" "$dst" 
+	DEBUG ln -sfn "$src" "$dst" 
 }
 
 function file_backup_strategy() 

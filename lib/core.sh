@@ -51,6 +51,18 @@ function USE_GLOBAL_ERROR_HANDLER()
 	trap '__error_handler ${LINENO} $?' ERR
 }
 
+_DEBUG=false
+function DEBUG()
+{
+	if $_DEBUG; then
+		echo "[DEBUG] $*"
+	else
+		set -x
+		$*
+		set +x
+	fi
+}
+
 function msg_info() 
 {
         printf " [ %s..%s ] %s\n" "${PEN_INFO}" "${PEN_RESET}" "$1"
