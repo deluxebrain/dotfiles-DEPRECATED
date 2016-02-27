@@ -52,14 +52,20 @@ function USE_GLOBAL_ERROR_HANDLER()
 }
 
 _DEBUG=false
+_TRACE=false 
 function DEBUG()
 {
+	local code
+
 	if $_DEBUG; then
 		echo "[DEBUG] $*"
-	else
+	elif $_TRACE; then
 		set -x
-		$*
-		set +x
+		echo hello
+		"$@"
+		# { set +x; } 2>/dev/null
+	else
+		"%@"
 	fi
 }
 
