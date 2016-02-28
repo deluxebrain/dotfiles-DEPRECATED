@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -z "${__CORE+.}" ] && readonly __CORE= || return 0
+# [ -z "${__CORE+.}" ] && readonly __CORE= || return 0
 
 function __exit_handler()
 {
@@ -60,12 +60,12 @@ function DEBUG()
 	if $_DEBUG; then
 		echo "[DEBUG] $*"
 	elif $_TRACE; then
-		set -x
-		echo hello
-		"$@"
-		# { set +x; } 2>/dev/null
+		(
+			set -x
+			"$*"
+		) 
 	else
-		"%@"
+		"$*"
 	fi
 }
 
