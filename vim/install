@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PSD="$( cd "$( dirname "${BAS_SOURCE[0]}" )" && pwd )"
+PSD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 DEPENDS_ON path \
 	exists 
