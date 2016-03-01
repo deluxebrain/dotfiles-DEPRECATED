@@ -62,10 +62,10 @@ function DEBUG()
 	elif $_TRACE; then
 		(
 			set -x
-			"$*"
+			eval "$*"
 		) 
 	else
-		"$*"
+		eval "$*"
 	fi
 }
 

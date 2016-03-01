@@ -37,7 +37,7 @@ function trap_err()
 function trap_exit()
 {
 	# Clean up the named pipe
-	rm "$ERR_PIPE"
+	rm "$_ERR_PIPE"
 	exec 3>&-
 }
 
@@ -50,10 +50,10 @@ function DEBUG()
 		# ( which would be sent to stdout by the set -x
 		(
 			set -x
-			"$*"
+			eval "$*"
 		)
 	else
-		"$*"
+		eval "$*"
 	fi 
 }
 
@@ -69,7 +69,7 @@ function path_exists()
 	# -f 		: file exists
 	# -d		: file exists and is a directory
 	# -L		: file exists and is a symlink
-	[[ -n "$path" && (-f "$path"|| -d "$path" ||-L "$path" ) ]]
+	[[ -n "$path" && (-f "$path"|| -d "$path" || -L "$path" ) ]]
 }
 
 function deal_with_existing_file()
@@ -225,7 +225,6 @@ function main()
 {
 	# Ensure xcode command line tools are installed
 	sudo xcode-select --install
-
 }
 
 main 
