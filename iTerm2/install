@@ -15,7 +15,9 @@ USE_GLOBAL_ERROR_HANDLER
 
 form_and_verify_path()
 {
-	local path="$(path_combine "$@")"
+	local path
+
+	path="$(path_combine "$@")"
 	file_exists? "${path}" ||
 	{
 		fail "Unable to find file ${path}"
@@ -25,21 +27,26 @@ form_and_verify_path()
 
 main()
 {
+	local config_path
+	local profile_path
+	local template_path
+	local colorscheme_path
+
 	# Load config
-        local config_path="$(form_and_verify_path "${PSD}" profile.conf)"
+        config_path="$(form_and_verify_path "${PSD}" profile.conf)"
 	msg_info "Loading profile config from ${config_path} ..."
-        source ${config_path}
+        source "${config_path}"
 
 	# form profile plist file path
 	dir_exists? "${ITERM_PROFILE_DIR}" || \
 		fail "Export variable ITERM_PROFILE_DIR not set or not valid path"
-	local profile_path="$(path_combine "${ITERM_PROFILE_DIR}" "${_PROFILE_NAME}".plist)"
+	profile_path="$(path_combine "${ITERM_PROFILE_DIR}" "${_PROFILE_NAME}".plist)"
 
 	# form path to template
-	local template_path="$(form_and_verify_path "${PSD}" profile_template.plist)"
+	template_path="$(form_and_verify_path "${PSD}" profile_template.plist)"
 
 	# form path to colorscheme plist
-	local colorscheme_path="$(form_and_verify_path \
+	colorscheme_path="$(form_and_verify_path \
 		"/Users/${USER}" \
 		".themes" \
 		"${_PROFILE_COLORSCHEME_NAME}")"

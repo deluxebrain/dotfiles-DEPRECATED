@@ -3,6 +3,8 @@
 function main() 
 {
 	local seq_period seq_top seq_step seq_name seq_counter
+	local author 
+	
 	seq_period="${1:-day}"
 	case "$seq_period" in
 		hour) seq_name=minutes; seq_top=60; seq_step=5;;
@@ -12,7 +14,7 @@ function main()
 		year) seq_name=days; seq_top=365; seq_step=10;;
 	esac
 
-	local author="$(git config user.name)"
+	author="$(git config user.name)"
 	for seq_counter in $(seq $seq_top $((seq_step*-1)) 0)
 	do 
 		git log --author "${author}" \

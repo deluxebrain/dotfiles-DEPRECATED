@@ -4,7 +4,9 @@
 
 function main() 
 {
-    local tmpFile="${@%/}.tar";			# remove trailing /
+    local tmpFile
+
+    tmpFile="${*%/}.tar"
     tar -cvf "${tmpFile}" --exclude=".DS_Store" "${@}" || return 1;
 
     size=$(

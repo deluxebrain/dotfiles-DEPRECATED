@@ -9,12 +9,15 @@ function main()
         false
 	return
     fi;
-    [ ${2} ] && local slug="-F \"code=${2}\""
+
+    local slug 
+
+    [ -n "${2}" ] && slug="-F \"code="${2}"\""
     curl -s -i http://git.io/ -F "url=${1}" ${slug} | grep Location | awk {'print $2'} 
 }
 
 result="$(main "$@")"
-if [ $? -eq 0 -a "$result" ]; then
+if (( $? == 0 )) && [ -a "$result" ]; then
 	echo "$result"
 	exit 0
 fi

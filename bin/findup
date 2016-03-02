@@ -4,7 +4,8 @@
 
 function main() 
 {
-	local cwd=$(pwd -P 2>/dev/null || command pwd)
+	local cwd 
+	cwd=$(pwd -P 2>/dev/null || command pwd)
 	while [ ! -e "${cwd}/$1" ]; do	
 		# ${string%substring}
 		#+ Deletes the shortest match of $substring
@@ -15,8 +16,8 @@ function main()
 	echo "$cwd"
 }
 
-cwd=$(main $@)
-if [ $? -eq 0 -a "${cwd}" ]; then
+cwd="$(main "$@")"
+if (( $? == 0 )) && [ -n "${cwd}" ]; then
 	echo "${cwd}"
 	exit 0
 fi

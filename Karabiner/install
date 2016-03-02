@@ -9,7 +9,9 @@ USE_GLOBAL_ERROR_HANDLER
 
 form_and_verify_path()
 {
-	local path="$(path_combine "$@")"
+	local path
+
+	path="$(path_combine "$@")"
 	file_exists? "${path}" || 
 	{
 		fail "Unable to find file ${path}"
@@ -19,9 +21,11 @@ form_and_verify_path()
 
 main()
 {
+	local path
+
 	# As required by Seil when remapping the caps lock key:
 	# Umap the caps lock key within OS X preferences
-	local path="$(form_and_verify_path "${PSD}" unmap_caps.scpt)"
+	path="$(form_and_verify_path "${PSD}" unmap_caps.scpt)"
 	msg_info "Running ${path}"
 	osascript "${path}" 
 
