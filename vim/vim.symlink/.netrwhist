@@ -1,4 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_cnt =3
 let g:netrw_dirhist_1='/Users/deluxebrain/Repos/deluxebrain/dotfiles/vim/vim.symlink'
 let g:netrw_dirhist_2='/Users/deluxebrain/Repos/deluxebrain/dotfiles/bin/ngincat'
+let g:netrw_dirhist_3='/Users/deluxebrain/Repos/deluxebrain/dotfiles/install'

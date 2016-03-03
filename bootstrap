@@ -2,6 +2,13 @@
 #
 # bootstrap the dotfiles setup
 
+# TODO
+# 1. CD to parent directory of current script
+# 2. Source core.sh
+# 3. Remove duplicate code (ref. core)
+# 4. Move to msg_
+# 5. Deal with symlinking non dotfiles
+
 set -o errtrace	  # inherit ERR traps within functions, substs and subshells
 set -o pipefail	  # fail entire pipeline
 set -o nounset	  # exit on any attempt to use uninitialized variables
