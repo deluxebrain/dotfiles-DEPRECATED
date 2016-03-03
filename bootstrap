@@ -73,7 +73,7 @@ function path_exists()
 	[[ -n "$path" && (-f "$path"|| -d "$path" || -L "$path" ) ]]
 }
 
-function deal_with_existing_file()
+function deal_with_existing_destination_path()
 {
 	local src
 	local dst
@@ -171,14 +171,16 @@ function link_file()
 	dst="$2"
 
 	# quasi-booleans ...
-	# true / false are just strings, but ...
+	# true / false are just strings, but will be "evaluated" as commands in conditionals
 	overwrite=false 
 	backup=false 
+
+	echo "Linking source path ${src} to destination path ${path} ..."
 
 	# work out what todo when source points to an existing destination
 	if path_exists "$dst"; then
 		
-		deal_with_existing_file "$src" "$dst"
+		deal_with_existing_destination_path "$src" "$dst"
 
 		# quasi-booleans ...
 		# Note the variables are NOT surrounded by quotes
@@ -213,17 +215,17 @@ function file_backup_strategy()
 	echo "${path}.backup"
 }
 
-function convert_src_to_dst()
+function form_link_path()
 {
 	local src
 
 	src="$1"
 	
 	# ${string%substring} : Deletes shortest match of $substring from back of $string
-	echo ".$(basename "${src%.symlink}")"
+	echo "$HOME/.$(basename "${src%.symlink}")"
 }
 
-function link_dotfiles() 
+function install_dotfiles() 
 {
 	local src dst
 	# Visible to all functions in the stack
@@ -235,24 +237,33 @@ function link_dotfiles()
 	backup_all=false 
 	skip_all=false
 
-	echo "linking dotfiles ..."
+	echo "installing dotfiles ..."
 	# Find:
 	# -H  : For symlinks use the file info of the linked file
 	# Exclude .git directories
+	echo "Looking for files and directories to link within ${_SCRIPT_PATH} ..."
 	find -H "$_SCRIPT_PATH" -maxdepth 3 -name '*.symlink' -not -path '*.git*' | while -r read src
 	do
-		dst="$HOME/$(convert_src_to_dst "$src")"
+		dst="$(form_link_path "$src")"
 		link_file "$src" "$dst"
 	done
 }
 
-function main() 
+function install_prequisites()
 {
 	# Ensure xcode command line tools are installed
 	sudo xcode-select --install
+}
 
-	# Link all dotfiles
-	link_dotfiles
+function install_packages()
+{
+}
+
+function main() 
+{
+	install_prequisites && \
+		install_dotfiles && \
+		install_packages
 }
 
 main 
