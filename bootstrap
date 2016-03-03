@@ -237,7 +237,7 @@ function install_dotfiles()
 	backup_all=false 
 	skip_all=false
 
-	echo "installing dotfiles ..."
+	echo "Installing dotfiles ..."
 	# Find:
 	# -H  : For symlinks use the file info of the linked file
 	# Exclude .git directories
@@ -251,12 +251,16 @@ function install_dotfiles()
 
 function install_prequisites()
 {
+	echo "Installing prerequisites"
+
 	# Ensure xcode command line tools are installed
+	echo "Installing XCode CLI tools if they are missing ..."
 	sudo xcode-select --install
 }
 
 function install_packages()
 {
+	echo "Installing packages ..."
 }
 
 function main() 
