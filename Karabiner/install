@@ -19,7 +19,7 @@ form_and_verify_path()
 	echo "${path}"
 }
 
-main()
+setup_seil()
 {
 	local path
 
@@ -28,6 +28,24 @@ main()
 	path="$(form_and_verify_path "${PSD}" unmap_caps.scpt)"
 	msg_info "Running ${path}"
 	osascript "${path}" 
+
+	# Run in Seil default
+	path="$(form_and_verify_path "${PSD}" seil_import)"
+	msg_info "Running in Seil defaults from ${path} ..."
+	"${path}"
+
+	# Restart Seil
+	msg_info "Restarting Seil ..."
+	/Applications/Seil.app/Contents/Library/bin/seil relaunch
+}
+
+setup_karabiner()
+{
+	local path
+
+	# Grant accessibility access to Karabiner
+	msg_info "Granting accessibility access to the Karabiner AXNotifier app ..."
+	sudo tccutil -i org.pqrs.Karabiner-AXNotifier
 
 	# Steps to create the plist in the first place:
 	# plutil -convert xml1 -o ~/tmp/karabiner.plist ~/Library/Preferences/org.pqrs.Karabiner.plist
@@ -40,18 +58,15 @@ main()
 	msg_info "Running in Karabiner defaults from ${path} ..."
 	"${path}"
 	
-	# Restart Kabarina
+	# Restart Karabina
 	msg_info "Restarting Karabiner ..."
 	/Applications/Karabiner.app/Contents/Library/bin/karabiner relaunch
+}
 
-	# Run in Seil default
-	path="$(form_and_verify_path "${PSD}" seil_import)"
-	msg_info "Running in Seil defaults from ${path} ..."
-	"${path}"
-
-	# Restart Seil
-	msg_info "Restarting Seil ..."
-	/Applications/Seil.app/Contents/Library/bin/seil relaunch
+main()
+{
+	setup_seil
+	setup_karabiner 
 }
 
 main 

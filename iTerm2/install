@@ -25,7 +25,14 @@ form_and_verify_path()
 	echo "${path}"
 }
 
-main()
+setup_permissions()
+{
+	# Grant accessibility access to iterm and all scripts executed from iterm
+	msg_info "Granting accessibility access to iTerm ..."
+	sudo tccutil -i com.googlecode.iterm2
+}
+
+setup_profile()
 {
 	local config_path
 	local profile_path
@@ -79,6 +86,12 @@ main()
 	msg_info "Configuring iTerm to use ${_PROFILE_NAME}"
 	set_iterm_profile "${_PROFILE_NAME}"
 	do_iterm_growl "Profile ${_PROFILE_NAME} created and set as current profile"
+}
+
+main()
+{
+	setup_permissions
+	setup_profile 
 }
 
 main
