@@ -6,7 +6,7 @@
 # and configuration
 #
 
-PSD="${BASH_SOURCE%/*}"
+_SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 DEPENDS_ON path \
 	exists
@@ -34,23 +34,17 @@ setup_permissions()
 
 setup_profile()
 {
-	local config_path
 	local profile_path
-	local template_path
 	local colorscheme_path
 
 	# Load config
-        config_path="$(form_and_verify_path "${PSD}" profile.conf)"
-	msg_info "Loading profile config from ${config_path} ..."
-        source "${config_path}"
+	msg_info "Loading profile config from $(pwd)/profile.conf ..."
+        source ./profile.conf
 
 	# form profile plist file path
 	dir_exists? "${ITERM_PROFILE_DIR}" || \
 		fail "Export variable ITERM_PROFILE_DIR not set or not valid path"
 	profile_path="$(path_combine "${ITERM_PROFILE_DIR}" "${_PROFILE_NAME}".plist)"
-
-	# form path to template
-	template_path="$(form_and_verify_path "${PSD}" profile_template.plist)"
 
 	# form path to colorscheme plist
 	colorscheme_path="$(form_and_verify_path \
@@ -77,9 +71,9 @@ setup_profile()
 	# <(...)	
 	#	use subshells to pipe multiple arguments to jq
 	# ---
-	msg_info "Transforming ${template_path} to form profile at ${profile_path}"
+	msg_info "Transforming profile_template.plist to form profile at ${profile_path}"
 	jq -s '.[0].Profiles[0] += .[1] | .[0]' \
-		<(envsubst < "${template_path}") \
+		<(envsubst < profile_template.plist) \
 		<(plutil -convert json "${colorscheme_path}" -o -) \
 		> "${profile_path}"
 
@@ -90,6 +84,10 @@ setup_profile()
 
 main()
 {
+	# We are going to be loading files relative to the parent script
+	# So just change to the parent directory of the script
+	cd "$_SCRIPT_PATH" || exit 1
+
 	setup_permissions
 	setup_profile 
 }

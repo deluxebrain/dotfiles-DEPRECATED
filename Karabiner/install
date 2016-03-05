@@ -1,38 +1,22 @@
 #!/bin/bash
 
-PSD="${BASH_SOURCE%/*}" 
+_SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 DEPENDS_ON path \
 	exists 
 
 USE_GLOBAL_ERROR_HANDLER
 
-form_and_verify_path()
-{
-	local path
-
-	path="$(path_combine "$@")"
-	file_exists? "${path}" || 
-	{
-		fail "Unable to find file ${path}"
-	}	
-	echo "${path}"
-}
-
 setup_seil()
 {
-	local path
-
 	# As required by Seil when remapping the caps lock key:
 	# Umap the caps lock key within OS X preferences
-	path="$(form_and_verify_path "${PSD}" unmap_caps.scpt)"
-	msg_info "Running ${path}"
-	osascript "${path}" 
+	msg_info "Running unmap_caps.scpt"
+	osascript ./unmap_caps.scpt
 
 	# Run in Seil default
-	path="$(form_and_verify_path "${PSD}" seil_import)"
-	msg_info "Running in Seil defaults from ${path} ..."
-	"${path}"
+	msg_info "Running in Seil defaults from seil_import ..."
+	. ./seil_import 
 
 	# Restart Seil
 	msg_info "Restarting Seil ..."
@@ -41,22 +25,18 @@ setup_seil()
 
 setup_karabiner()
 {
-	local path
-
 	# Grant accessibility access to Karabiner
 	msg_info "Granting accessibility access to the Karabiner AXNotifier app ..."
 	sudo tccutil -i org.pqrs.Karabiner-AXNotifier
 
 	# Steps to create the plist in the first place:
 	# plutil -convert xml1 -o ~/tmp/karabiner.plist ~/Library/Preferences/org.pqrs.Karabiner.plist
-	path="$(form_and_verify_path "${PSD}" karabiner.plist)"
-	msg_info "Running plist defaults into Karabiner from ${path} ..."
-	defaults import org.pqrs.Karabiner "${path}"
+	msg_info "Running plist defaults into Karabiner from karabiner.plist ..."
+	defaults import org.pqrs.Karabiner ./karabiner.plist
 
 	# Run in Karabiner defaults
-	path="$(form_and_verify_path "${PSD}" karabiner_import)"
-	msg_info "Running in Karabiner defaults from ${path} ..."
-	"${path}"
+	msg_info "Running in Karabiner defaults from karabiner_import ..."
+	. ./karabiner_import
 	
 	# Restart Karabina
 	msg_info "Restarting Karabiner ..."
@@ -65,6 +45,8 @@ setup_karabiner()
 
 main()
 {
+	cd "$_SCRIPT_PATH" || exit 1
+
 	setup_seil
 	setup_karabiner 
 }
