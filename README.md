@@ -1,5 +1,24 @@
 # @deluxebrain does dotfiles
 
+## Symlinking
+
+The dotfile synchronization model is based around symlinking files and directories in the dotfiles repository to equivalents in the ```$HOME``` directory.
+Two symlinking mechanisms are supported - which work for both files and directories:
+
+1. ```<somepath>.symlink```
+
+The path is symlinked into the ```$HOME``` directory as ```$HOME/<somepath>``` (i.e. with .symlink removed).
+
+2. ```<somepath>.dotfile```
+
+The path is symlinked into the ```$HOME``` directory as ```$HOME/.<somepath>``` (i.e. as a dotfile).
+
+Note that the repository contains one symlink, ```./lib``` which is a symlink to the ```./lib.symlink``` directory. This is to allow files within this path to be referenced at thtime of installation using the path ```./lib```. Obviously, post installation ( and hence post the setup of symlinks ), this is just performed using ```$HOME/lib```. This symlink is created using the *relative* option which prevents an other-wise absolute symlink being broken when cloned from Git into a different working directory. Relative symlinks are supported on revent version of the GNU coreutils ( as installed through Homebrew ), and created as follows:
+
+``` shell
+gln -s --relative  <source> destination
+```
+
 ## File organization
 
 ``` shell
