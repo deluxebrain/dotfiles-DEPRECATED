@@ -3,7 +3,6 @@
 # bootstrap the dotfiles setup
 
 # TODO
-# 4. Move to msg_
 # 5. Deal with symlinking non dotfiles
 
 set -o errtrace	  # inherit ERR traps within functions, substs and subshells
@@ -89,8 +88,8 @@ function prompt_for_file_overwrite_action()
 	dst="$2"
 
 	# -e : Enable interpretation of bashslash escapes ( to get the newline )
-	echo -e \
-		"File already exists: $dst $(basename "$src"); what do you want todo?\n"\
+	msg_prompt \
+		"File already exists: $(basename "$src")-->${dst}; what do you want todo?\n"\
 		"[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
 
 	# read one byte into action 
@@ -138,7 +137,7 @@ function link_file()
 	overwrite=false 
 	backup=false 
 
-	echo "Linking source path ${src} to destination path ${path} ..."
+	msg_info "Linking source path ${src} to destination path ${path} ..."
 
 	# work out what todo when source points to an existing destination
 	if path_exists "$dst"; then
@@ -150,14 +149,14 @@ function link_file()
 		# Hence they will be evaluated as commands
 		# Note it is possible to form complex expressions
 		if $g_overwrite || $overwrite; then
-			echo "removing $dst ..."
+			msg_info "removing $dst ..."
 			DEBUG rm -rf "$dst"
 		elif $g_backup || $backup; then
 			backup_path="$(file_backup_strategy "$dst")"
-			echo "backing up $dst to $backup_path ..." 
+			msg_info "backing up $dst to $backup_path ..." 
 			DEBUG mv "$dst" "$backup_path"
 		else
-			echo "skipping $src"
+			msg_info "skipping $src"
 			return 0;
 		fi
 	fi
@@ -166,7 +165,7 @@ function link_file()
 	# -s	: create a symbolic link
 	# -f	: unlink the target if it exists
 	# -n	: if target is already a symlink, dont follow it
-	echo "linking $src to $dst ..." 
+	msg_info "linking $src to $dst ..." 
 	DEBUG ln -sfn "$src" "$dst" 
 }
 
@@ -200,11 +199,11 @@ function install_dotfiles()
 	backup_all=false 
 	skip_all=false
 
-	echo "Installing dotfiles ..."
+	msg_info "Installing dotfiles ..."
 	# Find:
 	# -H  : For symlinks use the file info of the linked file
 	# Exclude .git directories
-	echo "Looking for files and directories to link within ${_SCRIPT_PATH} ..."
+	msg_info "Looking for files and directories to link within ${_SCRIPT_PATH} ..."
 	find -H "$_SCRIPT_PATH" -maxdepth 3 -name '*.symlink' -not -path '*.git*' | while -r read src
 	do
 		dst="$(form_link_path "$src")"
@@ -214,16 +213,16 @@ function install_dotfiles()
 
 function install_prequisites()
 {
-	echo "Installing prerequisites"
+	msg_info "Installing prerequisites"
 
 	# Ensure xcode command line tools are installed
-	echo "Installing XCode CLI tools if they are missing ..."
+	msg_info "Installing XCode CLI tools if they are missing ..."
 	sudo xcode-select --install
 }
 
 function install_packages()
 {
-	echo "Installing packages ..."
+	msg_info "Installing packages ..."
 }
 
 function main() 
