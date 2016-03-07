@@ -2,9 +2,6 @@
 #
 # bootstrap the dotfiles setup
 
-# TODO
-# 5. Deal with symlinking non dotfiles
-
 set -o errtrace	  # inherit ERR traps within functions, substs and subshells
 set -o pipefail	  # fail entire pipeline
 set -o nounset	  # exit on any attempt to use uninitialized variables
