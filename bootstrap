@@ -179,12 +179,21 @@ function file_backup_strategy()
 
 function form_link_path()
 {
-	local src
+	local src dst 
+	local link_type
 
 	src="$1"
+	# ##  : Greedy front trim
+	# *:  : Match anything followed by last .
+	link_type="${src##*.}"
+
+	case "$link_type" in 
+	dotfile) dst="$HOME/.$(basename "${src%.dotfile}")";;
+	symlink) dst="$HOME/$(basename "${src%.symlink}")";;
+	*) echo "unknown symlink format ${link_type}"; exit 1;;
+	esac 
 	
-	# ${string%substring} : Deletes shortest match of $substring from back of $string
-	echo "$HOME/.$(basename "${src%.symlink}")"
+	echo "$dst"
 }
 
 function install_dotfiles() 
