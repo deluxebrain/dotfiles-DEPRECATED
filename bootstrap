@@ -201,10 +201,14 @@ function install_dotfiles()
 
 	msg_info "Installing dotfiles ..."
 	# Find:
-	# -H  : For symlinks use the file info of the linked file
-	# Exclude .git directories
+	# -H	      : For symlinks use the file info of the linked file
+	# -not -path  : Exclude .git directory and contents 
+	# -o for or, -not for not
+	# Complex logical statements can be built up using escaped brackets
 	msg_info "Looking for files and directories to link within ${_SCRIPT_PATH} ..."
-	find -H "$_SCRIPT_PATH" -maxdepth 3 -name '*.symlink' -not -path '*.git*' | while -r read src
+	find -H "$_SCRIPT_PATH" -maxdepth 3 \
+		\( -name '*.symlink' -o -name '*.dotfile' \) \
+		-not -path '*.git*' | while -r read src
 	do
 		dst="$(form_link_path "$src")"
 		link_file "$src" "$dst"
