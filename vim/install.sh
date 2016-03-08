@@ -28,7 +28,7 @@ function main()
 		msg_info "Installing ${reposName}"
 		git submodule update --init --recursive
 
-		customInstallerPath="$(path_combine "${PSD}" "${reposName}")"
+		customInstallerPath="$(path_combine "${PSD}" "${reposName}".sh)"
 		if [ -x "${customInstallerPath}" ]; then
 			msg_info "Found custom installer for ${reposName}"
 			msg_info "Running script: ${customInstallerPath}"
