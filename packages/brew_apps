@@ -59,6 +59,7 @@ tccutil		# cli tool to modify os x's accessibility database
 yubikey-personalization 
 
 # Development
+ctags
 go
 rust
 mono

@@ -16,3 +16,6 @@ Thumbs.db
 # Vim swapfiles
 *.swp
 
+# Ctags
+tags
+
