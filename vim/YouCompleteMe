@@ -9,9 +9,6 @@ function main()
 	local reposPath
 	reposPath="$1"
 
-	dir_exists? "${reposPath}" ||\
-		fail "Unable to local repos with path ${reposPath}"
-
 	cd "${reposPath}" || { false; return; }
 
 	msg_info "Performing custom install for ${reposPath}"

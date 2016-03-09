@@ -7,6 +7,28 @@ DEPENDS_ON path \
 
 USE_GLOBAL_ERROR_HANDLER
 
+function run_custom_installer()
+{
+	customInstallerPath="$(path_combine "${PSD}" "${reposName}")"
+	if [ -x "${customInstallerPath}" ]; then
+		msg_info "Found custom installer for ${reposName}"
+		msg_info "Running script: ${customInstallerPath}"
+		"${customInstallerPath}" "${reposPath}"
+	else
+		msg_info "No custom installer found for ${reposName}"
+	fi
+}
+
+function generate_helptags()
+{
+	if [ -d "./doc" ]; then
+		msg_info "Generating helptags ..."	
+		vim -u NONE -c "helptags doc" -c -q
+	else
+		msg_ingo "No helptags found"
+	fi 
+}
+
 function main()
 {
 	local pathToBundles
@@ -28,14 +50,8 @@ function main()
 		msg_info "Installing ${reposName}"
 		git submodule update --init --recursive
 
-		customInstallerPath="$(path_combine "${PSD}" "${reposName}".sh)"
-		if [ -x "${customInstallerPath}" ]; then
-			msg_info "Found custom installer for ${reposName}"
-			msg_info "Running script: ${customInstallerPath}"
-			"${customInstallerPath}" "${reposPath}"
-		else
-			msg_info "No custom installer found for ${reposName}"
-		fi
+		run_custom_installer
+		generate_helptags
 	)
 	done
 }

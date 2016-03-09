@@ -43,3 +43,9 @@
 [submodule "vim/vim.dotfile/bundle/YouCompleteMe"]
 	path = vim/vim.dotfile/bundle/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe.git
+[submodule "vim/vim.dotfile/bundle/vim-fugitive"]
+	path = vim/vim.dotfile/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "vim/vim.dotfile/bundle/vim-obsession"]
+	path = vim/vim.dotfile/bundle/vim-obsession
+	url = https://github.com/tpope/vim-obsession.git
