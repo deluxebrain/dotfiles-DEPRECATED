@@ -1,4 +1,5 @@
 --recurse=yes
+--tag-relative
 --exclude=.git
 --exclude=log
 --exclude=tmp

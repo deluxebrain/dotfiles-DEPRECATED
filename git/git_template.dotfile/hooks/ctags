@@ -4,7 +4,16 @@ set -e
 
 PATH="/usr/local/bin:$PATH"
 dir="$(git rev-parse --git-dir)"
+
+# Remove the temp tags file on completion
 trap 'rm -f "$dir/$$.tags"' EXIT
+
+# git 
+# ls-files	  : list files in the index and the working tree
+# ctags
+# --tag-relative  : use paths relative to the tags directory
+# -L -		  : read file names of files to index from std in
+# -f		  : override filename of tag file
 git ls-files | \
   ctags --tag-relative -L - -f"$dir/$$.tags" --languages=-javascript,sql
 mv "$dir/$$.tags" "$dir/tags"
