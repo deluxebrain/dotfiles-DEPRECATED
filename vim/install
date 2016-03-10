@@ -10,6 +10,7 @@ USE_GLOBAL_ERROR_HANDLER
 function run_custom_installer()
 {
 	customInstallerPath="$(path_combine "${PSD}" "${reposName}")"
+	
 	if [ -x "${customInstallerPath}" ]; then
 		msg_info "Found custom installer for ${reposName}"
 		msg_info "Running script: ${customInstallerPath}"
@@ -22,10 +23,10 @@ function run_custom_installer()
 function generate_helptags()
 {
 	if [ -d "./doc" ]; then
-		msg_info "Generating helptags ..."	
+		msg_info "Generating helptags from doc directory ..."	
 		vim -u NONE -c "helptags doc" -c -q
 	else
-		msg_ingo "No helptags found"
+		msg_ingo "No helptags to generate - no doc direcotry found"
 	fi 
 }
 
@@ -43,7 +44,7 @@ function main()
 	for reposPath in ${pathToBundles}/*
 	do
 	(
-		msg_info "Changing directory to ${reposPath}"
+		msg_info "Changing to repos directory: ${reposPath}"
 		cd "${reposPath}" || { false; return; }
 		
 		reposName="$(git name)"
