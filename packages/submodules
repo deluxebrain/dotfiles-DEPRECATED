@@ -13,4 +13,7 @@ https://github.com/davidhalter/jedi-vim.git ./vim/vim.dotfile/bundle/jedi-vim
 https://github.com/fatih/vim-go.git ./vim/vim.dotfile/bundle/vim-go
 https://github.com/kylef/apiblueprint.vim.git ./vim/vim.dotfile/bundle/apiblueprint.vim
 https://github.com/Valloric/YouCompleteMe.git ./vim/vim.dotfile/bundle/YouCompleteMe
+https://github.com/tpope/vim-fugitive.git ./vim/vim.dotfile/bundle/vim-fugitive
+https://github.com/tpope/vim-obsession.git ./vim/vim.dotfile/bundle/vim-obsession
+
 
