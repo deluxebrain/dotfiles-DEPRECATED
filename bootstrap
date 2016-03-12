@@ -33,7 +33,6 @@ function install_packages()
 
 function main() 
 {
-	install_prequisites || return 1;
 	./install/install_links || return 1;
 	install_packages || return 1;
 }
