@@ -2,7 +2,7 @@
 
 ## Symlinking
 
-The dotfile synchronization model is based around symlinking files and directories in the dotfiles repository to equivalents in the ```$HOME``` directory.
+The dotfile synchronization model is based around symlinking files and directories in the dotfiles repository to their respective positions in the ```$HOME``` directory.
 Two symlinking mechanisms are supported - which work for both files and directories:
 
 1. ```<somepath>.symlink```
@@ -13,7 +13,7 @@ The path is symlinked into the ```$HOME``` directory as ```$HOME/<somepath>``` (
 
 The path is symlinked into the ```$HOME``` directory as ```$HOME/.<somepath>``` (i.e. as a dotfile).
 
-Note that the repository contains one symlink, ```./lib``` which is a symlink to the ```./lib.symlink``` directory. This is to allow files within this path to be referenced at thtime of installation using the path ```./lib```. Obviously, post installation ( and hence post the setup of symlinks ), this is just performed using ```$HOME/lib```. This symlink is created using the *relative* option which prevents an other-wise absolute symlink being broken when cloned from Git into a different working directory. Relative symlinks are supported on revent version of the GNU coreutils ( as installed through Homebrew ), and created as follows:
+Note that the repository contains one symlink, ```./lib``` which is a symlink to the ```./lib.symlink``` directory. This is to allow files within this path to be referenced at the time of installation using the path ```./lib```. Obviously, post installation ( and hence post the setup of symlinks ), this is just performed using ```$HOME/lib```. This symlink is created using the *relative* option which prevents an other-wise absolute symlink being broken when cloned from Git into a different working directory. Relative symlinks are supported on revent version of the GNU coreutils ( as installed through Homebrew ), and created as follows:
 
 ``` shell
 gln -s --relative  <source> destination
@@ -22,14 +22,24 @@ gln -s --relative  <source> destination
 ## File organization
 
 ``` shell
-\shell
-\bin		| Standalone scripts that are intended to be executed within a new shell or subshell
-\homebrew	| (functional area) Homebrew
-\install	| Bootstrapper and top-level installer script for all functional areas
-\lib		| Re-usable Bash functions intended to be sourced into scripts within the bin directory
-\ssh		|
-\system		|
-
+\Karabiner	| Karabiner and Seil setup and configuration
+\bin.symink	| Standalone scripts
+\completions	| Bash completions
+\config.dotfile	| Powerline configuration
+\cron		| Cron setup
+\ctags		|
+\environment	|
+\git		|
+\iTerm2		|
+\install	|
+\lib.symlink	|
+\linters	|
+\osx		|
+\packages	|
+\shell		|
+\themes.dotfile	|
+\tmux		|
+\vim		|
 ```
 
 ## Prerequisites
