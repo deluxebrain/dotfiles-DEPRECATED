@@ -15,6 +15,12 @@ cd "$_SCRIPT_PATH" || exit 1
 source ../lib/core.sh || exit 1
 USE_GLOBAL_ERROR_HANDLER
 
+_DEBUG=true
+
+#---------------------------------------------------------------------
+# Utility functions
+#---------------------------------------------------------------------
+
 function path_exists() 
 {
 	local path
@@ -28,34 +34,6 @@ function path_exists()
 	# -d		: file exists and is a directory
 	# -L		: file exists and is a symlink
 	[[ -n "$path" && (-f "$path"|| -d "$path" || -L "$path" ) ]]
-}
-
-function deal_with_existing_destination_path()
-{
-	local src
-	local dst
-
-	src="$1"
-	dst="$2"
-
-	if /
-		! $g_overwrite_all && /
-		! $g_backup_all && /
-		! $g_skip_all; then
-		# global strategy in place
-		# no more action required
-		return 0
-	fi
-
-	if dst_points_to_src "$src" "$dst"; then
-		# destination points to source
-		# skip current file
-		g_skip=true;
-		return 0
-	fi
-	
-	# user intervention required
-	prompt_for_file_overwrite_action "$src" "$dst"
 }
 
 function dst_points_to_src() 
@@ -72,6 +50,10 @@ function dst_points_to_src()
 	target="$(readlink $"dst")"
 	[ "$target" == "$src" ]
 }
+
+#---------------------------------------------------------------------
+# UI functions
+#---------------------------------------------------------------------
 
 function prompt_for_file_overwrite_action() 
 {
@@ -116,55 +98,39 @@ function prompt_for_file_overwrite_action()
 	esac	
 }
 
-function link_file() 
+#---------------------------------------------------------------------
+# Strategy functions
+#---------------------------------------------------------------------
+
+function destination_exists_strategy()
 {
-	local src dst 
-	# Visible to all functions in the stack
-	local overwrite	      # Per file action 
-	local backup	      # Per file action
-	local backup_path     # Per back path
-	
+	local src
+	local dst
+
 	src="$1"
 	dst="$2"
 
-	# quasi-booleans ...
-	# true / false are just strings, but will be "evaluated" as commands in conditionals
-	overwrite=false 
-	backup=false 
-
-	msg_info "Linking source path ${src} to destination path ${path} ..."
-
-	# work out what todo when source points to an existing destination
-	if path_exists "$dst"; then
-		
-		deal_with_existing_destination_path "$src" "$dst"
-
-		# quasi-booleans ...
-		# Note the variables are NOT surrounded by quotes
-		# Hence they will be evaluated as commands
-		# Note it is possible to form complex expressions
-		if $g_overwrite || $overwrite; then
-			msg_info "removing $dst ..."
-			DEBUG rm -rf "$dst"
-		elif $g_backup || $backup; then
-			backup_path="$(file_backup_strategy "$dst")"
-			msg_info "backing up $dst to $backup_path ..." 
-			DEBUG mv "$dst" "$backup_path"
-		else
-			msg_info "skipping $src"
-			return 0;
-		fi
+	if /
+		! $g_overwrite_all && /
+		! $g_backup_all && /
+		! $g_skip_all; then
+		# global strategy in place
+		# no more action required
+		return 0
 	fi
 
-	# link target to point at source
-	# -s	: create a symbolic link
-	# -f	: unlink the target if it exists
-	# -n	: if target is already a symlink, dont follow it
-	msg_info "linking $src to $dst ..." 
-	DEBUG ln -sfn "$src" "$dst" 
+	if dst_points_to_src "$src" "$dst"; then
+		# destination points to source
+		# skip current file
+		g_skip=true;
+		return 0
+	fi
+	
+	# user intervention required
+	prompt_for_file_overwrite_action "$src" "$dst"
 }
 
-function file_backup_strategy() 
+function form_backup_path() 
 {
 	local path
 	
@@ -191,17 +157,61 @@ function form_link_path()
 	echo "$dst"
 }
 
-function main() 
+#---------------------------------------------------------------------
+# Coordinating functions
+#---------------------------------------------------------------------
+
+function link_file() 
+{
+	local src dst 
+	# Visible to all functions in the stack
+	local overwrite	      # Per file action 
+	local backup	      # Per file action
+	local backup_path     # Per back path
+	
+	src="$1"
+	dst="$2"
+
+	# quasi-booleans ...
+	# true / false are just strings, but will be "evaluated" as commands in conditionals
+	overwrite=false 
+	backup=false 
+
+	msg_info "Linking source path ${src} to destination path ${path} ..."
+
+	# work out what todo when source points to an existing destination
+	if path_exists "$dst"; then
+		
+		destination_exists_strategy "$src" "$dst"
+
+		# quasi-booleans ...
+		# Note the variables are NOT surrounded by quotes
+		# Hence they will be evaluated as commands
+		# Note it is possible to form complex expressions
+		if $g_overwrite || $overwrite; then
+			msg_info "removing $dst ..."
+			DEBUG rm -rf "$dst"
+		elif $g_backup || $backup; then
+			backup_path="$(form_backup_path "$dst")"
+			msg_info "backing up $dst to $backup_path ..." 
+			DEBUG mv "$dst" "$backup_path"
+		else
+			msg_info "skipping $src"
+			return 0;
+		fi
+	fi
+
+	# link target to point at source
+	# -s	: create a symbolic link
+	# -f	: unlink the target if it exists
+	# -n	: if target is already a symlink, dont follow it
+	msg_info "linking $src to $dst ..." 
+	DEBUG ln -sfn "$src" "$dst" 
+}
+
+function link_files() 
 {
 	local src dst
-	# Visible to all functions in the stack
-	local overwrite_all
-	local backup_all
-	local skip_all
-	
-	overwrite_all=false 
-	backup_all=false 
-	skip_all=false
 
 	msg_info "Installing dotfiles ..."
 	# Find:
@@ -217,6 +227,26 @@ function main()
 		dst="$(form_link_path "$src")"
 		link_file "$src" "$dst"
 	done
+}
+
+#---------------------------------------------------------------------
+# Entry point
+#---------------------------------------------------------------------
+
+function main()
+{
+
+	# Visible to all functions in the stack
+	local g_overwrite_all
+	local g_backup_all
+	local g_skip_all
+	
+	# TODO - allow these to be overriden using command-line options
+	g_overwrite_all=false 
+	g_backup_all=false 
+	g_skip_all=false
+	
+	link_files
 }
 
 main 
