@@ -149,9 +149,15 @@ function form_link_path()
 	link_type="${src##*.}"
 
 	case "$link_type" in 
-	dotfile) dst="$HOME/.$(basename "${src%.dotfile}")";;
-	symlink) dst="$HOME/$(basename "${src%.symlink}")";;
-	*) echo "unknown symlink format ${link_type}"; exit 1;;
+	dotfile) 
+		dst="${HOME}/.$(basename "${src%.dotfile}")"
+		;;
+	symlink) 
+		dst="${HOME}/$(basename "${src%.symlink}")"
+		;;
+	*) 
+		echo "unknown symlink format ${link_type}"; exit 1
+		;;
 	esac 
 	
 	echo "$dst"
@@ -240,11 +246,19 @@ function main()
 	local g_overwrite_all
 	local g_backup_all
 	local g_skip_all
-	
-	# TODO - allow these to be overriden using command-line options
+
 	g_overwrite_all=false 
 	g_backup_all=false 
 	g_skip_all=false
+	
+	while getopts "f" OPTION
+	do
+		case $OPTION in 
+		v) 
+			g_overwrite_all=true
+			;;
+		esac
+	done
 	
 	link_files
 }
