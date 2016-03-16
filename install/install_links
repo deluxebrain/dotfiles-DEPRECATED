@@ -116,14 +116,14 @@ function destination_exists_strategy()
 		! $g_skip_all; then
 		# global strategy in place
 		# no more action required
-		return 0
+		true; return
 	fi
 
 	if dst_points_to_src "$src" "$dst"; then
 		# destination points to source
 		# skip current file
 		g_skip=true;
-		return 0
+		true; return
 	fi
 	
 	# user intervention required
@@ -156,7 +156,8 @@ function form_link_path()
 		dst="${HOME}/$(basename "${src%.symlink}")"
 		;;
 	*) 
-		echo "unknown symlink format ${link_type}"; exit 1
+		echo "unknown symlink format ${link_type}"
+		false; return;
 		;;
 	esac 
 	
@@ -201,9 +202,9 @@ function link_file()
 			backup_path="$(form_backup_path "$dst")"
 			msg_info "backing up $dst to $backup_path ..." 
 			DEBUG mv "$dst" "$backup_path"
-		else
+		elif $g_skip; then
 			msg_info "skipping $src"
-			return 0;
+			true; return
 		fi
 	fi
 
