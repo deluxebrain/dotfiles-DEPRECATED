@@ -5,10 +5,8 @@ set -o pipefail	  # fail entire pipeline
 set -o nounset	  # exit on any attempt to use uninitialized variables
 set -o errexit	  # exit the script if any statement returns non-true
 
-# Rather than dynamically created paths just cd into the script directory
-# This works better for linting as well
 _SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd "$_SCRIPT_PATH" || exit 1
+cd "$_SCRIPT_PATH"
 
 # Bring in the core library and enable global error handler
 # No futher need to check return codes after this point ...
@@ -178,13 +176,13 @@ function link_file()
 	
 	src="$1"
 	dst="$2"
-
+	
 	# quasi-booleans ...
 	# true / false are just strings, but will be "evaluated" as commands in conditionals
 	overwrite=false 
 	backup=false 
 
-	msg_info "Linking source path ${src} to destination path ${path} ..."
+	msg_info "Linking source path ${src} to destination path ${dst} ..."
 
 	# work out what todo when source points to an existing destination
 	if path_exists "$dst"; then
@@ -226,10 +224,10 @@ function link_files()
 	# -not -path  : Exclude .git directory and contents 
 	# -o for or, -not for not
 	# Complex logical statements can be built up using escaped brackets
-	msg_info "Looking for files and directories to link within ${_SCRIPT_PATH} ..."
-	find -H "$_SCRIPT_PATH" -maxdepth 3 \
+	msg_info "Looking for files and directories to link within $(pwd) ..."
+	find -H . -maxdepth 3 \
 		\( -name '*.symlink' -o -name '*.dotfile' \) \
-		-not -path '*.git*' | while -r read src
+		-not -path '*.git*' | while read -r src
 	do
 		dst="$(form_link_path "$src")"
 		link_file "$src" "$dst"
@@ -260,7 +258,9 @@ function main()
 			;;
 		esac
 	done
-	
+
+	# Change into the root git directory
+	cd "$(git rev-parse --show-toplevel)"
 	link_files
 }
 
