@@ -64,14 +64,15 @@ function prompt_for_file_overwrite_action()
 
 	# -e : Enable interpretation of bashslash escapes ( to get the newline )
 	msg_prompt \
-		"File already exists: $(basename "$src")-->${dst}; what do you want todo?\n"\
-		"[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
+		"File already exists: $(basename "$src")-->${dst}; what do you want todo? "$'\n'" \
+[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
 
 	# read one byte into action 
 	# -r	: raw mode to prevent \ getting messed up
+	# -s	: dont echo
 	# -n x	: read x bytes
-	read -r -n 1 action
-
+	read -r -s -n 1 action </dev/tty
+	
 	case "$action" in
 	  o)
 	    g_overwrite=true
@@ -109,9 +110,9 @@ function destination_exists_strategy()
 	dst="$2"
 
 	if /
-		! $g_overwrite_all && /
-		! $g_backup_all && /
-		! $g_skip_all; then
+		$g_overwrite_all || /
+		$g_backup_all || /
+		$g_skip_all; then
 		# global strategy in place
 		# no more action required
 		true; return
@@ -170,8 +171,9 @@ function link_file()
 {
 	local src dst 
 	# Visible to all functions in the stack
-	local overwrite	      # Per file action 
-	local backup	      # Per file action
+	local g_overwrite     # Per file action 
+	local g_backup	      # Per file action
+	local g_skip	      # Per file action
 	local backup_path     # Per back path
 	
 	src="$1"
@@ -179,28 +181,29 @@ function link_file()
 	
 	# quasi-booleans ...
 	# true / false are just strings, but will be "evaluated" as commands in conditionals
-	overwrite=false 
-	backup=false 
+	g_overwrite=false 
+	g_backup=false
+	g_skip=false
 
 	msg_info "Linking source path ${src} to destination path ${dst} ..."
 
 	# work out what todo when source points to an existing destination
 	if path_exists "$dst"; then
-		
+
 		destination_exists_strategy "$src" "$dst"
 
 		# quasi-booleans ...
 		# Note the variables are NOT surrounded by quotes
 		# Hence they will be evaluated as commands
 		# Note it is possible to form complex expressions
-		if $g_overwrite || $overwrite; then
+		if $g_overwrite_all || $g_overwrite; then
 			msg_info "removing $dst ..."
 			DEBUG rm -rf "$dst"
-		elif $g_backup || $backup; then
+		elif $g_backup_all || $g_backup; then
 			backup_path="$(form_backup_path "$dst")"
 			msg_info "backing up $dst to $backup_path ..." 
 			DEBUG mv "$dst" "$backup_path"
-		elif $g_skip; then
+		elif $g_skip_all || $g_skip; then  
 			msg_info "skipping $src"
 			true; return
 		fi
@@ -253,7 +256,7 @@ function main()
 	while getopts "f" OPTION
 	do
 		case $OPTION in 
-		v) 
+		v)
 			g_overwrite_all=true
 			;;
 		esac
