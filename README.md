@@ -27,19 +27,19 @@ gln -s --relative  <source> destination
 \completions	| Bash completions
 \config.dotfile	| Powerline configuration
 \cron		| Cron setup
-\ctags		|
-\environment	|
-\git		|
-\iTerm2		|
-\install	|
+\ctags		| ctag configuration
+\environment	| Environment configuration, such as bash dotfiles
+\git		| Git configuration, incuding hooks, etc
+\iTerm2		| iTerm setup - dynamic profiles and that kind of thing
+\install	| Installers
 \lib.symlink	|
-\linters	|
-\osx		|
-\packages	|
+\linters	| Linters and style checkers
+\osx		| 
+\packages	| Homebrew, cask, pip, NPM packages
 \shell		|
-\themes.dotfile	|
-\tmux		|
-\vim		|
+\themes.dotfile	| Solarized theme for iterm, tmux, etc
+\tmux		| Tmux configuration
+\vim		| Vim setup, including Pathogen plugins as submodules
 ```
 
 ## Prerequisites
