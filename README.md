@@ -32,11 +32,12 @@ gln -s --relative  <source> destination
 \git		| Git configuration, incuding hooks, etc
 \iTerm2		| iTerm setup - dynamic profiles and that kind of thing
 \install	| Installers
-\lib.symlink	|
+\lib		| Symlinked version of lib.symlink to allow the script library to be used as part of installation
+\lib.symlink	| Bash scripts intended to be sourced into scripts (i.e. a library of re-usable functions for more complex scripts)
 \linters	| Linters and style checkers
-\osx		| 
+\osx		| OSX setup
 \packages	| Homebrew, cask, pip, NPM packages
-\shell		|
+\shell		| Shell configuration (Bash dotfiles, etc)
 \themes.dotfile	| Solarized theme for iterm, tmux, etc
 \tmux		| Tmux configuration
 \vim		| Vim setup, including Pathogen plugins as submodules
