@@ -43,16 +43,13 @@ gln -s --relative  <source> destination
 \vim		| Vim setup, including Pathogen plugins as submodules
 ```
 
-## Prerequisites
+## Foundations
 
 ### Homebrew
 
-```Homebrew``` is a dependendy in the following ways:
-
-1. As the runner for the package and application ```Brewfile``` and ```Caskfile``` that can optionally be run as part of installation;
-2. One of the packages in the ```Brewfile``` (`bash-completion`) adds auto-completion to various Bash commands. This is configured in the symlinked ```.bash_profile```;
-
 #### Installing Homebrew
+
+Note - this is not done as part of the boostrapper ( via the packages installer )
 
 1. Run the installer:
 
