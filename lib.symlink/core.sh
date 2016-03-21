@@ -107,10 +107,13 @@ function USE_GLOBAL_ERROR_HANDLER()
 	mkfifo "$ERR_PIPE"
 
 	# redirect file descriptor 3 to stdout
-	exec 3>&1
+	exec 3>&2
 
 	# redirect all stdout to the temporary named pipe, filtering on stderr
-	exec > >(tee "$ERR_PIPE") 2>&1 1>&3
+	#exec > >(tee "$ERR_PIPE") 2>&1 1>&3
+
+
+	exec 2> >(tee "$ERR_PIPE" >&2) 2>&3
 	
 	# wire up exit and error handlers
 	trap '__exit_handler' EXIT
@@ -125,18 +128,18 @@ _DEBUG=false	  # Set to true to echo instead of executing a command
 _TRACE=false	  # Set to true to trace a command to stdout
 function DEBUG()
 {
-	local code
-
 	if $_DEBUG; then
 		echo "[DEBUG] $*"
 	elif $_TRACE; then
 		(
-			set -x
+			set -o xtrace
 			eval "$*"
 		) 
 	else
 		eval "$*"
 	fi
+	
+#	cat "$ERR_PIPE" &
 }
 
 #-------------------------------------------------------------
