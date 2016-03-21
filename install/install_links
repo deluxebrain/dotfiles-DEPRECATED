@@ -13,7 +13,8 @@ cd "$_SCRIPT_PATH"
 source ../lib/core.sh || exit 1
 USE_GLOBAL_ERROR_HANDLER
 
-_DEBUG=true
+_DEBUG=false
+_TRACE=true
 
 #---------------------------------------------------------------------
 # Utility functions
@@ -109,13 +110,10 @@ function destination_exists_strategy()
 	src="$1"
 	dst="$2"
 
-	if /
-		$g_overwrite_all || /
-		$g_backup_all || /
-		$g_skip_all; then
+	if $g_overwrite_all || $g_backup_all || $g_skip_all; then
 		# global strategy in place
 		# no more action required
-		true; return
+		return 0
 	fi
 
 	if dst_points_to_src "$src" "$dst"; then
