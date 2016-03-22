@@ -9,7 +9,7 @@ source ../lib/core.sh || exit 1
 USE_GLOBAL_ERROR_HANDLER
 
 _DEBUG=false
-_TRACE=true
+_TRACE=false
 
 #---------------------------------------------------------------------
 # Utility functions
@@ -247,11 +247,16 @@ function main()
 	g_backup_all=false 
 	g_skip_all=false
 	
-	while getopts "f" OPTION
-	do
-		case $OPTION in 
-		v)
+	# e.g. fA:x
+	# expect flag -f, argument -A, flag -x
+	# if very first character is : then  use silent error reporting
+	while getopts ":fv" opt; do
+		case $opt in 
+		f)
 			g_overwrite_all=true
+			;;
+		v)
+			_TRACE=true
 			;;
 		esac
 	done
@@ -261,6 +266,6 @@ function main()
 	link_files
 }
 
-main 
+main "$@" 
 exit $?
 
