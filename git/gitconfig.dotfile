@@ -1,3 +1,8 @@
+[include]
+
+  # Separate out all user specific config into config file outside of git
+  path = ~/.git_me
+
 [init]
   
   # Setup default hooks
@@ -85,4 +90,3 @@
 
   # Include summaries of merged commits in newly created merge commit messages
   log = true
-

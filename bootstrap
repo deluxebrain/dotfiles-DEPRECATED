@@ -29,6 +29,7 @@ function install_prequisites()
 function install_packages()
 {
 	msg_info "Installing packages ..."
+	# TODO - git config
 }
 
 function main() 
