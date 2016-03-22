@@ -70,6 +70,8 @@ export PEN_OK=${BGREEN}${ON_WHITE}
 
 function __exit_handler()
 {
+	echo "***"
+	cat <"$ERR_PIPE"
 	# Clean up the named pipe thats been used for storing stderr
 	rm "$ERR_PIPE"
 	exec 3>&-
@@ -81,6 +83,7 @@ function __error_handler()
 	local line_no
 	local code
 
+	# TODO - reading from a fifo pipe blocks ...
 	message="$(head -n1 < "$ERR_PIPE")" 
 	line_no="$1"
 	code="${2:-1}"
@@ -106,13 +109,13 @@ function USE_GLOBAL_ERROR_HANDLER()
 	ERR_PIPE="$(mktemp -u)"
 	mkfifo "$ERR_PIPE"
 
-	# redirect file descriptor 3 to stdout
+	# We want to redirect a copy of stderr to the fifo
+	# Things need to be done in this order ...
+	# 1. Redirect file descriptor 3 to stdout
 	exec 3>&2
 
-	# redirect all stdout to the temporary named pipe, filtering on stderr
-	#exec > >(tee "$ERR_PIPE") 2>&1 1>&3
-
-
+	# 2. Redirect stderr to the fifo pipe via tee
+	#    As part of the tee stderr needs redirecting somewhere... so bang it to &3
 	exec 2> >(tee "$ERR_PIPE" >&2) 2>&3
 	
 	# wire up exit and error handlers
@@ -138,8 +141,6 @@ function DEBUG()
 	else
 		eval "$*"
 	fi
-	
-#	cat "$ERR_PIPE" &
 }
 
 #-------------------------------------------------------------

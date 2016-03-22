@@ -220,8 +220,9 @@ function link_files()
 	# -not -path  : Exclude .git directory and contents 
 	# -o for or, -not for not
 	# Complex logical statements can be built up using escaped brackets
+	# Note use absolute path for find so that absolute paths are returned
 	msg_info "Looking for files and directories to link within $(pwd) ..."
-	find -H . -maxdepth 3 \
+	find -H "$(pwd)" -maxdepth 3 \
 		\( -name '*.symlink' -o -name '*.dotfile' \) \
 		-not -path '*.git*' | while read -r src
 	do
