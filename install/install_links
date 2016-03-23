@@ -32,6 +32,7 @@ function path_exists()
 
 function dst_points_to_src() 
 {
+	echo "$tmp"
 	local src
 	local dst
 	local target

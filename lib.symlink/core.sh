@@ -99,8 +99,9 @@ function USE_GLOBAL_ERROR_HANDLER()
 	# Exit the script on any attempt to use an uninitialized variable
 	set -o nounset
 
-	# Exit the script if any statement returns a non-true return code
-	set -o errexit
+	# Dont exit the script if any statement returns a non-true return code
+	# (We want out error handler to fire instead)
+	set +o errexit
 
 	# create a temporary named pipe
 	ERR_PIPE="$(mktemp -u)"
