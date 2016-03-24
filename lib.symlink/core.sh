@@ -81,7 +81,14 @@ function __error_handler()
 	local line_no
 	local code
 
-	message="$(head -n1 < "$ERR_PIPE")" 
+	# We need to read through all the lines to get to the last one
+	# (which will be the error)
+	# Note - this will block waiting for more input
+	# Hence the timeout option on the read
+	while read -r -t 1 message; do
+		echo "$message"
+	done <"$ERR_PIPE" 
+	
 	line_no="$1"
 	code="${2:-1}"
 	msg_error "Error on line ${line_no}: ${message}; exiting with status ${code}"
@@ -107,10 +114,9 @@ function USE_GLOBAL_ERROR_HANDLER()
 	ERR_PIPE="$(mktemp -u)"
 	mkfifo "$ERR_PIPE"
 
-	exec 3>&2
-
 	# Redirect stderr to the fifo pipe via tee
-	exec 2> >(tee "$ERR_PIPE" >&2) 2>&3 
+	# Note tee splits to a file and stdin hence we need to redirect stdin back to stderr
+	exec 2> >(tee "$ERR_PIPE" >&2)  
 	
 	# wire up exit and error handlers
 	trap '__exit_handler' EXIT
