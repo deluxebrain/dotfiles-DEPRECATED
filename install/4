@@ -1,6 +1,0 @@
-+ eval 'rm -rf /Users/deluxebrain/bin'
-++ rm -rf /Users/deluxebrain/bin
-+ eval 'ln -sfn /Users/deluxebrain/Repos/deluxebrain/dotfiles/bin.symlink /Users/deluxebrain/bin'
-++ ln -sfn /Users/deluxebrain/Repos/deluxebrain/dotfiles/bin.symlink /Users/deluxebrain/bin
-./install_links: line 212: tmp: unbound variable
-../lib/core.sh: line 84: /var/folders/08/5s83vlbn7sqd_1qxc54h6yv40000gn/T/tmp.tavIgoBX: Interrupted system call
