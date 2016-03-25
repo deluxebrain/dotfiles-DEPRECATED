@@ -126,6 +126,7 @@ function __start_tmux()
 # called when run from an non-interactive shell
 function __when_non_interactive() 
 {
+        # Nothing to see here ...
 }
 
 # called when run from an interactive shell
