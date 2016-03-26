@@ -3,7 +3,7 @@
 #- executing a script
 #- cron
 
-function __set_shelloptions()
+function set_shelloptions()
 {
         # Case-insensitive globbing (used in pathname expansion)
         shopt -s nocaseglob;
@@ -18,7 +18,7 @@ function __set_shelloptions()
 # start ssh-agent, using existing agent if available;
 # note this is not absolutely necessary if the window manager is set to
 # auto-start ssh-agent on first use (e.g. as with OS X ssh-agent launchd integration);
-function __start_ssh_agent()
+function start_ssh_agent()
 {
         # detect if ssh-agent is running
         # &> redirects stdout and stderr
@@ -51,7 +51,7 @@ function __start_ssh_agent()
         fi
 }
 
-function __start_completions()
+function start_completions()
 {
         # enable bash completion
         if [ -f $(brew --prefix)/etc/bash_completion ]; then
@@ -71,7 +71,7 @@ function __start_completions()
                 tr ' ' '\n')" scp sftp ssh;
 }
 
-function __start_powerline()
+function start_powerline()
 {
         powerline-daemon -q
         POWERLINE_BASH_CONTINUATION=1
@@ -79,7 +79,7 @@ function __start_powerline()
         . "$(piproot powerline-status)"/powerline/bindings/bash/powerline.sh
 }
 
-function __start_tmux()
+function start_tmux()
 {
 	# Return if tmux has already been fired up
 	[ -z "${TMUX}" ] || return; 
@@ -124,13 +124,14 @@ function __start_tmux()
 }
 
 # called when run from an non-interactive shell
-function __when_non_interactive() 
+function when_non_interactive() 
 {
         # Nothing to see here ...
+        :
 }
 
 # called when run from an interactive shell
-function __when_interactive()
+function when_interactive()
 {
 	set_shelloptions
 	start_ssh_agent
@@ -141,14 +142,14 @@ function __when_interactive()
 
 # `.bashrc` is pointed to by $BASH_ENV for non-interactive shells
 # Hence this file is split into interactive (e.g terminal) and non-interfactive (e.g. Cron) sections
-[[ $- == *i* ]] && __when_interactive || __when_non_interactive
+[[ $- == *i* ]] && when_interactive || when_non_interactive
 
 # prevent pollution of shell by deleting all local variables and functions
-unset -f __set_shell_options
-unset -f __start_ssh_agent
-unset -f __start_completions
-unset -f __start_powerline
-unset -f __start_tmux
-unset -f __when_non_interactive
-unset -f __when_interactive
+unset -f set_shell_options
+unset -f start_ssh_agent
+unset -f start_completions
+unset -f start_powerline
+unset -f start_tmux
+unset -f when_non_interactive
+unset -f when_interactive
 
