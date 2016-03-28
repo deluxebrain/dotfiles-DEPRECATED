@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Executed by non-login shells:
 #- new shell created using `bash`
 #- executing a script
@@ -46,7 +48,7 @@ function start_ssh_agent()
                         # kill ssh-agent on shell exit (EXIT)
                         # note $SSH_AGENT_PID is not set for system ssh-agent
                         # so this will only kill shell launched agents
-                        trap "kill $SSH_AGENT_PID" EXIT
+                        trap 'kill $SSH_AGENT_PID' EXIT
                 fi
         fi
 }
@@ -54,8 +56,8 @@ function start_ssh_agent()
 function start_completions()
 {
         # enable bash completion
-        if [ -f $(brew --prefix)/etc/bash_completion ]; then
-                . $(brew --prefix)/etc/bash_completion
+        if [ -f "$(brew --prefix)"/etc/bash_completion ]; then
+                source "$(brew --prefix)"/etc/bash_completion
         fi
 
         # Enable tab completion for `g` by marking it as an alias for `git`
@@ -76,7 +78,7 @@ function start_powerline()
         powerline-daemon -q
         POWERLINE_BASH_CONTINUATION=1
         POWERLINE_BASH_SELECT=1
-        . "$(piproot powerline-status)"/powerline/bindings/bash/powerline.sh
+        source "$(piproot powerline-status)"/powerline/bindings/bash/powerline.sh
 }
 
 function start_tmux()
@@ -142,7 +144,11 @@ function when_interactive()
 
 # `.bashrc` is pointed to by $BASH_ENV for non-interactive shells
 # Hence this file is split into interactive (e.g terminal) and non-interfactive (e.g. Cron) sections
-[[ $- == *i* ]] && when_interactive || when_non_interactive
+if [[ $- == *i* ]]; then
+        when_interactive
+else
+        when_non_interactive
+fi
 
 # prevent pollution of shell by deleting all local variables and functions
 unset -f set_shell_options

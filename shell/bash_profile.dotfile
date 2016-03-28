@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Interactive login shell configuration files:
 #- /etc/profile, then the first of:
 #- ~/.bash_profile
@@ -10,7 +12,7 @@
 # Note - new shells created using e.g. `bash` are interactive non-login sessions
 # and inherit the environment of the parent shell
 
-[[ -s ${HOME}/.bashrc ]] && source ${HOME}/.bashrc
+[[ -s "${HOME}"/.bashrc ]] && source "${HOME}"/.bashrc
 
 # The bash_profile should contain any configuration that you want to add to the
 # shell environment to be available to the current shell and all child processes
@@ -31,11 +33,13 @@ set_iterm_profile "${ITERM_PROFILE_NAME}"
 # If not in tmux sesison or if multiple panes then use builtin exit
 function exit()
 {
+	local panes 
+
 	if [ -z "${TMUX}" ]; then
 		builtin exit
 	else
-		local PANES=$(tmux list-panes | wc -l)
-		if (( ${PANES} > 1 )); then
+		panes=$(tmux list-panes | wc -l)
+		if (( panes > 1 )); then
 			builtin exit
 		else
 			# Close the current window and detach from the session
