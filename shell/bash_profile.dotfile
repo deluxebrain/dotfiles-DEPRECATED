@@ -12,7 +12,7 @@
 # Note - new shells created using e.g. `bash` are interactive non-login sessions
 # and inherit the environment of the parent shell
 
-[[ -s "${HOME}"/.bashrc ]] && source "${HOME}"/.bashrc
+[[ -s ~/.bashrc ]] && source ~/.bashrc
 
 # The bash_profile should contain any configuration that you want to add to the
 # shell environment to be available to the current shell and all child processes

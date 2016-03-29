@@ -83,6 +83,9 @@ function start_powerline()
 
 function start_tmux()
 {
+        local client_count client_id
+        local grouped_session 
+
 	# Return if tmux has already been fired up
 	[ -z "${TMUX}" ] || return; 
 
@@ -98,12 +101,12 @@ function start_tmux()
 	fi
 
 	# does he session already have clients attached ?
-	local client_count=$(tmux list-clients | wc -l)
+	client_count=$(tmux list-clients | wc -l)
 	if (( ${client_count} > 0 )); then
 
 		# form session name for grouped session
-		local client_id=1
-		local grouped_session="${global_session}_${client_id}"
+		client_id=1
+		grouped_session="${global_session}_${client_id}"
 		while tmux has-session -t "${grouped_session}" > /dev/null 2>&1
 		do
 			((client_id++)) # shorthand for increment
