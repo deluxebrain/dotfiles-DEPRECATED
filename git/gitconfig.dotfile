@@ -1,7 +1,7 @@
 [include]
 
   # Separate out all user specific config into config file outside of git
-  path = ~/.git_me
+  path = ~/.gitlocal
 
 [init]
   

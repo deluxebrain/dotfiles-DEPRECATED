@@ -8,24 +8,29 @@
 
 # Sourced for interactive login sessions
 # - New terminal windows (inc. new tabs and splits)
-
 # Note - new shells created using e.g. `bash` are interactive non-login sessions
 # and inherit the environment of the parent shell
 
-[[ -s ~/.bashrc ]] && source ~/.bashrc
+[[ -s "${HOME}"/.bashrc ]] && source "${HOME}"/.bashrc
 
 # The bash_profile should contain any configuration that you want to add to the
 # shell environment to be available to the current shell and all child processes
 # This includes:
 # - Environment variables ( those that are exported )
 # - Functions ( those that are exported )
+# NOTE that aliases are NOT exported and hence should not live here
 # The rest ( e.g. aliases ) should live in the .bashrc
 
 # PATH feels like it should be here and not in the exports file 
 export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
 
+# Bring in global (checked into git) and local (not-checked into git) exports
+[ -f "${HOME}"/.environment/path ] && source "${HOME}"/.environment/path
+[ -f "${HOME}"/.environment/export ] && source "${HOME}"/.environment/exports
+[ -f "${HOME}"/.environment/localrc ] && source "${HOME}"/.environment/localrc
+
 # Set item to use the generated dynamic profile
-set_iterm_profile "${ITERM_PROFILE_NAME}"
+[ -n "${ITERM_PROFILE_NAME}" ] && set_iterm_profile "${ITERM_PROFILE_NAME}"
 
 # Override the exit command so that it:
 # - kills the current tmux session
