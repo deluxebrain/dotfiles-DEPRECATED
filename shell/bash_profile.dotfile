@@ -11,8 +11,6 @@
 # Note - new shells created using e.g. `bash` are interactive non-login sessions
 # and inherit the environment of the parent shell
 
-[[ -s "${HOME}"/.bashrc ]] && source "${HOME}"/.bashrc
-
 # The bash_profile should contain any configuration that you want to add to the
 # shell environment to be available to the current shell and all child processes
 # This includes:
@@ -21,38 +19,27 @@
 # NOTE that aliases are NOT exported and hence should not live here
 # The rest ( e.g. aliases ) should live in the .bashrc
 
-# PATH feels like it should be here and not in the exports file 
-export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+#-------------------------------------------------------------------------------
 
 # Bring in global (checked into git) and local (not-checked into git) exports
+# shellcheck source=/dev/null
 [ -f "${HOME}"/.environment/path ] && source "${HOME}"/.environment/path
+# shellcheck source=/dev/null
 [ -f "${HOME}"/.environment/export ] && source "${HOME}"/.environment/exports
+# shellcheck source=/dev/null
 [ -f "${HOME}"/.environment/localrc ] && source "${HOME}"/.environment/localrc
+
+# Bring in helper functions
+find -H "${HOME}"/.environment/functions -maxdepth 1 \
+	-name '*.sh' | while read -r src
+do
+	echo "Importing ${src} ..."
+	# shellcheck source=/dev/null
+	source "${src}" || echo "... failed"
+done
 
 # Set item to use the generated dynamic profile
 [ -n "${ITERM_PROFILE_NAME}" ] && set_iterm_profile "${ITERM_PROFILE_NAME}"
 
-# Override the exit command so that it:
-# - kills the current tmux session
-# - closes the window ( works because the tmux session was created via exec )
-# If not in tmux sesison or if multiple panes then use builtin exit
-function exit()
-{
-	local panes 
-
-	if [ -z "${TMUX}" ]; then
-		builtin exit
-	else
-		panes=$(tmux list-panes | wc -l)
-		if (( panes > 1 )); then
-			builtin exit
-		else
-			# Close the current window and detach from the session
-			# NOTE this appears to be the only way to achieve this ...
-			# 1. As soon as you kill the window this function will stop running
-			# 2. If you just "detach" then session and iterm console are destroyed
-			#	but the window remains attached to the parent session
-			tmux kill-window \; detach
-		fi
-	fi
-}
+# shellcheck source=/dev/null
+[[ -s "${HOME}"/.bashrc ]] && source "${HOME}"/.bashrc

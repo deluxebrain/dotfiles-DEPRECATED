@@ -56,6 +56,7 @@ function start_ssh_agent()
 function start_completions()
 {
         # enable bash completion
+        # shellcheck source=/dev/null
         if [ -f "$(brew --prefix)"/etc/bash_completion ]; then
                 source "$(brew --prefix)"/etc/bash_completion
         fi
@@ -76,8 +77,10 @@ function start_completions()
 function start_powerline()
 {
         powerline-daemon -q
-        POWERLINE_BASH_CONTINUATION=1
-        POWERLINE_BASH_SELECT=1
+        export POWERLINE_BASH_CONTINUATION=1
+        export POWERLINE_BASH_SELECT=1
+        
+        # shellcheck source=/dev/null
         source "$(piproot powerline-status)"/powerline/bindings/bash/powerline.sh
 }
 
@@ -91,7 +94,7 @@ function start_tmux()
 
 	# Create session identifier for the primary session
 	# Default to username if no explicit sesison name provided
-	local global_session="${1:-$USER}"
+	local global_session="${USER}"
 
 	# does this session already exist?
 	# create it if not 
@@ -102,7 +105,7 @@ function start_tmux()
 
 	# does he session already have clients attached ?
 	client_count=$(tmux list-clients | wc -l)
-	if (( ${client_count} > 0 )); then
+	if (( client_count > 0 )); then
 
 		# form session name for grouped session
 		client_id=1
@@ -138,6 +141,10 @@ function when_non_interactive()
 # called when run from an interactive shell
 function when_interactive()
 {
+        # Bring in aliases
+        # shellcheck source=/dev/null
+        [ -f "${HOME}"/.environment/aliases ] && source "${HOME}"/.environment/aliases
+
 	set_shelloptions
 	start_ssh_agent
 	start_completions

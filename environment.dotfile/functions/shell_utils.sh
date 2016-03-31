@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # interactive login shells
 #+ /etc/profile
 #+ /etc/profile.d/
@@ -12,26 +14,26 @@
 
 # Simple test for interactive shell
 #$ is_interactive? && echo 'interactive shell'
-unset is_interactive?
-function is_interactive?()
+unset is_interactive
+function is_interactive()
 {
 	# $-	| current options set for the shell
 	[[ $- == *i* ]] 
 	return
 }
-export -f is_interactive? && readonly -f is_interactive?
+export -f is_interactive && readonly -f is_interactive
 
 # Simple test for login shell
 #$ is_login? && echo 'login shell'
-unset is_login?
-function is_login?()
+unset is_login
+function is_login()
 {
 	# shopt		| bash set options
 	# login_shell	| read-only shell descriptor set by then shell when is login shell
 	shopt -q login_shell
 	return
 }
-export -f is_login? && readonly -f is_login?
+export -f is_login && readonly -f is_login
 
 # Unify help and man
 # http://unix.stackexchange.com/a/18088/77581

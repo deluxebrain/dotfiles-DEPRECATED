@@ -1,8 +1,10 @@
+#!/bin/bash
+
 # Create a new directory and enter it
 unset mkd
 function mkd() 
 {
-    mkdir -p "$@" && cd "$_";
+    mkdir -p "$@" && cd "$_" || exit 1
 }
 export -f mkd && readonly -f mkd
 

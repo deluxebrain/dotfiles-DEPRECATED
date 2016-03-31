@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 'v' with no arguments opens the current directory in Vim
 # otherwise opens the given location
 unset v
@@ -14,13 +16,14 @@ export -f v && readonly -f v
 unset vup
 function vup()
 (
-	cd "$HOME/.vim"
 	local d
+
+	cd "${HOME}"/.vim || exit 1
 	for d in ./bundle/*
 	do
 	( 
 		echo "Updating $(basename "$d")"
-		cd "$d"
+		cd "$d" || exit 1
 		git submodule update --recursive 
 	)
 	done

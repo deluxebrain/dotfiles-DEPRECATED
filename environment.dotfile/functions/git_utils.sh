@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Change to the specified git repository
 # Source the .settings file if it exists
 # >>> If the locate index becomes corrupt try:
@@ -14,7 +16,7 @@ function ggo()
         # <<< is a "here string" which allow the output from a subshell
         #+ to be redirected to the main while loop.
         local found_repos=false
-        while read a_repos_path
+        while -r read a_repos_path
         do
                 local this_repos_path="${a_repos_path}"
                 local this_repos_name=$(basename "${this_repos_path}")
