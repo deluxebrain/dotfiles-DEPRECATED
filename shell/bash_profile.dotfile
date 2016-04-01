@@ -25,21 +25,20 @@
 # shellcheck source=/dev/null
 [ -f "${HOME}"/.environment/path ] && source "${HOME}"/.environment/path
 # shellcheck source=/dev/null
-[ -f "${HOME}"/.environment/export ] && source "${HOME}"/.environment/exports
+[ -f "${HOME}"/.environment/exports ] && source "${HOME}"/.environment/exports
 # shellcheck source=/dev/null
 [ -f "${HOME}"/.environment/localrc ] && source "${HOME}"/.environment/localrc
 
 # Bring in helper functions
-find -H "${HOME}"/.environment/functions -maxdepth 1 \
-	-name '*.sh' | while read -r src
-do
-	echo "Importing ${src} ..."
+for file in ~/.environment/functions/*.sh; do
 	# shellcheck source=/dev/null
-	source "${src}" || echo "... failed"
+	source $file
 done
+unset file
 
 # Set item to use the generated dynamic profile
 [ -n "${ITERM_PROFILE_NAME}" ] && set_iterm_profile "${ITERM_PROFILE_NAME}"
 
 # shellcheck source=/dev/null
 [[ -s "${HOME}"/.bashrc ]] && source "${HOME}"/.bashrc
+

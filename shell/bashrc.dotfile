@@ -149,7 +149,7 @@ function when_interactive()
 	start_ssh_agent
 	start_completions
 	start_powerline
-	start_tmux
+	#start_tmux
 }
 
 # `.bashrc` is pointed to by $BASH_ENV for non-interactive shells
