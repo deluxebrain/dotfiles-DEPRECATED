@@ -79,7 +79,7 @@ function start_powerline()
         powerline-daemon -q
         export POWERLINE_BASH_CONTINUATION=1
         export POWERLINE_BASH_SELECT=1
-        
+
         # shellcheck source=/dev/null
         source "$(piproot powerline-status)"/powerline/bindings/bash/powerline.sh
 }
@@ -149,7 +149,7 @@ function when_interactive()
 	start_ssh_agent
 	start_completions
 	start_powerline
-	#start_tmux
+	start_tmux
 }
 
 # `.bashrc` is pointed to by $BASH_ENV for non-interactive shells
@@ -159,6 +159,33 @@ if [[ $- == *i* ]]; then
 else
         when_non_interactive
 fi
+
+# Override the exit command so that it:
+# - kills the current tmux session
+# - closes the window ( works because the tmux session was created via exec )
+# If not in tmux sesison or if multiple panes then use builtin exit
+# unset exit
+# NOTE don't do this until tmux has started up
+function exit()
+{
+	local panes 
+
+	if [ -z "${TMUX}" ]; then
+		builtin exit
+	else
+		panes=$(tmux list-panes | wc -l)
+		if (( panes > 1 )); then
+			builtin exit
+		else
+			# Close the current window and detach from the session
+			# NOTE this appears to be the only way to achieve this ...
+			# 1. As soon as you kill the window this function will stop running
+			# 2. If you just "detach" then session and iterm console are destroyed
+			#	but the window remains attached to the parent session
+			tmux kill-window \; detach
+		fi
+	fi
+}
 
 # prevent pollution of shell by deleting all local variables and functions
 unset -f set_shell_options
