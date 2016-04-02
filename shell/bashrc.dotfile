@@ -99,7 +99,7 @@ function start_tmux()
 	# does this session already exist?
 	# create it if not 
 	# -d	: detached from current terminal  
-	if ! tmux has-session -t "${global_session}"; then
+	if ! tmux has-session -t "${global_session}" &>2 /dev/null ; then
 		tmux new-session -d -s "${global_session}"
 	fi
 
@@ -148,8 +148,8 @@ function when_interactive()
 	set_shelloptions
 	start_ssh_agent
 	start_completions
-	start_powerline
-	start_tmux
+        [ -z "${USE_POWERLINE+.}" ] || start_powerline
+	[ -z "${USE_TMUX+.}" ] || start_tmux
 }
 
 # `.bashrc` is pointed to by $BASH_ENV for non-interactive shells

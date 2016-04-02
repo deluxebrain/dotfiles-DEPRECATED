@@ -9,6 +9,8 @@ elif infocmp xterm-256color >/dev/null 2>&1; then
 fi;
 export ITERM_PROFILE_DIR="/Users/${USER}/Library/Application Support/iTerm2/DynamicProfiles/"
 export ITERM_PROFILE_NAME="${USER}"
+export USE_TMUX=
+export USE_POWERLINE= 
 
 #-------------------------------------------------------------
 # Package managers
