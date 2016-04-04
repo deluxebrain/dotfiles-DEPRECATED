@@ -24,3 +24,7 @@ macpass
 yubikey-neo-manager
 yubikey-personalization-gui
 gpgtools
+
+# .Net development
+visual-studio-code
+
