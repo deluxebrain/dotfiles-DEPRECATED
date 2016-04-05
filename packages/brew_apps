@@ -59,6 +59,7 @@ tccutil		# cli tool to modify os x's accessibility database
 yubikey-personalization 
 
 # Development
+packer          # machine image creation (used with Vagrant)
 ctags
 go
 rust

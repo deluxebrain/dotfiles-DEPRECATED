@@ -39,9 +39,10 @@ export LOCATE_PATH="/Users/${USER}/tmp/user_locatedb"
 export EDITOR='vim';
 
 #-------------------------------------------------------------
-# Language defaults
+# Language / time defaults
 #-------------------------------------------------------------
 
+export NTP_SERVER='time.euro.apple.com'
 export LANG='en_GB.UTF-8'
 export LC_ALL='en_GB.UTF-8'
 
