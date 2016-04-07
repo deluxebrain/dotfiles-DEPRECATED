@@ -66,7 +66,7 @@ function ghome()
 export -f ghome && readonly -f ghome
 
 unset gpath
-function gpath()
+gpath()
 {
         git rev-parse --show-toplevel
 }

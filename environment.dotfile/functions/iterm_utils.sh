@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # https://www.iterm2.com/documentation-escape-codes.html
 # iTerm2 supports several non-standard escape codes.
 # Note these wont work in tmux or screen without them being sent to the underlying terminal
@@ -9,7 +11,7 @@ function set_iterm_cursor()
 {
 	# Use [[ which allows:
 	#+ Expression short circuiting ( replace -o with || )
-	if [[ -z "$1" || $1 -lt 0 || $1 -gt 2 ]]; then
+	if [ -z "$1" || $1 -lt 0 || $1 -gt 2 ]; then
 		echo "Usage: set_item_cursor cursor"
 		echo "0: Block"
 		echo "1: Vertical bar"

@@ -40,5 +40,5 @@ unset file
 [ -n "${ITERM_PROFILE_NAME}" ] && set_iterm_profile "${ITERM_PROFILE_NAME}"
 
 # shellcheck source=/dev/null
-[[ -s "${HOME}"/.bashrc ]] && source "${HOME}"/.bashrc
+[ -s "${HOME}"/.bashrc ] && source "${HOME}"/.bashrc
 
