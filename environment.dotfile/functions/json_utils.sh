@@ -1,8 +1,10 @@
+#!/bin/bash
+#
 # pretty print json
 unset jpp
 function jpp()
 {
-	< $1 jq '.'
+	jq '.' < "$1"
 }
 export -f jpp && readonly -f jpp
 

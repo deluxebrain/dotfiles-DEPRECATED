@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 'o' with no arguments opens the current directory
 # otherwise opens the given location
 unset o

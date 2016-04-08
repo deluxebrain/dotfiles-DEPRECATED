@@ -11,7 +11,7 @@ function set_iterm_cursor()
 {
 	# Use [[ which allows:
 	#+ Expression short circuiting ( replace -o with || )
-	if [ -z "$1" || $1 -lt 0 || $1 -gt 2 ]; then
+	if [[ -z "$1" || $1 -lt 0 || $1 -gt 2 ]]; then
 		echo "Usage: set_item_cursor cursor"
 		echo "0: Block"
 		echo "1: Vertical bar"

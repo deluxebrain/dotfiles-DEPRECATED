@@ -1,3 +1,5 @@
+#!/bin/bash
+
 unset DEPENDS_ON
 function DEPENDS_ON()
 {
@@ -10,6 +12,7 @@ function DEPENDS_ON()
 	local FILE
 	for FILE in "${FILES[@]}"
 	do
+		# shellcheck source=/dev/null
 		source "${LIB_PATH}/${FILE}.sh" > /dev/null 2>&1  || 
 		{
 			echo "Failed to source ${FILE}.sh" 2>&1
