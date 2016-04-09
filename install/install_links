@@ -208,6 +208,8 @@ function link_file()
 	# -n	: if target is already a symlink, dont follow it
 	msg_info "linking $src to $dst ..." 
 	DEBUG ln -sfn "$src" "$dst"
+
+	echo $poop
 }
 
 function link_files() 

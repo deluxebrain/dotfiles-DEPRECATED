@@ -72,7 +72,6 @@ function __exit_handler()
 {
 	# Clean up the named pipe thats been used for storing stderr
 	rm "$ERR_PIPE"
-	exec 3>&-
 }
 
 function __error_handler()
@@ -81,14 +80,13 @@ function __error_handler()
 	local line_no
 	local code
 
-	echo "***"
-
 	# We need to read through all the lines to get to the last one
 	# (which will be the error)
 	# Note - this will block waiting for more input
 	# Hence the timeout option on the read
-	while read -r -s -t 1 message; do
-		:
+	local message_line
+	while read -r -s -t 1 message_line; do
+		message="$message_line"
 	done <"$ERR_PIPE" 
 	
 	line_no="$1"
@@ -118,8 +116,7 @@ function USE_GLOBAL_ERROR_HANDLER()
 
 	# Redirect stderr to the fifo pipe via tee
 	# Note tee splits to a file and stdin hence we need to redirect stdin back to stderr
-	#exec 3>&2
-	exec 2> >(tee "$ERR_PIPE" >&2) 2>&3 
+	exec 2> >(tee "$ERR_PIPE" >&2) 
 
 	# wire up exit and error handlers
 	trap '__exit_handler' EXIT
@@ -139,7 +136,7 @@ function DEBUG()
 	elif $_TRACE; then
 		(
 			set -o xtrace
-			eval "$*"
+			eval "$*" # 2> >(while read line; do echo "*** $line ***"; done)
 		) 
 	else
 		eval "$*"
