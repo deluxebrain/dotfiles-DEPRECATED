@@ -63,6 +63,7 @@ export PEN_ALERT=${BWHITE}${ON_RED}
 export PEN_HIGHLIGHT=${BYELLOW}${ON_BLUE}
 export PEN_INFO=${BBLUE}${ON_WHITE}
 export PEN_OK=${BGREEN}${ON_WHITE}
+export PEN_DEBUG=${BORANGE}${ON_WHITE}
 
 #-------------------------------------------------------------
 # Global error handlers
@@ -95,11 +96,22 @@ function __error_handler()
 	exit "${code}"
 }
 
+function __debug_handler()
+{
+	if $__DEBUG; then
+		msg_debug "$BASH_COMMAND"
+		__DEBUG=false
+	fi
+}
+
 function USE_GLOBAL_ERROR_HANDLER()
 {
 	# Inherit traps on ERR within shell functions, command substitutions and subshells
 	set -o errtrace
 
+	# Inherit traps on DEBUG and RETURN within shell functions, command substitutions and subshells
+	set -o functrace 
+	
 	# Cause any failure anywhere in a pipeline to cause the entire pipeline to fail
 	set -o pipefail
 
@@ -118,9 +130,10 @@ function USE_GLOBAL_ERROR_HANDLER()
 	# Note tee splits to a file and stdin hence we need to redirect stdin back to stderr
 	exec 2> >(tee "$ERR_PIPE" >&2) 
 
-	# wire up exit and error handlers
+	# wire up traps
 	trap '__exit_handler' EXIT
 	trap '__error_handler ${LINENO} $?' ERR
+	trap '__debug_handler' DEBUG
 }
 
 #-------------------------------------------------------------
@@ -128,18 +141,11 @@ function USE_GLOBAL_ERROR_HANDLER()
 #-------------------------------------------------------------
 
 _DEBUG=false	  # Set to true to echo instead of executing a command
-_TRACE=false	  # Set to true to trace a command to stdout
+__DEBUG=false	  # Internal variable related to debugging
 function DEBUG()
 {
 	if $_DEBUG; then
-		echo "[DEBUG] $*"
-	elif $_TRACE; then
-		(
-			set -o xtrace
-			eval "$*" # 2> >(while read line; do echo "*** $line ***"; done)
-		) 
-	else
-		eval "$*"
+		__DEBUG=true
 	fi
 }
 
@@ -150,6 +156,11 @@ function DEBUG()
 function msg_info() 
 {
         printf " [ %s..%s ] %s\n" "${PEN_INFO}" "${PEN_RESET}" "$1"
+}
+
+function msg_debug() 
+{
+        printf " [ %sDEBUG%s ] %s\n" "${PEN_DEBUG}" "${PEN_RESET}" "$1"
 }
 
 function msg_prompt() 

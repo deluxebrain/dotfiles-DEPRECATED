@@ -9,7 +9,6 @@ source ../lib/core.sh || exit 1
 USE_GLOBAL_ERROR_HANDLER
 
 _DEBUG=false
-_TRACE=false
 
 #---------------------------------------------------------------------
 # Utility functions
@@ -191,11 +190,11 @@ function link_file()
 		# Note it is possible to form complex expressions
 		if $g_overwrite_all || $g_overwrite; then
 			msg_info "removing $dst ..."
-			DEBUG rm -rf "$dst"
+			DEBUG; rm -rf "$dst"
 		elif $g_backup_all || $g_backup; then
 			backup_path="$(form_backup_path "$dst")"
 			msg_info "backing up $dst to $backup_path ..." 
-			DEBUG mv "$dst" "$backup_path"
+			DEBUG; mv "$dst" "$backup_path"
 		elif $g_skip_all || $g_skip; then  
 			msg_info "skipping $src"
 			true; return
@@ -207,9 +206,7 @@ function link_file()
 	# -f	: unlink the target if it exists
 	# -n	: if target is already a symlink, dont follow it
 	msg_info "linking $src to $dst ..." 
-	DEBUG ln -sfn "$src" "$dst"
-
-	echo $poop
+	DEBUG; ln -sfn "$src" "$dst"
 }
 
 function link_files() 
@@ -258,7 +255,7 @@ function main()
 			g_overwrite_all=true
 			;;
 		v)
-			_TRACE=true
+			_DEBUG=true
 			;;
 		esac
 	done
