@@ -148,6 +148,7 @@ function form_link_path()
 		;;
 	local)
 		dst="${HOME}/.$(basename "${src%.local}")"
+		;;
 		
 	*) 
 		echo "unknown symlink format ${link_type}"
