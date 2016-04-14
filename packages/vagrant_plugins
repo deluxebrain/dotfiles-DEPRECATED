@@ -1,0 +1,6 @@
+# List all installed plugins using:
+# $ vagrant plugin list
+
+# Needed when provisioning via PowerShell 5 (perhaps ...)
+winrm-fs
+
