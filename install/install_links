@@ -44,6 +44,16 @@ function dst_points_to_src()
 	[ "$target" == "$src" ]
 }
 
+function get_link_type()
+{
+	local src 
+	src="$1"
+
+	# ##  : Greedy front trim
+	# *:  : Match anything followed by last .
+	echo "${src##*.}"
+}
+
 #---------------------------------------------------------------------
 # UI functions
 #---------------------------------------------------------------------
@@ -135,9 +145,7 @@ function form_link_path()
 	local link_type
 
 	src="$1"
-	# ##  : Greedy front trim
-	# *:  : Match anything followed by last .
-	link_type="${src##*.}"
+	link_type="$(get_link_type "$src")"
 
 	case "$link_type" in 
 	dotfile) 
@@ -166,7 +174,6 @@ function form_link_path()
 function link_file() 
 {
 	local src dst 
-	# Visible to all functions in the stack
 	local g_overwrite     # Per file action 
 	local g_backup	      # Per file action
 	local g_skip	      # Per file action
