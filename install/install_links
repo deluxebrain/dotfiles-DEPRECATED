@@ -159,7 +159,7 @@ function form_link_path()
 		;;
 		
 	*) 
-		echo "unknown symlink format ${link_type}"
+		echo "unknown link format ${link_type}"
 		false; return;
 		;;
 	esac 
@@ -178,7 +178,8 @@ function link_file()
 	local g_backup	      # Per file action
 	local g_skip	      # Per file action
 	local backup_path     # Per back path
-	
+	local link_type
+
 	src="$1"
 	dst="$2"
 	
@@ -212,12 +213,24 @@ function link_file()
 		fi
 	fi
 
-	# link target to point at source
-	# -s	: create a symbolic link
-	# -f	: unlink the target if it exists
-	# -n	: if target is already a symlink, dont follow it
-	msg_info "linking $src to $dst ..." 
-	DEBUG; ln -sfn "$src" "$dst"
+	link_type="$(get_link_type "$dst")"
+	case "$link_type" in
+	dotfile | symlink)
+		# link target to point at source
+		# -s	: create a symbolic link
+		# -f	: unlink the target if it exists
+		# -n	: if target is already a symlink, dont follow it
+		msg_info "linking $src to $dst ..." 
+		DEBUG; ln -sfn "$src" "$dst"
+		;;
+	local)
+		:
+		;;
+	*)
+		echo "unknown link format $link_type"
+		false; return;
+		;;
+	esac
 }
 
 function link_files() 
