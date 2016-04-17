@@ -215,7 +215,7 @@ function link_file()
 
 	link_type="$(get_link_type "$dst")"
 	case "$link_type" in
-	dotfile | symlink)
+	dotfile|symlink)
 		# link target to point at source
 		# -s	: create a symbolic link
 		# -f	: unlink the target if it exists
@@ -224,6 +224,8 @@ function link_file()
 		DEBUG; ln -sfn "$src" "$dst"
 		;;
 	local)
+		# create a standalone dotfile that is outside of the repository
+		# ( usually used to store "secrets" that must not be checked it )
 		:
 		;;
 	*)
