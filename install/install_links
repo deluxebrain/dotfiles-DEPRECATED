@@ -226,6 +226,7 @@ function link_file()
 	local)
 		# create a standalone dotfile that is outside of the repository
 		# ( usually used to store "secrets" that must not be checked it )
+		msg_info "Creating local file $dst from $src ..."
 		:
 		;;
 	*)
