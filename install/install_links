@@ -157,7 +157,6 @@ function form_link_path()
 	local)
 		dst="${HOME}/.$(basename "${src%.local}")"
 		;;
-		
 	*) 
 		echo "unknown link format ${link_type}"
 		false; return;
@@ -227,7 +226,7 @@ function link_file()
 		# create a standalone dotfile that is outside of the repository
 		# ( usually used to store "secrets" that must not be checked it )
 		msg_info "Creating local file $dst from $src ..."
-		:
+		# TODO
 		;;
 	*)
 		echo "unknown link format $link_type"
