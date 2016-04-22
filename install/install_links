@@ -72,7 +72,6 @@ function prompt_for_file_overwrite_action()
 		"File already exists: $(basename "$src")-->${dst}; what do you want todo? "$'\n'" \
 [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
 
-	# read one byte into action 
 	# -r	: raw mode to prevent \ getting messed up
 	# -s	: dont echo
 	# -n x	: read x bytes
