@@ -12,6 +12,7 @@ google-chrome
 # Virtualisation and packaging
 vagrant
 virtualbox
+vmware-fusion
 
 # Graphics
 inkscape
