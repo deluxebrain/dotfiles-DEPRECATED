@@ -27,7 +27,7 @@
 # shellcheck source=/dev/null
 [ -f "${HOME}"/.environment/exports ] && source "${HOME}"/.environment/exports
 # shellcheck source=/dev/null
-[ -f "${HOME}"/.environment/localrc ] && source "${HOME}"/.environment/localrc
+[ -f "${HOME}"/secrets/localrc ] && source "${HOME}"/secrets/localrc
 
 # Bring in helper functions
 for file in ~/.environment/functions/*.sh; do
