@@ -190,7 +190,7 @@ function fail()
 }
 
 #-------------------------------------------------------------
-# Functional helpers
+# Core helpers when only sourcing core
 #-------------------------------------------------------------
 
 function _join()
@@ -203,5 +203,11 @@ function _join()
 
 	# Expand args to "$1c$2c..." where c is first character if IFS
 	echo "$*"
+}
+
+# Generate file from a template
+function _render_template()
+{
+	eval "echo \"$(cat $1)\""
 }
 

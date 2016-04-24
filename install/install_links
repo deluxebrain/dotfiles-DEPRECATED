@@ -223,8 +223,10 @@ function link_file()
 		;;
 	local)
 		# create a standalone dotfile that is outside of the repository
-		msg_info "Creating local file $dst from $src ..."
-		DEBUG; cp "$src" "$dst"
+		# this is done by a simple templating function as the packages
+		# ( of which we would use envsubst ) have not yet been installed
+		msg_info "Rendering local file $dst from $src ..."
+		DEBUG; _render_template "$src" > "$dst" 
 		;;
 	*)
 		echo "unknown link format $link_type"
