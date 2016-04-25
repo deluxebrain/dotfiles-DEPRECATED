@@ -226,7 +226,8 @@ function link_file()
 		# this is done by a simple templating function as the packages
 		# ( of which we would use envsubst ) have not yet been installed
 		msg_info "Rendering local file $dst from $src ..."
-		DEBUG; _render_template "$src" > "$dst" 
+		# DEBUG; _render_template "$src" > "$dst"
+		DEBUG; cp "$src" "$dst"
 		;;
 	*)
 		echo "unknown link format $link_type"
