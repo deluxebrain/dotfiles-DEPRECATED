@@ -208,6 +208,6 @@ function _join()
 # Generate file from a template
 function _render_template()
 {
-	eval "echo \"$(cat $1)\""
+	eval "echo \"$(cat "$1")\""
 }
 

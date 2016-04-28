@@ -1,0 +1,72 @@
+#!/bin/bash
+
+function exit_handler()
+{
+        # check the TEMPFILE variable has been set and that it points to an existing file
+        if [[ ! -z "${TEMPFILE+.}" && -f "${TEMPFILE}" ]]; then
+                rm -rf "${TEMPFILE}"
+        fi
+}
+
+function usage()
+{
+        echo "Usage: $0 template-file.json"
+        return 1
+}
+
+function main()
+{
+        local var_file
+        local template
+        local autounattend
+        local import_licenses
+
+        import_licenses=false
+
+        # non-positional arguments
+        while getopts "v:a:l" opt; do
+                case "$opt" in 
+                        v) 
+                                var_file="$OPTARG"
+                                ;;
+                        a)
+                                autounattend="$OPTARG"
+                                ;;
+                        l)
+                                import_licenses=true
+                                ;;
+                        \?)
+                                echo "Invalid argument: -$OPTARG" >&2
+                                return 1
+                                ;;
+                        :)
+                                echo "Option -$OPTARG requires an argument" >&2
+                                return 1
+                                ;;
+                esac
+        done
+
+        # check required positional argument was passed
+        if [ ! $(( $# - OPTIND )) -lt 1 ]; then
+                usage
+                return
+        fi
+
+        # use indirect expansion to get nth positional argument
+        template="${!OPTIND}"
+
+        if [ ! -f "$template" ]; then
+                echo "Unable to locate specified template ${template}" >& 2
+                return 1;
+        fi
+
+        if import_licenses && [ -f "$HOME/.secrets/licenses" ]; then
+                # shellcheck source=/dev/null
+                source "$HOME/.secrets/licenses"
+        fi
+}
+
+trap 'exit_handler' EXIT
+
+main "$@"
+exit $?
