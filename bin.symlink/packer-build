@@ -11,10 +11,7 @@ function exit_handler()
 function usage()
 {
         cat <<EOF
- Usage: $0 <template-file> 
--v <variable-file>
--a <unattend-file>
--l Import licenses 
+Usage: $0 <template-file> -v <variable-file> -a <unattend-file> -l Import licenses 
 EOF
 
         return 1
