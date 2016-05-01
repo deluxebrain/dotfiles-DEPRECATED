@@ -11,7 +11,7 @@ function exit_handler()
 function usage()
 {
         cat <<EOF
-Usage: $0 <template-file> -v <variable-file> -a <unattend-file> -l Import licenses 
+Usage: $0 <template-file> -v <variable-file> -a <unattend-file> 
 EOF
 
         return 1
@@ -22,21 +22,19 @@ function main()
         local var_file
         local template
         local autounattend
-        local import_licenses
-
-        import_licenses=false
 
         # non-positional arguments
-        while getopts "v:a:l" opt; do
+        while getopts "v:a:" opt; do
                 case "$opt" in 
                         v) 
                                 var_file="$OPTARG"
                                 ;;
                         a)
                                 autounattend="$OPTARG"
-                                ;;
-                        l)
-                                import_licenses=true
+                                if [ ! -f "$autounattend" ]; then
+                                        echo "Unable to locate specified autounattend ${autounattend}" >& 2
+                                        return 1
+                                fi 
                                 ;;
                         \?)
                                 echo "Invalid argument: -$OPTARG" >&2
@@ -63,9 +61,13 @@ function main()
                 return 1;
         fi
 
-        if import_licenses && [ -f "$HOME/.secrets/licenses" ]; then
-                # shellcheck source=/dev/null
-                source "$HOME/.secrets/licenses"
+        if [ -z "${autounattend+.}" ]; then
+
+                # source in any environment variables required for the transform
+                if  [ -f "$HOME/.secrets/licenses" ]; then
+                        # shellcheck source=/dev/null
+                        source "$HOME/.secrets/licenses"
+                fi
         fi
 }
 
