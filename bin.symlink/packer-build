@@ -2,9 +2,9 @@
 
 function exit_handler()
 {
-        # check the TEMPFILE variable has been set and that it points to an existing file
-        if [[ ! -z "${TEMPFILE+.}" && -f "${TEMPFILE}" ]]; then
-                rm -rf "${TEMPFILE}"
+        # check the TMPFILE variable has been set and that it points to an existing file
+        if [[ ! -z "${TMPFILE+.}" && -f "${TMPFILE}" ]]; then
+                rm -rf "${TMPFILE}"
         fi
 }
 
@@ -68,6 +68,16 @@ function main()
                         # shellcheck source=/dev/null
                         source "$HOME/.secrets/licenses"
                 fi
+
+                # create tempfile to store transformed autounattend
+                TMPFILE="$(mktmp -q -t "$(basename "$0")")"
+                if [ $? -ne 0 ]; then
+                        echo "$0: Can't create temp file, exiting ..." >&2
+                        return 1
+                fi
+
+                # transform autounattend
+                envsubst < "$autounattend" > "$TMPFILE"
         fi
 }
 
