@@ -70,7 +70,10 @@ function main()
                 fi
 
                 # create tempfile to store transformed autounattend
-                TMPFILE="$(mktmp -q -t "$(basename "$0")")"
+                # -q: suppress error messages ( we'll deal with them ourselves )
+                # -t: use supplied prefix and the TMPDIR (if set )
+                tmpfoo="$(basename "$0")"
+                TMPFILE="$(mktmp -q -t "$tmpfoo")"
                 if [ $? -ne 0 ]; then
                         echo "$0: Can't create temp file, exiting ..." >&2
                         return 1
@@ -78,6 +81,17 @@ function main()
 
                 # transform autounattend
                 envsubst < "$autounattend" > "$TMPFILE"
+
+                if [ -z "${var_file+.}" ]; then
+                        packer build /
+                                -var "autounattend=$TMPFILE" /
+                                -var-file="$var_file" /
+                                $template
+                else
+                        packer build /
+                                -var "autounattend=$TMPFILE" /
+                                $template 
+                fi
         fi
 }
 
