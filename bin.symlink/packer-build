@@ -92,6 +92,15 @@ function main()
                                 -var "autounattend=$TMPFILE" /
                                 $template 
                 fi
+        else
+
+                if [ -z "${var_file+.}" ]; then
+                        packer build /
+                                -var-file="var_file" /
+                                $template
+                else
+                        packer build $template
+                fi
         fi
 }
 
