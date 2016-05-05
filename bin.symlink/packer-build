@@ -17,6 +17,31 @@ EOF
         return 1
 }
 
+function packer_build()
+{
+        if [ -z "${autounattend+.}" ]; then
+                if [ -z "${var_file+.}" ]; then
+                        packer build /
+                                -var "autounattend=$TMPFILE" /
+                                -var-file="$var_file" /
+                                $template
+                else
+                        packer build /
+                                -var "autounattend=$TMPFILE" /
+                                $template 
+                fi
+        else
+
+                if [ -z "${var_file+.}" ]; then
+                        packer build /
+                                -var-file="var_file" /
+                                $template
+                else
+                        packer build "$template"
+                fi       
+        fi
+}
+
 function main()
 {
         local var_file
@@ -81,27 +106,9 @@ function main()
 
                 # transform autounattend
                 envsubst < "$autounattend" > "$TMPFILE"
-
-                if [ -z "${var_file+.}" ]; then
-                        packer build /
-                                -var "autounattend=$TMPFILE" /
-                                -var-file="$var_file" /
-                                $template
-                else
-                        packer build /
-                                -var "autounattend=$TMPFILE" /
-                                $template 
-                fi
-        else
-
-                if [ -z "${var_file+.}" ]; then
-                        packer build /
-                                -var-file="var_file" /
-                                $template
-                else
-                        packer build $template
-                fi
         fi
+
+        packer_build
 }
 
 trap 'exit_handler' EXIT
