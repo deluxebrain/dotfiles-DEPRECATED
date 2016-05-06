@@ -2,6 +2,9 @@
 iterm2-beta
 alfred
 
+# Environment
+flux            # f.lux
+
 # Powertools
 karabiner	# keyboard mapping
 seil		# capslock remapping
