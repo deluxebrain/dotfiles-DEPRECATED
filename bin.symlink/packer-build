@@ -17,6 +17,13 @@ EOF
         return 1
 }
 
+function build_command()
+{
+        local command_string
+
+        echo "$command_string"
+}
+
 function packer_build()
 {
         if [ -z "${autounattend+.}" ]; then
