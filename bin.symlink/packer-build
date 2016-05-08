@@ -21,6 +21,8 @@ function build_command()
 {
         local command_string
 
+        command_string="packer build"
+
         echo "$command_string"
 }
 
