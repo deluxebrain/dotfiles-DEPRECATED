@@ -4,3 +4,7 @@
 # Needed when provisioning via PowerShell 5 (perhaps ...)
 winrm-fs
 
+# Cache packages
+# Note - cached to: $HOME/.vagrant.d/cache/<box-name>/<optional-bucket-name>
+vagrant-cachier
+
