@@ -1,0 +1,35 @@
+#!/bin/bash
+
+DEPENDS_ON core
+
+USE_GLOBAL_ERROR_HANDLER
+
+create_cache()
+{
+	sudo mkdir -p /var/cache/vagrant
+	mkdir -p "${HOME}/.vagrant.d"
+
+	local cache_dir="${HOME}/.vagrant.d/cache"
+	if [[ -d "$cache_dir" && ! -L "$cache_dir" ]]; then
+		msg_prompt "Overwrite vagrant cache directory? [y/n]"
+		read -n 1 -r -s
+		if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
+			msg_error "Unable to overwrite vagrant cache directory"
+			return 1
+		fi
+
+		rm -rf "$cache_dir"
+	fi
+
+	msg_info "Linking /var/cache/vagrant to ${cache_dir}"
+	ln -sfn /var/cache/vagrant "$cache_dir"
+}
+
+main()
+{
+	create_cache 
+}
+
+main
+exit $?
+
