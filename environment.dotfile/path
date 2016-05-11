@@ -1,5 +1,6 @@
-# Add `~/bin` to the `$PATH`
-export PATH="$HOME/bin:$PATH";
-
 # Put /usr/local/{sbin,bin} first
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+
+# Add `~/bin` to the `$PATH`
+export PATH="$HOME/bin:$PATH"
+

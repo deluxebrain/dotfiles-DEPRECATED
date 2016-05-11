@@ -1,0 +1,14 @@
+#!/bin/bash
+
+eval set -- $(getopt -n foo -o +m:ih -- "$@")
+while test "$1" != "--"
+do case "$1" in
+      -h) : ;;
+      -i) : ;;
+      -m) shift ;;
+      *)  echo "***Illegal option: $1" >&2; exit 1 ;;
+esac
+shift  # delete "$1"
+done
+shift  # delete the "--"
+echo "remaining args are: $*"

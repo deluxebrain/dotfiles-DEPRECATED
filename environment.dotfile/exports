@@ -12,6 +12,10 @@ export ITERM_PROFILE_NAME="${USER}"
 export USE_TMUX=
 export USE_POWERLINE= 
 
+type brew >/dev/null 2>&1  && export MANPATH="$(brew --prefix)/opt/coreutils/libexec/gnuman:$MANPATH"
+
+export FOOBAR=$((++FOOBAR))
+
 #-------------------------------------------------------------
 # Package managers
 #-------------------------------------------------------------
