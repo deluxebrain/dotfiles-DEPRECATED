@@ -21,24 +21,86 @@
 
 #-------------------------------------------------------------------------------
 
-# Bring in global (checked into git) and local (not-checked into git) exports
-# shellcheck source=/dev/null
-[ -f "${HOME}"/.environment/path ] && source "${HOME}"/.environment/path
-# shellcheck source=/dev/null
-[ -f "${HOME}"/.environment/exports ] && source "${HOME}"/.environment/exports
-# shellcheck source=/dev/null
-[ -f "${HOME}"/secrets/localrc ] && source "${HOME}"/secrets/localrc
+export USE_POWERLINE=
+export USE_TMUX=
 
-# Bring in helper functions
-for file in ~/.environment/functions/*.sh; do
+function start_tmux()
+{
+        local client_count client_id
+        local grouped_session 
+
+	# Return if tmux has already been fired up
+	[ -z "${TMUX}" ] || return; 
+
+	# Create session identifier for the primary session
+	# Default to username if no explicit sesison name provided
+	local global_session="${USER}"
+
+	# does this session already exist?
+	# create it if not 
+	# -d	: detached from current terminal  
+	if ! tmux has-session -t "${global_session}" &>2 /dev/null ; then
+		tmux new-session -d -s "${global_session}"
+	fi
+
+	# does he session already have clients attached ?
+	client_count=$(tmux list-clients | wc -l)
+	if (( client_count > 0 )); then
+
+		# form session name for grouped session
+		client_id=1
+		grouped_session="${global_session}_${client_id}"
+		while tmux has-session -t "${grouped_session}" > /dev/null 2>&1
+		do
+			((client_id++)) # shorthand for increment
+			grouped_session="${global_session}_${client_id}"
+		done
+
+		# -2	: 256 color
+		# -t    : grouped with named session so they share same set of windows 
+		# exec	: replace the current shell (needed to make exit work)
+		# set to automatically destroy the grouped session when last window closed
+		exec tmux -2 new-session -d \
+			-t "${global_session}" \
+			-s "${grouped_session}" \
+			\; set-option destroy-unattached \
+			\; new-window \
+			\; attach-session -t "${grouped_session}"
+	else
+		exec tmux -2 attach-session -t "${global_session}"
+	fi 
+}
+
+function main()
+{
+	# Bring in global (checked into git) and local (not-checked into git) exports
 	# shellcheck source=/dev/null
-	source $file
-done
-unset file
+	[ -f "${HOME}"/.environment/path ] && source "${HOME}"/.environment/path
+	# shellcheck source=/dev/null
+	[ -f "${HOME}"/.environment/exports ] && source "${HOME}"/.environment/exports
+	# shellcheck source=/dev/null
+	[ -f "${HOME}"/secrets/localrc ] && source "${HOME}"/secrets/localrc
 
-# Set item to use the generated dynamic profile
-[ -n "${ITERM_PROFILE_NAME}" ] && set_iterm_profile "${ITERM_PROFILE_NAME}"
+	# Bring in helper functions
+	local file
+	for file in ~/.environment/functions/*.sh; do
+		# shellcheck source=/dev/null
+		source $file
+	done
 
-# shellcheck source=/dev/null
-[ -s "${HOME}"/.bashrc ] && source "${HOME}"/.bashrc
+	# Set item to use the generated dynamic profile
+	[ -n "${ITERM_PROFILE_NAME}" ] && set_iterm_profile "${ITERM_PROFILE_NAME}"
+
+	# shellcheck source=/dev/null
+	[ -f "${HOME}"/.bashrc ] && source "${HOME}"/.bashrc
+}
+
+if [[ (! -z "${USE_TMUX+.}") && (-z "${TMUX}") ]]; then
+	start_tmux
+else
+	main
+fi
+
+unset -f start_tmux
+unset -f main
 

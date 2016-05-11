@@ -74,10 +74,10 @@ setw -g monitor-activity on
 set -g visual-activity on
 
 # Install theme
-# This seems to actually REMOTE the theme!
+# This seems to actually REMOVE the theme!
 # Assuming its some interaction with powerline and just remove it for now ...
 # source "/Users/${USER}/.themes/solarized/tmux/tmuxcolors-dark.conf"
 
 # Fire up Powerline integration
-source "${PIP_PATH}"/powerline/bindings/tmux/powerline.conf
+source /usr/local/lib/python3.5/site-packages/powerline/bindings/tmux/powerline.conf
 

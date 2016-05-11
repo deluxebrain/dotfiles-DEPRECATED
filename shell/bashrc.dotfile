@@ -84,53 +84,6 @@ function start_powerline()
         source "$(piproot powerline-status)"/powerline/bindings/bash/powerline.sh
 }
 
-function start_tmux()
-{
-        local client_count client_id
-        local grouped_session 
-
-	# Return if tmux has already been fired up
-	[ -z "${TMUX}" ] || return; 
-
-	# Create session identifier for the primary session
-	# Default to username if no explicit sesison name provided
-	local global_session="${USER}"
-
-	# does this session already exist?
-	# create it if not 
-	# -d	: detached from current terminal  
-	if ! tmux has-session -t "${global_session}" &>2 /dev/null ; then
-		tmux new-session -d -s "${global_session}"
-	fi
-
-	# does he session already have clients attached ?
-	client_count=$(tmux list-clients | wc -l)
-	if (( client_count > 0 )); then
-
-		# form session name for grouped session
-		client_id=1
-		grouped_session="${global_session}_${client_id}"
-		while tmux has-session -t "${grouped_session}" > /dev/null 2>&1
-		do
-			((client_id++)) # shorthand for increment
-			grouped_session="${global_session}_${client_id}"
-		done
-
-		# -2	: 256 color
-		# -t    : grouped with named session so they share same set of windows 
-		# exec	: replace the current shell (needed to make exit work)
-		# set to automatically destroy the grouped session when last window closed
-		exec tmux -2 new-session -d \
-			-t "${global_session}" \
-			-s "${grouped_session}" \
-			\; set-option destroy-unattached \
-			\; new-window \
-			\; attach-session -t "${grouped_session}"
-	else
-		exec tmux -2 attach-session -t "${global_session}"
-	fi 
-}
-
 # called when run from an non-interactive shell
 function when_non_interactive() 
 {
@@ -149,7 +102,6 @@ function when_interactive()
 	start_ssh_agent
 	start_completions
         [ -z "${USE_POWERLINE+.}" ] || start_powerline
-	[ -z "${USE_TMUX+.}" ] || start_tmux
 }
 
 # `.bashrc` is pointed to by $BASH_ENV for non-interactive shells
@@ -192,7 +144,6 @@ unset -f set_shell_options
 unset -f start_ssh_agent
 unset -f start_completions
 unset -f start_powerline
-unset -f start_tmux
 unset -f when_non_interactive
 unset -f when_interactive
 
