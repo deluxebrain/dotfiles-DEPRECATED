@@ -10,6 +10,8 @@ fi;
 export ITERM_PROFILE_DIR="/Users/${USER}/Library/Application Support/iTerm2/DynamicProfiles/"
 export ITERM_PROFILE_NAME="${USER}"
 
+# Add Homebrew packages to man pages
+# ( https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/ )
 type brew >/dev/null 2>&1 && export MANPATH="$(brew --prefix)"/opt/coreutils/libexec/gnuman${MANPATH:+:$MANPATH}
 
 #-------------------------------------------------------------
