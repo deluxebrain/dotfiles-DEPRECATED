@@ -5,6 +5,8 @@
 coreutils
 
 # Others - prefixed with a "g" unless --with-default-names
+# Some of these will be keg only
+# ( https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/How-to-build-software-outside-Homebrew-with-Homebrew-keg-only-dependencies.md )
 binutils
 diffutils
 ed --with-default-names

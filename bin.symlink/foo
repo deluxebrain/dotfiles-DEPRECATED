@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export PATH="$(brew --prefix)"/opt/gnu-getopt/bin:$PATH
+
 eval set -- $(getopt -n foo -o +m:ih -- "$@")
 while test "$1" != "--"
 do case "$1" in

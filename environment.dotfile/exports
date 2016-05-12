@@ -10,7 +10,7 @@ fi;
 export ITERM_PROFILE_DIR="/Users/${USER}/Library/Application Support/iTerm2/DynamicProfiles/"
 export ITERM_PROFILE_NAME="${USER}"
 
-type brew >/dev/null 2>&1  && export MANPATH="$(brew --prefix)/opt/coreutils/libexec/gnuman:$MANPATH"
+type brew >/dev/null 2>&1 && export MANPATH="$(brew --prefix)"/opt/coreutils/libexec/gnuman${MANPATH:+:$MANPATH}
 
 #-------------------------------------------------------------
 # Package managers
