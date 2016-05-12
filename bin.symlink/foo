@@ -6,13 +6,14 @@ PATH="$(brew --prefix)"/opt/gnu-getopt/bin:$PATH
 # use -q as not interested in hearing about invalid options
 # -n foo -> report errors from foo
 # -o -> single character options
-# + -> POSIX compliant mode
-eval set -- "$(getopt -q -n foo -o +m:ih -- "$@")"
+# + -> POSIX compliant mode ( stop an first non option )
+eval set -- "$(getopt -q -n foo -o -m:ih -- "$@")"
 while test "$1" != "--"; do 
       case "$1" in
-            -h) : ;;
-            -i) : ;;
-            -m) shift ;; # shift off the argument
+            -h) echo "h" ;;
+            -i) echo "i" ;;
+            -m) echo "m"; shift ;; # shift off the argument
+            *) echo "$1";
       esac
       shift  # shift off the argument
 done
@@ -21,5 +22,5 @@ shift  # delete the "--"
 echo "remaining args are: $*"
 
 # which we can then use to proxy a command
-eval "ls $*"
+# eval "ls $*"
 
