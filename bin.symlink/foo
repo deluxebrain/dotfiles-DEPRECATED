@@ -1,16 +1,25 @@
 #!/bin/bash
 
-export PATH="$(brew --prefix)"/opt/gnu-getopt/bin:$PATH
+# bring in gnu getopt (a keg only brew package that isnt linked by default)
+PATH="$(brew --prefix)"/opt/gnu-getopt/bin:$PATH
 
-eval set -- $(getopt -n foo -o +m:ih -- "$@")
-while test "$1" != "--"
-do case "$1" in
-      -h) : ;;
-      -i) : ;;
-      -m) shift ;;
-      *)  echo "***Illegal option: $1" >&2; exit 1 ;;
-esac
-shift  # delete "$1"
+# use -q as not interested in hearing about invalid options
+# -n foo -> report errors from foo
+# -o -> single character options
+# + -> POSIX compliant mode
+eval set -- "$(getopt -q -n foo -o +m:ih -- "$@")"
+while test "$1" != "--"; do 
+      case "$1" in
+            -h) : ;;
+            -i) : ;;
+            -m) shift ;; # shift off the argument
+      esac
+      shift  # shift off the argument
 done
+
 shift  # delete the "--"
 echo "remaining args are: $*"
+
+# which we can then use to proxy a command
+eval "ls $*"
+
