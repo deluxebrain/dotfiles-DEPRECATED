@@ -3,8 +3,8 @@
 function exit_handler()
 {
         # check the TMPFILE variable has been set and that it points to an existing file
-        if [[ ! -z "${TMPFILE+.}" && -f "${TMPFILE}" ]]; then
-                rm -rf "${TMPFILE}"
+        if [[ -n "$TMPFILE" && -f "$TMPFILE" ]]; then
+                rm -rf "$TMPFILE"
         fi
 }
 
