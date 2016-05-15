@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# bring in gnu getopt ( a key only package )
+PATH="$(brew --prefix)"/opt/gnu-getop/bin:$PATH
+
 function exit_handler()
 {
         # check the TMPFILE variable has been set and that it points to an existing file
@@ -15,15 +18,6 @@ Usage: $0 <template-file> -v <variable-file> -a <unattend-file>
 EOF
 
         return 1
-}
-
-function build_command()
-{
-        local command_string
-
-        command_string="packer build"
-
-        echo "$command_string"
 }
 
 function packer_build()
@@ -50,6 +44,31 @@ function packer_build()
                 fi       
         fi
 }
+
+function main()
+{
+        local autounattend_file
+        local packer_args
+
+        # use gnu getopt to parse the command line arguments
+        # gnu getopt is POSIX compliant in that it stops parsing at --
+        # this allows us to use the pre -- arguments for this script
+        # and then forward the post -- arguments to packer build
+        eval set -- "$(getopt -q -n "$(basename "$0")" -- "$@")"
+        while true; do
+                case "$1" in
+                        --) break ;;
+                        *) autounattend_file="$1";;
+                esac
+                shift # shift off the argument we have just inspected
+        done
+        shift # shift off the "--"
+
+        # the arguments that are left (post the --) can then be passed to packer build
+        packer_args="$*"
+}
+
+
 
 function main()
 {

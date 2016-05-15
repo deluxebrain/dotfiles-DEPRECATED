@@ -10,9 +10,9 @@ PATH="$(brew --prefix)"/opt/gnu-getopt/bin:$PATH
 eval set -- "$(getopt -q -n foo -o -m:ih -- "$@")"
 while test "$1" != "--"; do 
       case "$1" in
-            -h) echo "h" ;;
-            -i) echo "i" ;;
-            -m) echo "m"; shift ;; # shift off the argument
+            -h) : ;;
+            -i) : ;;
+            -m) shift ;; # shift off the argument
             *) echo "$1";
       esac
       shift  # shift off the argument
