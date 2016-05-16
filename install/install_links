@@ -62,43 +62,32 @@ function prompt_for_file_overwrite_action()
 {
 	local src
 	local dst
+	local optionstring, options
+	local OFS
 	local action
 
 	src="$1"
 	dst="$2"
 
-	# -e : Enable interpretation of bashslash escapes ( to get the newline )
-	msg_prompt \
-		"File already exists: $(basename "$src")-->${dst}; what do you want todo? "$'\n'" \
-[s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
+	optionstring="Overwrite, Overwrite all, Backup, Backup all, Skip, Skip all"
+	OFS=$IFS; IFS=","
+	# form an array from our options string ( splitting on , )
+	options=( $optionstring )
+	IFS=$OFS
 
-	# -r	: raw mode to prevent \ getting messed up
-	# -s	: dont echo
-	# -n x	: read x bytes
-	read -r -s -n 1 action </dev/tty
-	
-	case "$action" in
-	  o)
-	    g_overwrite=true
-	    ;;
-	  O)
-	    g_overwrite_all=true
-	    ;;
-	  b) 
-	    g_backup=true
-	    ;;
-	  B)
-	    g_backup_all=true
-	    ;;
-	  s)
-	    g_skip=true
-	    ;;
-	  S)
-	    g_skip_all=true
-	    ;;
-	  *)
-	    ;;
-	esac	
+	# the prompt string for the select is taken from PS3
+	PS3="File already exists $(basename "$src"); what do you want todo?"
+	select action in "${options[@]}"; do
+		case "$action" in
+		o) g_overwrite=true ;;
+		O) g_overwrite_all=true ;;
+		b) g_backup=true ;;
+		B) g_backup_all=true ;;
+		s) g_skip=true ;;
+		S) g_skip_all=true ;;
+		*) ;;
+		esac
+	done
 }
 
 #---------------------------------------------------------------------
