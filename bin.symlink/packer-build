@@ -20,31 +20,6 @@ EOF
         return 1
 }
 
-function packer_build()
-{
-        if [ -z "${autounattend+.}" ]; then
-                if [ -z "${var_file+.}" ]; then
-                        packer build /
-                                -var "autounattend=$TMPFILE" /
-                                -var-file="$var_file" /
-                                $template
-                else
-                        packer build /
-                                -var "autounattend=$TMPFILE" /
-                                $template 
-                fi
-        else
-
-                if [ -z "${var_file+.}" ]; then
-                        packer build /
-                                -var-file="var_file" /
-                                $template
-                else
-                        packer build "$template"
-                fi       
-        fi
-}
-
 function main()
 {
         local autounattend_file
@@ -66,6 +41,9 @@ function main()
 
         # the arguments that are left (post the --) can then be passed to packer build
         packer_args="$*"
+
+        echo "$autounattend_file"
+        echo "$packer_args"
 }
 
 
