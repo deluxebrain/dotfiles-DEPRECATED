@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bring in gnu getopt ( a key only package )
+# bring in gnu getopt ( a key-only package )
 PATH="$(brew --prefix)"/opt/gnu-getop/bin:$PATH
 
 function exit_handler()
@@ -14,7 +14,7 @@ function exit_handler()
 function usage()
 {
         cat <<EOF
-Usage: $0 <template-file> -v <variable-file> -a <unattend-file> 
+Usage: $0 <autounattend-file> -- {usual packer build options and arguments}
 EOF
 
         return 1
