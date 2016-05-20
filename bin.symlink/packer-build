@@ -14,7 +14,7 @@ function exit_handler()
 function usage()
 {
         cat <<EOF
-Usage: $0 <autounattend-file> -- {usual packer build options and arguments}
+Usage: $0 <autounattend-file> -- {packer build options and arguments}
 EOF
 
         return 1
@@ -22,14 +22,22 @@ EOF
 
 function main()
 {
+        local parsed_options
         local autounattend_file
         local packer_args
+        
 
         # use gnu getopt to parse the command line arguments
         # gnu getopt is POSIX compliant in that it stops parsing at --
         # this allows us to use the pre -- arguments for this script
         # and then forward the post -- arguments to packer build
-        eval set -- "$(getopt -q -n "$(basename "$0")" -- "$@")"
+        parsed_options= "$(getopt -q -n "$(basename "$0")" -o -- "$@")"
+
+        [ $? -ne 0 ] && return 1;
+
+        # wang the parsed options back into script arguments
+        eval set -- "$parsed_options"
+
         while true; do
                 case "$1" in
                         --) break ;;
@@ -42,73 +50,49 @@ function main()
         # the arguments that are left (post the --) can then be passed to packer build
         packer_args="$*"
 
-        echo "$autounattend_file"
-        echo "$packer_args"
-}
-
-
-
-function main()
-{
-        local var_file
-        local template
-        local autounattend
-
-        # non-positional arguments
-        while getopts "v:a:" opt; do
-                case "$opt" in 
-                        v) 
-                                var_file="$OPTARG"
-                                ;;
-                        a)
-                                autounattend="$OPTARG"
-                                if [ ! -f "$autounattend" ]; then
-                                        echo "Unable to locate specified autounattend ${autounattend}" >& 2
-                                        return 1
-                                fi 
-                                ;;
-                        \?)
-                                echo "Invalid argument: -$OPTARG" >&2
-                                return 1
-                                ;;
-                        :)
-                                echo "Option -$OPTARG requires an argument" >&2
-                                return 1
-                                ;;
-                esac
-        done
-
-        # check required positional argument was passed
-        if [ ! $(( $# - OPTIND )) -lt 1 ]; then
+        if [ -z "$autounattend_file" ]; then
                 usage
                 return
         fi
 
-        # use indirect expansion to get nth positional argument
-        template="${!OPTIND}"
-
-        if [ ! -f "$template" ]; then
-                echo "Unable to locate specified template ${template}" >& 2
-                return 1;
+        if [ ! -f "$autounattend_file" ]; then
+                echo "Unable to locate specified autounattend file $autounattend_file" >& 2
+                return 1
         fi
 
-        if [ -z "${autounattend+.}" ]; then
+        # source in any envionment variables required for the transform 
+        if  [ -f "$HOME/.secrets/licenses" ]; then
+                # shellcheck source=/dev/null
+                source "$HOME/.secrets/licenses"
+        fi
 
-                # source in any environment variables required for the transform
-                if  [ -f "$HOME/.secrets/licenses" ]; then
-                        # shellcheck source=/dev/null
-                        source "$HOME/.secrets/licenses"
-                fi
 
-                # create tempfile to store transformed autounattend
-                # -q: suppress error messages ( we'll deal with them ourselves )
-                # -t: use supplied prefix and the TMPDIR (if set )
-                tmpfoo="$(basename "$0")"
-                TMPFILE="$(mktmp -q -t "$tmpfoo")"
-                if [ $? -ne 0 ]; then
-                        echo "$0: Can't create temp file, exiting ..." >&2
-                        return 1
-                fi
+
+
+}
+
+function create_tmpfile()
+{
+        local tmpfoo
+        local tmpfile
+
+        # generate temp file prefix from script name
+        tmpfoo="$(basename "$0")"
+
+        # -q: suppress error messages ( we'll deal with them ourselves )
+        # -t: use supplied prefix and the TMPDIR ( if set )
+        tmpfile="$(mktmp -q -t "$tmpfoo")"
+
+        if [ $? -ne 0 ]; then
+                echo "Unable to create temp file" >&2
+                return 1
+        fi
+
+        echo "$tempfile"
+}
+
+
+
 
                 # transform autounattend
                 envsubst < "$autounattend" > "$TMPFILE"
