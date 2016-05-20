@@ -22,6 +22,12 @@
   # Re-index ctags
   ctags = !".git/hooks/ctags"
 
+  # repository size
+  size = count-objects -vH
+
+  # HEAD
+  head = rev-parse HEAD
+
 [apply]
 
   # Detect whitespace errors when applying a patch
