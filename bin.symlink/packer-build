@@ -3,6 +3,9 @@
 # bring in gnu getopt ( a key-only package )
 PATH="$(brew --prefix)"/opt/gnu-getop/bin:$PATH
 
+# global to store path to temp autounattend file
+TMPFILE=
+
 function exit_handler()
 {
         # check the TMPFILE variable has been set and that it points to an existing file
@@ -18,57 +21,6 @@ Usage: $0 <autounattend-file> -- {packer build options and arguments}
 EOF
 
         return 1
-}
-
-function main()
-{
-        local parsed_options
-        local autounattend_file
-        local packer_args
-        
-
-        # use gnu getopt to parse the command line arguments
-        # gnu getopt is POSIX compliant in that it stops parsing at --
-        # this allows us to use the pre -- arguments for this script
-        # and then forward the post -- arguments to packer build
-        parsed_options= "$(getopt -q -n "$(basename "$0")" -o -- "$@")"
-
-        [ $? -ne 0 ] && return 1;
-
-        # wang the parsed options back into script arguments
-        eval set -- "$parsed_options"
-
-        while true; do
-                case "$1" in
-                        --) break ;;
-                        *) autounattend_file="$1";;
-                esac
-                shift # shift off the argument we have just inspected
-        done
-        shift # shift off the "--"
-
-        # the arguments that are left (post the --) can then be passed to packer build
-        packer_args="$*"
-
-        if [ -z "$autounattend_file" ]; then
-                usage
-                return
-        fi
-
-        if [ ! -f "$autounattend_file" ]; then
-                echo "Unable to locate specified autounattend file $autounattend_file" >& 2
-                return 1
-        fi
-
-        # source in any envionment variables required for the transform 
-        if  [ -f "$HOME/.secrets/licenses" ]; then
-                # shellcheck source=/dev/null
-                source "$HOME/.secrets/licenses"
-        fi
-
-
-
-
 }
 
 function create_tmpfile()
@@ -88,19 +40,67 @@ function create_tmpfile()
                 return 1
         fi
 
-        echo "$tempfile"
+        echo "$tmpfile"
 }
 
+function main()
+{
+        local parsed_options
+        local autounattend_file
+        local packer_args
+        
 
+        # use gnu getopt to parse the command line arguments
+        # gnu getopt is POSIX compliant in that it stops parsing at --
+        # this allows us to use the pre -- arguments for this script
+        # and then forward the post -- arguments to packer build
+        parsed_options="$(getopt -q -n "$(basename "$0")" -o -- "$@")"
+        [ $? -ne 0 ] && return 1;
 
+        # wang the parsed options back into script arguments
+        eval set -- "$parsed_options"
 
-                # transform autounattend
-                envsubst < "$autounattend" > "$TMPFILE"
+        while true; do
+                case "$1" in
+                        --) break ;;
+                        *) autounattend_file="$1";;
+                esac
+                shift # shift off the argument we have just inspected
+        done
+        shift # shift off the "--"
+
+        # the arguments that are left (post the --) can then be passed to packer build
+        packer_args="$*"
+
+        # guards
+        if [ -z "$autounattend_file" ]; then
+                usage
+                return
         fi
 
-        packer_build
+        if [ ! -f "$autounattend_file" ]; then
+                echo "Unable to locate specified autounattend file $autounattend_file" >& 2
+                return 1
+        fi
+
+        # source in any envionment variables required for the transform 
+        if  [ -f "$HOME/.secrets/licenses" ]; then
+                # shellcheck source=/dev/null
+                source "$HOME/.secrets/licenses"
+        fi
+
+        # create a temp file to hold the transformed autounattend
+        TMPFILE="$(create_tmpfile)"
+
+        # transform the autounattend file
+        envsubt < "$autounattend_file" > "$TMPFILE"
+        if [ $? -ne 0 ]; then
+                echo "Unable to transform autounattend file ${autounattend_file} to temporary file ${TMPFILE}" >& 2
+                return 
+        fi
 }
 
+# wire up the traps
 trap 'exit_handler' EXIT
 
 main "$@"
