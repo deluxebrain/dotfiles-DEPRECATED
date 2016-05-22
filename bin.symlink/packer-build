@@ -43,6 +43,36 @@ function create_tmpfile()
         echo "$tmpfile"
 }
 
+function transform_autounattend()
+{
+        local raw_autounattend
+        local transformed_autounattend
+
+        raw_autounattend="$1"
+        if [ ! -f "$raw_autounattend" ]; then
+                echo "Unable to locate specified autounattend file $raw_autounattend" >& 2
+                return 1
+        fi
+
+        # source in any envionment variables required for the transform 
+        if  [ -f "$HOME/.secrets/licenses" ]; then
+                # shellcheck source=/dev/null
+                source "$HOME/.secrets/licenses"
+        fi
+
+        # create a temp file to hold the transformed autounattend
+        transformed_autounattend="$(create_tmpfile)"
+
+        # transform the autounattend file
+        envsubt < "$raw_autounattend" > "$transformed_autounattend"
+        if [ $? -ne 0 ]; then
+                echo "Unable to transform autounattend file ${raw_autounattend} to temporary file ${transformed_autounattend}" >& 2
+                return 
+        fi
+
+        echo "$transformed_autounattend"
+}
+
 function main()
 {
         local parsed_options
@@ -72,32 +102,7 @@ function main()
         # the arguments that are left (post the --) can then be passed to packer build
         packer_args="$*"
 
-        # guards
-        if [ -z "$autounattend_file" ]; then
-                usage
-                return
-        fi
-
-        if [ ! -f "$autounattend_file" ]; then
-                echo "Unable to locate specified autounattend file $autounattend_file" >& 2
-                return 1
-        fi
-
-        # source in any envionment variables required for the transform 
-        if  [ -f "$HOME/.secrets/licenses" ]; then
-                # shellcheck source=/dev/null
-                source "$HOME/.secrets/licenses"
-        fi
-
-        # create a temp file to hold the transformed autounattend
-        TMPFILE="$(create_tmpfile)"
-
-        # transform the autounattend file
-        envsubt < "$autounattend_file" > "$TMPFILE"
-        if [ $? -ne 0 ]; then
-                echo "Unable to transform autounattend file ${autounattend_file} to temporary file ${TMPFILE}" >& 2
-                return 
-        fi
+        TMPFILE="$(transform_autounattend "$autounattend_file")"
 }
 
 # wire up the traps
