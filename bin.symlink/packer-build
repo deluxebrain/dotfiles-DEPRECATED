@@ -49,24 +49,25 @@ function transform_autounattend()
         local transformed_autounattend
 
         raw_autounattend="$1"
-        if [ ! -f "$raw_autounattend" ]; then
-                echo "Unable to locate specified autounattend file $raw_autounattend" >& 2
+        if [ -z "$raw_autounattend" ] || [ ! -f "$raw_autounattend" ]; then
+                echo "Unable to locate specified autounattend file ${raw_autounattend:-EMPTY}" >&2
                 return 1
         fi
 
         # source in any envionment variables required for the transform 
+        # TODO this will need expanding to deal with different transforms
         if  [ -f "$HOME/.secrets/licenses" ]; then
                 # shellcheck source=/dev/null
                 source "$HOME/.secrets/licenses"
         fi
 
         # create a temp file to hold the transformed autounattend
-        transformed_autounattend="$(create_tmpfile)"
+        transformed_autounattend="$(create_tmpfile)" || return
 
         # transform the autounattend file
         envsubt < "$raw_autounattend" > "$transformed_autounattend"
         if [ $? -ne 0 ]; then
-                echo "Unable to transform autounattend file ${raw_autounattend} to temporary file ${transformed_autounattend}" >& 2
+                echo "Unable to transform autounattend file ${raw_autounattend} to temporary file ${transformed_autounattend}" >&2
                 return 
         fi
 
