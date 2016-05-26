@@ -6,6 +6,9 @@ PATH="$(brew --prefix)"/opt/gnu-getop/bin:$PATH
 # global to store path to temp autounattend file
 TMPFILE=
 
+# debug mode
+DRY_RUN=false
+
 function exit_handler()
 {
         # check the TMPFILE variable has been set and that it points to an existing file
@@ -85,7 +88,7 @@ function main()
         # gnu getopt is POSIX compliant in that it stops parsing at --
         # this allows us to use the pre -- arguments for this script
         # and then forward the post -- arguments to packer build
-        parsed_options="$(getopt -q -n "$(basename "$0")" -o -- "$@")"
+        parsed_options="$(getopt -q -n -o -d "$(basename "$0")" -o -- "$@")"
         [ $? -ne 0 ] && return 1;
 
         # wang the parsed options back into script arguments
@@ -93,6 +96,7 @@ function main()
 
         while true; do
                 case "$1" in
+                        d) DRY_RUN=true;;
                         --) break ;;
                         *) autounattend_file="$1";;
                 esac
