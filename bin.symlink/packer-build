@@ -88,7 +88,7 @@ function main()
         # gnu getopt is POSIX compliant in that it stops parsing at --
         # this allows us to use the pre -- arguments for this script
         # and then forward the post -- arguments to packer build
-        parsed_options="$(getopt -q -n -o -d "$(basename "$0")" -o -- "$@")"
+        parsed_options="$(getopt -q -n "$(basename "$0")" -o --long dry-run -- "$@")"
         [ $? -ne 0 ] && return 1;
 
         # wang the parsed options back into script arguments
@@ -96,7 +96,7 @@ function main()
 
         while true; do
                 case "$1" in
-                        d) DRY_RUN=true;;
+                        dry-run) DRY_RUN=true;;
                         --) break ;;
                         *) autounattend_file="$1";;
                 esac
