@@ -3,11 +3,11 @@
 # bring in gnu getopt ( a key-only package )
 PATH="$(brew --prefix)"/opt/gnu-getop/bin:$PATH
 
+# dry run ( debug ) mode
+DRY_RUN=false
+
 # global to store path to temp autounattend file
 TMPFILE=
-
-# debug mode
-DRY_RUN=false
 
 function exit_handler()
 {
@@ -86,8 +86,13 @@ function main()
 
         # use gnu getopt to parse the command line arguments
         # gnu getopt is POSIX compliant in that it stops parsing at --
-        # this allows us to use the pre -- arguments for this script
-        # and then forward the post -- arguments to packer build
+        # - this allows us to use the pre -- arguments for this script
+        # - and then forward the post -- arguments to packer build
+        # -q        : quiet mode - we will handle any errors ourselves
+        # -n foo    : report error as being from foo
+        # -o        : specify single character options
+        # --long    : specify multi-character options
+        # -/+       : POSIX/non-POSIX mode ( yes/no stop on first non-option)
         parsed_options="$(getopt -q -n "$(basename "$0")" -o --long dry-run -- "$@")"
         [ $? -ne 0 ] && return 1;
 
