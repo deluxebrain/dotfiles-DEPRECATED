@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # bring in gnu getopt ( a key-only package )
-PATH="$(brew --prefix)"/opt/gnu-getop/bin:$PATH
+PATH="$(brew --prefix)"/opt/gnu-getopt/bin:$PATH
 
 # dry run ( debug ) mode
 DRY_RUN=false
@@ -86,14 +86,15 @@ function main()
 
         # use gnu getopt to parse the command line arguments
         # gnu getopt is POSIX compliant in that it stops parsing at --
+        # Note we need to specify -o - (zero options / non-posix) to pickup the positional argument
         # - this allows us to use the pre -- arguments for this script
         # - and then forward the post -- arguments to packer build
-        # -q        : quiet mode - we will handle any errors ourselves
-        # -n foo    : report error as being from foo
-        # -o        : specify single character options
-        # --long    : specify multi-character options
-        # -/+       : POSIX/non-POSIX mode ( yes/no stop on first non-option)
-        parsed_options="$(getopt -q -n "$(basename "$0")" -o --long dry-run -- "$@")"
+        # -q            : quiet mode - we will handle any errors ourselves
+        # -n foo        : report error as being from foo
+        # -o            : specify single character options
+        # --long / -l   : specify multi-character options
+        # -/+           : POSIX/non-POSIX mode ( yes/no stop on first non-option)
+        parsed_options="$(getopt -q -n "$(basename "$0")" -o - --long dry-run -- "$@")"
         [ $? -ne 0 ] && return 1;
 
         # wang the parsed options back into script arguments
@@ -101,7 +102,7 @@ function main()
 
         while true; do
                 case "$1" in
-                        dry-run) DRY_RUN=true;;
+                        --dry-run) DRY_RUN=true;;
                         --) break ;;
                         *) autounattend_file="$1";;
                 esac

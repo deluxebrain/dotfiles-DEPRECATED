@@ -1,27 +1,41 @@
 #!/bin/bash
 
-# bring in gnu getopt (a keg only brew package that isnt linked by default)
+# bring in gnu getopt ( a key-only package )
 PATH="$(brew --prefix)"/opt/gnu-getopt/bin:$PATH
 
-# use -q as not interested in hearing about invalid options
-# -n foo -> report errors from foo
-# -o -> single character options
-# + -> POSIX compliant mode ( stop an first non option )
-eval set -- "$(getopt -q -n foo -o +a -- "$@")"
-while test "$1" != "--"; do 
-      case "$1" in
-            -a) : ;;
-            *) echo "$1";
-      esac
-      shift  # shift off the argument
-done
+# dry run ( debug ) mode
+DRY_RUN=false
 
-shift  # delete the "--"
-echo "remaining args are: $*"
+function main()
+{
+        local parsed_options
+        local autounattend_file
+        local packer_args
+        
+        parsed_options="$(getopt -q -n "$(basename "$0")" -o - -l dry-run -- "$@")"
+        [ $? -ne 0 ] && return 1;
 
+        # wang the parsed options back into script arguments
+        eval set -- "$parsed_options"
 
+        while true; do
+                case "$1" in
+                        --dry-run) DRY_RUN=true;;
+                        --) break ;;
+                        *) autounattend_file="$1";;
+                esac
+                shift # shift off the argument we have just inspected
+        done
+        shift # shift off the "--"
 
+        # the arguments that are left (post the --) can then be passed to packer build
+        packer_args="$*"
 
-# which we can then use to proxy a command
-# eval "ls $*"
+        echo "$autounattend_file"
+        echo "$packer_args"
+        if $DRY_RUN; then echo "DEBUG"; fi 
+}
+
+main "$@"
+exit $?
 
