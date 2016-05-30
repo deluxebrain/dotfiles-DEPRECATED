@@ -13,6 +13,7 @@ function exit_handler()
 {
         # check the TMPFILE variable has been set and that it points to an existing file
         if [[ -n "$TMPFILE" && -f "$TMPFILE" ]]; then
+                echo "Deleting temp file $TMPFILE ..." >&2
                 rm -rf "$TMPFILE"
         fi
 }
@@ -20,7 +21,10 @@ function exit_handler()
 function usage()
 {
         cat <<EOF
-Usage: $0 <autounattend-file> -- {packer build options and arguments}
+Usage: $0
+        --dry-run ( simulated run ) 
+        <autounattend-file> 
+        -- {packer build options and arguments}
 EOF
 
         return 1
@@ -36,7 +40,7 @@ function create_tmpfile()
 
         # -q: suppress error messages ( we'll deal with them ourselves )
         # -t: use supplied prefix and the TMPDIR ( if set )
-        tmpfile="$(mktmp -q -t "$tmpfoo")"
+        tmpfile="$(mktemp -q -t "$tmpfoo")"
 
         if [ $? -ne 0 ]; then
                 echo "Unable to create temp file" >&2
@@ -68,7 +72,7 @@ function transform_autounattend()
         transformed_autounattend="$(create_tmpfile)" || return
 
         # transform the autounattend file
-        envsubt < "$raw_autounattend" > "$transformed_autounattend"
+        envsubst < "$raw_autounattend" > "$transformed_autounattend"
         if [ $? -ne 0 ]; then
                 echo "Unable to transform autounattend file ${raw_autounattend} to temporary file ${transformed_autounattend}" >&2
                 return 
@@ -81,8 +85,8 @@ function main()
 {
         local parsed_options
         local autounattend_file
-        local packer_args
-        
+        declare -a packer_args
+        local packer_command
 
         # use gnu getopt to parse the command line arguments
         # gnu getopt is POSIX compliant in that it stops parsing at --
@@ -113,7 +117,22 @@ function main()
         # the arguments that are left (post the --) can then be passed to packer build
         packer_args="$*"
 
-        TMPFILE="$(transform_autounattend "$autounattend_file")"
+        # guard
+        if [ -z "${autounattend_file+.}" ] || [ -z "$packer_args" ]; then
+                usage; return
+        fi
+                
+        # transform the autounattend file to a temporary file
+        TMPFILE="$(transform_autounattend "$autounattend_file")" || return 1
+
+        # form packer build command
+        packer_command="packer build $packer_args"
+
+        if $DRY_RUN; then
+                echo "$packer_command"
+        else
+                eval "$packer_command" || return 1
+        fi
 }
 
 # wire up the traps
