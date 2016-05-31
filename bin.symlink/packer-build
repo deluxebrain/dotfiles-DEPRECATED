@@ -125,8 +125,8 @@ function main()
         # transform the autounattend file to a temporary file
         TMPFILE="$(transform_autounattend "$autounattend_file")" || return 1
 
-        # form packer build command
-        packer_command="packer build $packer_args"
+        # form packer build command from the passed in args and the temp autounattend
+        packer_command="packer build $packer_args -var "autounattend=${TMPFILE}""
 
         if $DRY_RUN; then
                 echo "$packer_command"
