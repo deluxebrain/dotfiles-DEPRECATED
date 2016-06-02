@@ -15,4 +15,5 @@ pandas                  # data structures and analysis tools
 scipy                   # scientific computing tools for python
 sklearn                 # scikit-learn
 nltk                    # natural language toolkit
+csvkit                  # tools for working with csv files
 
