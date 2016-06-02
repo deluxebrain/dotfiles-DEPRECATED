@@ -12,5 +12,6 @@ pyprind                 # progress indicator
 
 # data analysis and machine learning
 pandas                  # data structures and analysis tools
+scipy                   # scientific computing tools for python
 sklearn                 # scikit-learn
 
