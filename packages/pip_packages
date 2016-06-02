@@ -10,6 +10,7 @@ aws-shell
 ansible-lint
 pyprind                 # progress indicator
 
-# data analysis
+# data analysis and machine learning
 pandas                  # data structures and analysis tools
+sklearn                 # scikit-learn
 
