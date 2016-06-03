@@ -13,7 +13,7 @@ For plugins that require post-installation steps (such as YouCompleteMe), author
 
 Verified basic setup is working ok by issuing `:Helptags`
 
-List installed checkers for the detectec type of the current file via `:SyntasticInfo`
+List installed checkers for the detected type of the current file via `:SyntasticInfo`
 
 Note that the underlying syntax checkers need to be installed and configured independently. For a list of supported syntax checkers see: Syntax checkers: https://github.com/scrooloose/syntastic/wiki/Syntax-Checkers
 

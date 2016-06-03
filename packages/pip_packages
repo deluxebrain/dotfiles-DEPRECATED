@@ -17,3 +17,5 @@ sklearn                 # scikit-learn
 nltk                    # natural language toolkit
 csvkit                  # tools for working with csv files
 
+# python
+flake8                  # wrapper around PyFlakes, pep8 and McCabe
