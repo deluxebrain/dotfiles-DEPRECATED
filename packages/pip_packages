@@ -19,3 +19,7 @@ csvkit                  # tools for working with csv files
 
 # python
 flake8                  # wrapper around PyFlakes, pep8 and McCabe
+
+# IDE related
+# notebook              # Jupyter (a.k.a IPython) notebook
+#
