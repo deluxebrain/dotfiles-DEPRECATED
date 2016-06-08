@@ -56,13 +56,14 @@ spark
 jq		# e.g. < my_json.json jq '.' to pretty print
 pstree
 tree
-tccutil		# cli tool to modify os x's accessibility database
+tccutiil	# cli tool to modify os x's accessibility database
+httpie          # cli http client
 
 # Security
 yubikey-personalization 
 
 # Development
-packer          # machine image creation (used with Vagrant)
+packer
 ctags
 go
 rust
