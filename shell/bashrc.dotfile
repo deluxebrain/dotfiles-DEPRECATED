@@ -84,6 +84,19 @@ function start_powerline()
         source "$(piproot powerline-status)"/powerline/bindings/bash/powerline.sh
 }
 
+function start_pyenv()
+{
+        if which pyenv > /dev/null; then
+                # use Homebrew directories rather that ~/.pyenv
+                export PYENV_ROOT=/usr/local/var/pyenv 
+                eval "$(pyenv init -)"
+        fi        
+
+        if which pyenv-virtualenv-init > /dev/null; then
+                eval "$(pyenv virtualenv-init -)"
+        fi
+}
+
 # called when run from an non-interactive shell
 function when_non_interactive() 
 {
@@ -102,6 +115,7 @@ function when_interactive()
 	start_ssh_agent
 	start_completions
         [ -z "${USE_POWERLINE+.}" ] || start_powerline
+        start_pyenv 
 }
 
 # `.bashrc` is pointed to by $BASH_ENV for non-interactive shells

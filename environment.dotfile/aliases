@@ -121,9 +121,9 @@ alias sudu="sudo "	# allow sudo to be used with aliases
 
 alias grep="grep --color=auto"	# Always use color
 
-# Python
-alias python="python3"
-alias pip="pip3"
+# X Moved to pyenv
+# alias python="python3"
+# alias pip="pip3"
 
 # Vim
 alias vi="vim"

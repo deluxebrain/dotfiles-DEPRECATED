@@ -63,7 +63,6 @@ poppler         # PDF document splitter
 djvulibre       # OSS implementation of DjVu (web-centric docoument distribution format)
 ghostscript     # PostSript and PDF interpreter
 
-
 # Security
 yubikey-personalization 
 
@@ -73,18 +72,22 @@ ctags
 go
 rust
 mono
-cmake           # cmake compiler
-python		# includes pip
-python3		# includes pip3
-pyside 		# Python bindings for Qt - needed for yubikey-neo-manager
+cmake             # cmake compiler
 node
-shunit2		# bash testing framework
-roundup		# bash testing framework
-shellcheck	# static analyser for bash/sh shell scripts
-tidy-html5      # html5 linter
-goaccess        # log-file parser
+shunit2		  # bash testing framework
+roundup		  # bash testing framework
+shellcheck	  # static analyser for bash/sh shell scripts
+tidy-html5        # html5 linter
+goaccess          # log-file parser
 # API Blueprint parser
 https://raw.github.com/apiaryio/drafter/master/tools/homebrew/drafter.rb --HEAD
+
+# python 
+python            # includes pip
+python3           # includes pip
+pyenv             # python version manager (c.f rvm)
+pyenv-virtualenv  # pyenv virtual environments
+pyside 		  # Python bindings for Qt - needed for yubikey-neo-manager
 
 # completions
 bash-completion
