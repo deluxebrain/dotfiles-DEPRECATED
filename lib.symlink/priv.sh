@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 [ -z "${__PRIV+.}" ] && readonly __PRIV= || return 0
 

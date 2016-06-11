@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 [ -z "${__CORE+.}" ] && readonly __CORE= || return 0
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # -z			Check for not set or null
 # ${parameter+word}	Parameter expansion: substitute word in all cases except

@@ -1,6 +1,4 @@
-#!/bin/bash
-#
-# bootstrap the dotfiles setup
+#!/usr/bin/env bash
 
 set -o errtrace	  # inherit ERR traps within functions, substs and subshells
 set -o pipefail	  # fail entire pipeline

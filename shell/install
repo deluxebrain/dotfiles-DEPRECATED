@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -e
+
+# -F use fixed string matching ( not regex )
+# -x match exactly
+# -q quiet, and exit with 1 if not found
+if ! grep -Fxq '/usr/local/bin/bash' /etc/shells; then
+  # sudo doesn't affect redirects so need to use bash -c
+  sudo bash -c "echo /usr/local/bin/bash >> /etc/shells" 
+fi
+
+chsh -s /usr/local/bin/bash

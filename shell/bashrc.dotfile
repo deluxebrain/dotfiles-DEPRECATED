@@ -15,6 +15,13 @@ function set_shelloptions()
 
         # Autocorrect typos in path names when using `cd`
         shopt -s cdspell;
+
+        # Perform recursive globbing on **
+        # e.g this:
+        # find . -type f -name "*.py" -print0 | xargs -0 cat | wc -l
+        # becomes this:
+        # wc **/*.py -l
+        shopt -s globstar
 }
 
 # start ssh-agent, using existing agent if available;

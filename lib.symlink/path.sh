@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 [ -z "${__PATH+.}" ] && readonly __PATH= || return 0
 

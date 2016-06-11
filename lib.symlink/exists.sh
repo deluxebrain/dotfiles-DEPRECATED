@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Collection of utility functions around testing for the existence of stuff
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # bring in gnu getopt ( a key-only package )
 PATH="$(brew --prefix)"/opt/gnu-getopt/bin:$PATH
