@@ -45,6 +45,10 @@ let g_syntastic_markdown_mdl_args = ''
 let g:syntastic_html_tidy_exec = '/usr/local/bin/tidy'
 let g:syntastic_css_checkers = ['csslint', 'prettycss']
 
+" YouCompleteMe
+" Needed after moving to PyEnv for Python environment management
+let g:ycm_path_to_python_interpreter='/usr/bin/python'
+
 " Colorscheme
 syntax enable
 set background=dark

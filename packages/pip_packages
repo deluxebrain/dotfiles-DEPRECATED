@@ -24,5 +24,5 @@ theano                  # maths expressions involving multi-dimensional arrays
 flake8                  # wrapper around PyFlakes, pep8 and McCabe
 
 # IDE related
-# notebook              # Jupyter (a.k.a IPython) notebook
-#
+notebook                #  Jupyter (a.k.a IPython) notebook
+

@@ -98,7 +98,7 @@ function main()
         # -o            : specify single character options
         # --long / -l   : specify multi-character options
         # -/+           : POSIX/non-POSIX mode ( yes/no stop on first non-option)
-        parsed_options="$(getopt -q -n "$(basename "$0")" -o - --long dry-run -- "$@")"
+        parsed_options="$(getopt -q -n "$(basename "$0")" -o -n --long dry-run -- "$@")"
         [ $? -ne 0 ] && return 1;
 
         # wang the parsed options back into script arguments
@@ -106,7 +106,7 @@ function main()
 
         while true; do
                 case "$1" in
-                        --dry-run) DRY_RUN=true;;
+                        --dry-run|n) DRY_RUN=true;;
                         --) break ;;
                         *) autounattend_file="$1";;
                 esac
