@@ -11,8 +11,10 @@ export ITERM_PROFILE_DIR="/Users/${USER}/Library/Application Support/iTerm2/Dyna
 export ITERM_PROFILE_NAME="${USER}"
 
 # Add Homebrew packages to man pages
-# ( https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/ )
-type brew >/dev/null 2>&1 && export MANPATH="$(brew --prefix)"/opt/coreutils/libexec/gnuman${MANPATH:+:$MANPATH}
+# NOTE this is not needed
+# 1. Installing packages via brew appears to automatically setup their man pages
+# 2. Setting the manpath environment variable prevents the man config file being loaded - removing all other man pages
+# type brew >/dev/null 2>&1 && export MANPATH="$(brew --prefix)"/opt/coreutils/libexec/gnuman${MANPATH:+:$MANPATH}
 
 #-------------------------------------------------------------
 # Package managers
