@@ -1,20 +1,29 @@
 #!/usr/bin/env bash
 
+# wrapper for:
+# packer build \
+#   -var 'autounattend=myautounattend.xml'
+#   template.json
+# packer build \
+#   -var-file=myvarfile.json
+#   template.json
+# for myvarfile.json
+# { "autounattend": "myautounattend.xml" }
+
 # bring in gnu getopt ( a key-only package )
 PATH="$(brew --prefix)"/opt/gnu-getopt/bin:$PATH
 
-# dry run ( debug ) mode
+# dry run mode ( log to stdout intended actions without performing them )
 DRY_RUN=false
 
 # global to store path to temp autounattend file
-TMPFILE=
+TMP_AUTOUNATTEND=
 
 function exit_handler()
 {
-        # check the TMPFILE variable has been set and that it points to an existing file
-        if [[ -n "$TMPFILE" && -f "$TMPFILE" ]]; then
-                echo "Deleting temp file $TMPFILE ..." >&2
-                rm -rf "$TMPFILE"
+        if [[ -n "$TMP_AUTOUNATTEND" && -f "$TMP_AUTOUNATTEND" ]]; then
+                echo "Deleting temp file $TMP_AUTOUNATTEND ..." >&2
+                rm -rf "$TMP_AUTOUNATTEND"
         fi
 }
 
@@ -61,6 +70,11 @@ function transform_autounattend()
                 return 1
         fi
 
+        transform_autounattend="$2"
+        if [ -z "$transformed_autounattend" ] || [ ! -f "$transformed_autounattend" ]; then
+                echo "Invalid path specified for autounattend transform ${transformed_autounattend:-EMPTY}" >&2
+        fi
+
         # source in any envionment variables required for the transform 
         # TODO this will need expanding to deal with different transforms
         if  [ -f "$HOME/.secrets/licenses" ]; then
@@ -68,17 +82,12 @@ function transform_autounattend()
                 source "$HOME/.secrets/licenses"
         fi
 
-        # create a temp file to hold the transformed autounattend
-        transformed_autounattend="$(create_tmpfile)" || return
-
         # transform the autounattend file
         envsubst < "$raw_autounattend" > "$transformed_autounattend"
         if [ $? -ne 0 ]; then
                 echo "Unable to transform autounattend file ${raw_autounattend} to temporary file ${transformed_autounattend}" >&2
                 return 
         fi
-
-        echo "$transformed_autounattend"
 }
 
 function main()
@@ -123,10 +132,11 @@ function main()
         fi
                 
         # transform the autounattend file to a temporary file
-        TMPFILE="$(transform_autounattend "$autounattend_file")" || return 1
+        TMP_AUTOUNATTEND="$(create_tmpfile)" || return
+        transform_autounattend "$autounattend_file" "$TMP_AUTOUNATTEND" || return
 
         # form packer build command from the passed in args and the temp autounattend
-        packer_command="packer build $packer_args -var "autounattend=${TMPFILE}""
+        packer_command="packer build $packer_args -var "autounattend=${TMP_AUTOUNATTEND}""
 
         if $DRY_RUN; then
                 echo "$packer_command"
