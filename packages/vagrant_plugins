@@ -8,3 +8,10 @@ winrm-fs
 # Note - cached to: $HOME/.vagrant.d/cache/<box-name>/<optional-bucket-name>
 vagrant-cachier
 
+# desired state configuration provisioning plugin
+# https://www.penflip.com/powershellorg/the-dsc-book
+vagrant-dsc
+
+# Manage /etc/hosts on guest and host
+vagrant-hostmanager
+
