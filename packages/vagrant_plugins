@@ -13,5 +13,6 @@ vagrant-cachier
 vagrant-dsc
 
 # Manage /etc/hosts on guest and host
+# Includes support for Winodws hosts.ini
 vagrant-hostmanager
 
