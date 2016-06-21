@@ -89,7 +89,8 @@ alias badge="tput bel"
 #+ find . -name .gitattributes | map dirname
 alias map="xargs -n1"
 
-alias mt="multitail"
+# -CT terminalmode: interpret terminal codes (only ansi supported)
+alias mt="multitail -cT ansi"
 
 #-------------------------------------------------------------
 # Cryptography
