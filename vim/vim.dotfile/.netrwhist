@@ -1,6 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/Users/deluxebrain/Repos/deluxebrain/dotfiles/vim/vim.dotfile'
 let g:netrw_dirhist_2='/Users/deluxebrain/Repos/deluxebrain/dotfiles/bin.symlink'
 let g:netrw_dirhist_3='/Users/deluxebrain/Repos/mefellows/windows-machine-factory-tutorial/machine-factory/scripts'
 let g:netrw_dirhist_4='/Users/deluxebrain/Repos/deluxebrain/play-packer-aws-provisioning/packer_cache'
+let g:netrw_dirhist_5='/Users/deluxebrain/Repos/deluxebrain/dotfiles/misc'
+let g:netrw_dirhist_6='/Users/deluxebrain/.vagrant.d'

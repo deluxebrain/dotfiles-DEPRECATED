@@ -89,6 +89,8 @@ alias badge="tput bel"
 #+ find . -name .gitattributes | map dirname
 alias map="xargs -n1"
 
+alias mt="multitail"
+
 #-------------------------------------------------------------
 # Cryptography
 #-------------------------------------------------------------

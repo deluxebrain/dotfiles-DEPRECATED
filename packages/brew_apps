@@ -62,6 +62,7 @@ httpie          # cli http client
 poppler         # PDF document splitter
 djvulibre       # OSS implementation of DjVu (web-centric docoument distribution format)
 ghostscript     # PostSript and PDF interpreter
+multitail       # more powerful tail (inc. word highlighting)
 
 # Security
 yubikey-personalization 
@@ -81,6 +82,9 @@ tidy-html5        # html5 linter
 goaccess          # log-file parser
 # API Blueprint parser
 https://raw.github.com/apiaryio/drafter/master/tools/homebrew/drafter.rb --HEAD
+
+# ruby
+ruby
 
 # python 
 python            # includes pip
