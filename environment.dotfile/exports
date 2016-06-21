@@ -73,6 +73,8 @@ export NODE_REPL_MODE='sloppy'
 #-------------------------------------------------------------
 
 export PACKER_CACHE_DIR=/var/cache/packer
+# export PACKER_LOG=1
+# export PACKER_LOG_PATH=/var/log/packer.log
 
 #-------------------------------------------------------------
 # Mono
