@@ -30,7 +30,14 @@ function start_tmux()
         local grouped_session 
 
 	# Return if tmux has already been fired up
-	[ -z "${TMUX}" ] || return; 
+	[ -z "${TMUX}" ] || return;
+
+	# Tmux has a reliance on python being configured
+	# ( tmux / powerline integration )
+	if which pyenv > /dev/null; then
+		export PYENV_ROOT=/usr/local/var/pyenv
+		eval "$(pyenv init -)"
+	fi
 
 	# Create session identifier for the primary session
 	# Default to username if no explicit sesison name provided
@@ -76,8 +83,10 @@ function main()
 	# Bring in global (checked into git) and local (not-checked into git) exports
 	# shellcheck source=/dev/null
 	[ -f "${HOME}"/.environment/path ] && source "${HOME}"/.environment/path
+	
 	# shellcheck source=/dev/null
 	[ -f "${HOME}"/.environment/exports ] && source "${HOME}"/.environment/exports
+	
 	# shellcheck source=/dev/null
 	[ -f "${HOME}"/secrets/localrc ] && source "${HOME}"/secrets/localrc
 
@@ -85,12 +94,12 @@ function main()
 	local file
 	for file in ~/.environment/functions/*.sh; do
 		# shellcheck source=/dev/null
-		source $file
+		source "$file"
 	done
 
 	# Set item to use the generated dynamic profile
 	[ -n "${ITERM_PROFILE_NAME}" ] && set_iterm_profile "${ITERM_PROFILE_NAME}"
-
+	
 	# shellcheck source=/dev/null
 	[ -f "${HOME}"/.bashrc ] && source "${HOME}"/.bashrc
 }

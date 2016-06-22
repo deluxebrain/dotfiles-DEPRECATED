@@ -86,9 +86,8 @@ function start_powerline()
         powerline-daemon -q
         export POWERLINE_BASH_CONTINUATION=1
         export POWERLINE_BASH_SELECT=1
-
         # shellcheck source=/dev/null
-        source "$(piproot powerline-status)"/powerline/bindings/bash/powerline.sh
+        source "${PIP_PATH}/powerline/bindings/bash/powerline.sh"
 }
 
 function start_pyenv()
@@ -119,10 +118,12 @@ function when_interactive()
         [ -f "${HOME}"/.environment/aliases ] && source "${HOME}"/.environment/aliases
 
 	set_shelloptions
-	start_ssh_agent
+	
+        start_pyenv
+        
+        start_ssh_agent
 	start_completions
         [ -z "${USE_POWERLINE+.}" ] || start_powerline
-        start_pyenv 
 }
 
 # `.bashrc` is pointed to by $BASH_ENV for non-interactive shells

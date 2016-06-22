@@ -20,7 +20,8 @@ export ITERM_PROFILE_NAME="${USER}"
 # Package managers
 #-------------------------------------------------------------
 
-export PIP_PATH="/usr/local/lib/python3.5/site-packages"
+# export PIP_PATH="/usr/local/lib/python3.5/site-packages"
+export PIP_PATH="/usr/local/var/pyenv/versions/3.5.1/lib/python3.5/site-packages"
 
 #-------------------------------------------------------------
 # Scripting
