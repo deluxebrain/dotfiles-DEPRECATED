@@ -90,6 +90,8 @@ alias badge="tput bel"
 alias map="xargs -n1"
 
 # -CT terminalmode: interpret terminal codes (only ansi supported)
+# To use: mt -cS <colorscheme> <log_path>
+# E.g: mt -cS lab mylog.log
 alias mt="multitail -cT ansi"
 
 #-------------------------------------------------------------
