@@ -87,7 +87,7 @@ function start_powerline()
         export POWERLINE_BASH_CONTINUATION=1
         export POWERLINE_BASH_SELECT=1
         # shellcheck source=/dev/null
-        source "${PIP_PATH}/powerline/bindings/bash/powerline.sh"
+        source "${SYS_PIP_PACKAGES_PATH}/powerline/bindings/bash/powerline.sh"
 }
 
 function start_pyenv()

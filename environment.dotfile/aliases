@@ -231,3 +231,4 @@ alias debug="bash -x"
 
 alias brewup="brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup"
 alias brewupall="brew update && brew upgrade && brew cleanup && brew cask cleanup"
+alias syspip="/usr/local/bin/pip"
