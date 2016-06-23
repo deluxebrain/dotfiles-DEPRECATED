@@ -1,14 +1,19 @@
+# All to be run into the global python environment using syspip alias
+#
 # development environment
 virtualenv              # create isolated Python environments
                         # NOTE does'nt play well with Python 3
                         # ( which comes with pyvenv )
+
+# AWS
+aws-shell
+awscli
 
 # tools
 pygments
 powerline-status
 pyinstaller		# dependency for yubikey-neo-manager
 pycrypto		# dependency for yubikey-neo-manager
-aws-shell
 ansible-lint
 pyprind                 # progress indicator
 
