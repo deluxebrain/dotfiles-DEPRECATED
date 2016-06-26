@@ -16,7 +16,7 @@ alias ~="cd ~"
 alias reload="exec $SHELL -l"
 
 #-------------------------------------------------------------
-# Tmux
+# AWS
 #-------------------------------------------------------------
 
 alias ec2-log="aws ec2 get-console-output --output text --instance-id "
@@ -99,6 +99,14 @@ alias map="xargs -n1"
 # To use: mt -cS <colorscheme> <log_path>
 # E.g: mt -cS lab mylog.log
 alias mt="multitail -cT ansi"
+
+#-------------------------------------------------------------
+# Dev powertools
+#-------------------------------------------------------------
+
+# Generate secure password
+# At least one number, at least one special symbol, random, 12 chars long
+alias secpwd="pwgen -n -y -s 12 1"
 
 #-------------------------------------------------------------
 # Cryptography
