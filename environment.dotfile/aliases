@@ -19,6 +19,12 @@ alias reload="exec $SHELL -l"
 # Tmux
 #-------------------------------------------------------------
 
+alias ec2-log="aws ec2 get-console-output --output text --instance-id "
+
+#-------------------------------------------------------------
+# Tmux
+#-------------------------------------------------------------
+
 # -A flag makes new-session behave like attach-session if session pre-exists
 alias ta="tmux new-session -A -s "${USER}""
 

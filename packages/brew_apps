@@ -63,6 +63,7 @@ poppler         # PDF document splitter
 djvulibre       # OSS implementation of DjVu (web-centric docoument distribution format)
 ghostscript     # PostSript and PDF interpreter
 multitail       # more powerful tail (inc. word highlighting)
+pwgen           # cli tool for generating strong passwords
 
 # Security
 yubikey-personalization 
