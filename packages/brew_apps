@@ -68,6 +68,9 @@ pwgen           # cli tool for generating strong passwords
 # Security
 yubikey-personalization 
 
+# Ops
+terraform       # cross-provider cloud infrastructure management platform
+
 # Development
 packer
 ctags
