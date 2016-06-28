@@ -50,6 +50,7 @@ macvim --override-system-vim --custom-system-icons
 imagemagick	# e.g. convert between file formats
 jp2a		# convert jpgs to ascii art
 libtiff         # support for the Tag Image File Fomrat (TIFF) used for storing image data
+graphviz        # graph visualization software
 
 # Powertools
 ossp-uuid # uuid's
