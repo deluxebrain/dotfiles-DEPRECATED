@@ -3,3 +3,7 @@ export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH"
+
+# Mono
+export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+

@@ -78,6 +78,7 @@ ctags
 go
 rust
 mono
+nuget
 cmake             # cmake compiler
 node
 shunit2		  # bash testing framework
