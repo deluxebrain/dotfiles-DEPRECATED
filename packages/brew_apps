@@ -70,6 +70,7 @@ pwgen           # cli tool for generating strong passwords
 yubikey-personalization 
 
 # Ops
+ansible
 terraform       # cross-provider cloud infrastructure management platform
 
 # Development
