@@ -72,6 +72,7 @@ yubikey-personalization
 # Ops
 ansible
 terraform       # cross-provider cloud infrastructure management platform
+vault           # store and access secrets
 
 # Development
 packer
