@@ -112,6 +112,32 @@ Note - this is not done as part of the boostrapper ( via the packages installer 
 	ssh-add -l
 	```
 
+### Adding identity to ssh config to allow multiple github accounts
+
+	Update you ```~/.ssh/config``` as follows:
+
+	```shell
+	Host github.com
+		User git
+		Hostname github.com
+		PreferredAuthentications publickey
+		IdentitiesOnly yes
+		IdentityFile ~/.ssh/id_rsa
+
+	Host github-my-account
+		User git
+		Hostname github.com
+		PreferredAuthentications publickey
+		IdentitiesOnly yes
+		IdentityFile ~/.ssh/my-account
+	```
+
+	To use the non-default account, specify when clongin. E.g.
+
+	```shell
+	git clone git@github-my-account:user/repos
+	```
+	
 ### Adding your public key to GitHib
 
 1. Copy your public key to the clipboard:
