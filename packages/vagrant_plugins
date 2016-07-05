@@ -16,3 +16,5 @@ vagrant-dsc
 # Includes support for Winodws hosts.ini
 vagrant-hostmanager
 
+# Adds support for synced folders over sshfs
+vagrant-sshfs

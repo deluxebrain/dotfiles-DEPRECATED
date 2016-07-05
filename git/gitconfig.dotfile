@@ -96,3 +96,5 @@
 
   # Include summaries of merged commits in newly created merge commit messages
   log = true
+[user]
+	email = matt.caton@mac.com
