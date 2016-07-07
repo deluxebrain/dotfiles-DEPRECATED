@@ -49,3 +49,12 @@
 [submodule "vim/vim.dotfile/bundle/vim-obsession"]
 	path = vim/vim.dotfile/bundle/vim-obsession
 	url = https://github.com/tpope/vim-obsession.git
+[submodule "vim/vim.dotfile/bundle/vim-ps1"]
+	path = vim/vim.dotfile/bundle/vim-ps1
+	url = https://github.com/PProvost/vim-ps1.git
+[submodule "vim/vim.dotfile/bundle/vim-gitgutter"]
+	path = vim/vim.dotfile/bundle/vim-gitgutter
+	url = git://github.com/airblade/vim-gitgutter.git
+[submodule "vim/vim.dotfile/bundle/tabular"]
+	path = vim/vim.dotfile/bundle/tabular
+	url = git://github.com/godlygeek/tabular.git

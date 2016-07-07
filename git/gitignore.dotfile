@@ -19,3 +19,5 @@ Thumbs.db
 # Ctags
 tags
 
+# Terraform state files
+*.tfstate
