@@ -58,3 +58,6 @@
 [submodule "vim/vim.dotfile/bundle/tabular"]
 	path = vim/vim.dotfile/bundle/tabular
 	url = git://github.com/godlygeek/tabular.git
+[submodule "vim/vim.dotfile/bundle/vim-cucumber"]
+	path = vim/vim.dotfile/bundle/vim-cucumber
+	url = git://github.com/tpope/vim-cucumber.git

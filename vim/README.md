@@ -50,6 +50,17 @@ Note - as the presents are baked into JSCS, simply updating JSCS updates the pre
 
 #### ESLint
 
+#### Tabularize
+
+E.g. to align on =
+```shell
+:Tabularize /=
+```
+
+Certain frequently used variants have been mapped to <leader> key combinations using the ```after/plugin/tabularize.vim``` vim script. 
+Note this relies on the Tabularize plugin have been loaded - hence why it needs to be performed after all plugins have been loaded.
+
+It is also wired up to auto-align cucumber tables on the <pipe> character. This is done in the ```after/plugin/cucumbertables.vim``` script that is taken from [this Tim Pope scgist](https://gist.github.com/tpope/287147)
 
 
 

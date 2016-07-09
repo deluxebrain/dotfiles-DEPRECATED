@@ -9,4 +9,4 @@ eslint-config-defaults -g # Plugin for ESLint that provides sets of configuratio
 jsonlint -g
 markdownlint-cli -g       # markdown linter
 js-yaml -g
-
+gherkin-lint -g

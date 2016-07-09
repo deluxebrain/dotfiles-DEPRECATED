@@ -1,6 +1,5 @@
 " Configure Tabularize
 if exists(":Tabularize")
-  source ~/.vim/scripts/cucumbertables.vim
   nmap <Leader>t<bar> :Tabularize /<bar><CR>
   vmap <Leader>t<bar> :Tabularize /<bar><CR>
   nmap <Leader>t= :Tabularize /=<CR>
