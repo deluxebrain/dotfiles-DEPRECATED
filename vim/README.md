@@ -62,5 +62,19 @@ Note this relies on the Tabularize plugin have been loaded - hence why it needs 
 
 It is also wired up to auto-align cucumber tables on the <pipe> character. This is done in the ```after/plugin/cucumbertables.vim``` script that is taken from [this Tim Pope scgist](https://gist.github.com/tpope/287147)
 
+Example cucumber table for reference:
+```gherkin
+Scenario Outline: something
+	Given there are <start> things
+	When I remove <removed> things
+	Then I should have <remaining> things
+
+	Examples:
+	| start | removed | remaining |
+	| 10    | 2       | 8         |
+```
+
+
+
 
 
