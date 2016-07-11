@@ -61,3 +61,9 @@
 [submodule "vim/vim.dotfile/bundle/vim-cucumber"]
 	path = vim/vim.dotfile/bundle/vim-cucumber
 	url = git://github.com/tpope/vim-cucumber.git
+[submodule "vim/vim.dotfile/bundle/nerdtree"]
+	path = vim/vim.dotfile/bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule "vim/vim.dotfile/bundle/vim-vinegar"]
+	path = vim/vim.dotfile/bundle/vim-vinegar
+	url = git://github.com/tpope/vim-vinegar.git
