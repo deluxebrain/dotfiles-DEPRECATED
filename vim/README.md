@@ -48,8 +48,6 @@ Configuration of JSCS is via presets ( see http://jscs.info/overview#preset ), e
 This buik of the JSCS configuration file is then just selecting the desired preset and providing any overrides as necessary - i.e. it wont have much in it.
 Note - as the presents are baked into JSCS, simply updating JSCS updates the presets and the associated linter rules. I.e there is no need to manually reconcile linter rules against the reference set.
 
-#### ESLint
-
 #### Tabularize
 
 E.g. to align on =
