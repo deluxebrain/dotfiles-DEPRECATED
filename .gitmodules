@@ -67,3 +67,6 @@
 [submodule "vim/vim.dotfile/bundle/vim-vinegar"]
 	path = vim/vim.dotfile/bundle/vim-vinegar
 	url = git://github.com/tpope/vim-vinegar.git
+[submodule "vim/vim.dotfile/bundle/vim-surround"]
+	path = vim/vim.dotfile/bundle/vim-surround
+	url = git@github.com:tpope/vim-surround.git
