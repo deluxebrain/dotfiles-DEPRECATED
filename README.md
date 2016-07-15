@@ -49,8 +49,6 @@ gln -s --relative  <source> destination
 
 #### Installing Homebrew
 
-Note - this is not done as part of the boostrapper ( via the packages installer )
-
 1. Run the installer:
 
 	``` shell
@@ -64,7 +62,7 @@ Note - this is not done as part of the boostrapper ( via the packages installer 
 	brew doctor
 	```
 
-### Homebrew minimum to know to get going
+#### Homebrew minimum to know to get going
 
 1. ``` brew help```, or ```man brew``` to get some help
 2. Type ```brew search``` for a list
@@ -85,6 +83,14 @@ Note - this is not done as part of the boostrapper ( via the packages installer 
 	``` shell
 	# This upgrades all software in the Homebrew Cellar
 	brew upgrade
+	```
+
+3. Updating all cask apps
+
+	Theres currently no in-build mechanism to update cask apps. The following one-liner is a suggested work-around until an official mechanism becomes available:
+	
+	``` shell
+	brew cask list | xargs brew cask install
 	```
 
 ## Getting ready to install
