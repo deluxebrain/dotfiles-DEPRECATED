@@ -65,6 +65,7 @@ djvulibre       # OSS implementation of DjVu (web-centric docoument distribution
 ghostscript     # PostSript and PDF interpreter
 multitail       # more powerful tail (inc. word highlighting)
 pwgen           # cli tool for generating strong passwords
+youtube-dl
 
 # Security
 yubikey-personalization 
