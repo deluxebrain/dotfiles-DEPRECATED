@@ -74,6 +74,7 @@ yubikey-personalization
 ansible
 terraform       # cross-provider cloud infrastructure management platform
 vault           # store and access secrets
+consul-template # templating engine that works with vault (and doesnt require consul!)
 
 # Development
 packer
