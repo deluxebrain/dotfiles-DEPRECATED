@@ -54,10 +54,12 @@ syntax enable
 set background=dark
 colorscheme solarized
 
-" Setup indentation to not use hard tabs
+" Tab setups
 set expandtab
 set shiftwidth=2
 set softtabstop=2
+" Insert tab using shift+tab
+inoremap <S-Tab> <C-V><Tab>
 " Configure vim-indent-guides
 let g:indent_guides_start_level=2
 let g:indent_guides_guide_size=1

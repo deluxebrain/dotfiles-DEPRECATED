@@ -4,6 +4,23 @@ Starting from Vim 7.4 you can structure your Vim dotfiles as follows:
 
 ~/.vim/vimrc
 
+## Debugging
+
+### List all loaded plugins
+
+```shell
+:scriptnames
+
+```
+
+### List command linked to key combination
+
+```shell
+:verbose map <S-Tab>
+:verbose nnoremap <S-Tab>   # normal mode non-recursive map
+:verbose inoremap <S-Tab>   # insert mode non-recursive map
+```
+
 ## Plugin management
 
 Vim plugins are orchestrated using Pathogen and installed as git submodules into the bundle directory.
