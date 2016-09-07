@@ -55,11 +55,15 @@ set background=dark
 colorscheme solarized
 
 " Tab setups
+" Superseeded by sleuth.vim? Thought Sleuth doesnt seem to work ...
 set expandtab
 set shiftwidth=2
 set softtabstop=2
+" Allow /ftplugin/<language>.vim files
+" Check detected filetype using :set ft?
+filetype plugin indent on
 " Insert tab using shift+tab
-inoremap <S-Tab> <C-V><Tab>
+inoremap <S-Tab> :<C-V><Tab>
 " Configure vim-indent-guides
 let g:indent_guides_start_level=2
 let g:indent_guides_guide_size=1
@@ -82,5 +86,4 @@ let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclu
 " Configure Nerdtree
 " Bind to ctrl-n
 map <silent> <C-n> :NERDTreeFocus<CR>
-
 
