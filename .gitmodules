@@ -73,3 +73,9 @@
 [submodule "vim/vim.dotfile/bundle/alchemist.vim"]
 	path = vim/vim.dotfile/bundle/alchemist.vim
 	url = https://github.com/slashmili/alchemist.vim.git
+[submodule "vim/vim.dotfile/bundle/vim-elixir"]
+	path = vim/vim.dotfile/bundle/vim-elixir
+	url = https://github.com/elixir-lang/vim-elixir.git
+[submodule "vim/vim.dotfile/bundle/vim-mix"]
+	path = vim/vim.dotfile/bundle/vim-mix
+	url = https://github.com/mattreduce/vim-mix.git

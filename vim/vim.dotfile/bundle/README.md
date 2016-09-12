@@ -2,9 +2,19 @@
 
 ## Plugins
 
-### Alchemist
+### Elixir
+
+#### Alchemist
 
 Client-Server app for Elixir development. Primarily for Emacs - but a Vim plugin exists. Note that the plugin installs Alchemist as part of the actual plugin - the are no further dependencies.
+
+#### mix.vim
+
+Plugin for using Elixirs build tool ```mix```.
+
+#### vim-elixir
+
+Elixir support for vim, including syntax highlighting, indentation, etc
 
 ###  Syntastic
 
