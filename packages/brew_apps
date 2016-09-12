@@ -93,6 +93,10 @@ goaccess          # log-file parser
 # API Blueprint parser
 https://raw.github.com/apiaryio/drafter/master/tools/homebrew/drafter.rb --HEAD
 
+# Postgres
+postgres --with-python
+postgis           # spatial database extender for postgres
+
 # ruby
 ruby
 
@@ -102,6 +106,10 @@ python3           # includes pip
 pyenv             # python version manager (c.f rvm)
 pyenv-virtualenv  # pyenv virtual environments
 pyside 		  # Python bindings for Qt - needed for yubikey-neo-manager
+
+# Erlang / Elixir
+elixir
+erlang
 
 # completions
 bash-completion
