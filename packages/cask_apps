@@ -12,6 +12,9 @@ seil		# capslock remapping
 # Browsers and related
 google-chrome
 
+# Google 
+google-drive
+
 # Virtualisation and packaging
 vagrant
 virtualbox
