@@ -1,5 +1,6 @@
 # Stetic ( used by Xamarin Studio )
 config.dotfile/stetic
-
 config.dotfile/.mono
 
+# Elixir
+mix.lock
