@@ -79,3 +79,6 @@
 [submodule "vim/vim.dotfile/bundle/vim-mix"]
 	path = vim/vim.dotfile/bundle/vim-mix
 	url = https://github.com/mattreduce/vim-mix.git
+[submodule "elixir/dogma"]
+	path = elixir/dogma
+	url = https://github.com/lpil/dogma.git

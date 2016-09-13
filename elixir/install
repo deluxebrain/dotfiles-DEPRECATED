@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+# change into the script directory
+cd "$( dirname "${BASH_SOURCE[0]}" )"
+
+echo building dogma and installing into bin directory
+
+cd ./dogma
+mix deps.get --force
+mix local.rebar --force
+
+# this creates the dogma binary in the parent directory
+mix escript.build --force
+
+# copy it across to the bin folder
+if [ ! -x ./dogma ]; then
+  echo cant find the dogma binary >&2
+  exit 1
+fi
+
+cp ./dogma ~/bin/
+
+
+
+
