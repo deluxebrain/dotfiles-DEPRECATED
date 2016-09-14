@@ -11,6 +11,14 @@ set number  " Show line numbers
 let mapleader = "\<Space>"
 " Save file: <Leader>w
 nnoremap <Leader>w :w<CR>
+nnoremap <Leader>l :Dispatch<CR>
+
+" Autocmds
+" Setup dispatch for exilir
+" % references the current file
+autocmd FIleType elixir let b:dispatch = 'dogma %'
+" Run dispatch on save
+autocmd BufWritePost *.ex,*.exs Dispatch
 
 " Enbable Powerline
 let pippath = $PIP_PATH . "/powerline/bindings/vim/"

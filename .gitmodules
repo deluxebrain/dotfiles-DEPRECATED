@@ -82,3 +82,6 @@
 [submodule "elixir/dogma"]
 	path = elixir/dogma
 	url = https://github.com/lpil/dogma.git
+[submodule "vim/vim.dotfile/bundle/vim-dispatch"]
+	path = vim/vim.dotfile/bundle/vim-dispatch
+	url = https://github.com/tpope/vim-dispatch.git
