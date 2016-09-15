@@ -85,3 +85,6 @@
 [submodule "vim/vim.dotfile/bundle/vim-dispatch"]
 	path = vim/vim.dotfile/bundle/vim-dispatch
 	url = https://github.com/tpope/vim-dispatch.git
+[submodule "vim/vim.dotfile/bundle/tslime.vim"]
+	path = vim/vim.dotfile/bundle/tslime.vim
+	url = git@github.com:jgdavey/tslime.vim.git
