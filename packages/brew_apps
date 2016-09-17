@@ -108,8 +108,8 @@ pyenv-virtualenv  # pyenv virtual environments
 pyside 		  # Python bindings for Qt - needed for yubikey-neo-manager
 
 # Erlang / Elixir
-elixir
 erlang
+elixir
 
 # completions
 bash-completion

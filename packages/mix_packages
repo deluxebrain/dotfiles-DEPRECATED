@@ -1,5 +1,7 @@
 #!/usr/bin/env bash 
 
+# use --force to run non-interactively ( no -y option )
+
 # Hex package manager
 mix local.hex --force
 
