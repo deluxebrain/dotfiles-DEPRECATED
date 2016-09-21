@@ -4,6 +4,7 @@ alfred
 
 # Environment
 flux            # f.lux
+spectacle       # window manager
 
 # Powertools
 karabiner	# keyboard mapping
