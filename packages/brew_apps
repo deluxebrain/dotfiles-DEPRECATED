@@ -45,6 +45,7 @@ rsync
 unzip
 vim --override-system-vi 
 macvim --override-system-vim --custom-system-icons
+the_silver_searcher # ack replacement
 
 # Image manipulation
 imagemagick	# e.g. convert between file formats
@@ -66,6 +67,7 @@ ghostscript     # PostSript and PDF interpreter
 multitail       # more powerful tail (inc. word highlighting)
 pwgen           # cli tool for generating strong passwords
 youtube-dl
+fzf             # fuzzy file finder
 
 # Security
 yubikey-personalization 

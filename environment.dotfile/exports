@@ -129,3 +129,8 @@ export GIT_REPOS_ROOT="/Users/${USER}/Repos"
 #+ Can be overriden at the repository level using a .gitprompt file
 export GIT_COMMIT_ALERT=120
 export GIT_COMMIT_WARN=30
+
+# fzf
+export FZF_DEFAULT_COMMAND='ag -g ""'
+export FZF_DEFAULT_OPTS="--reverse --inline-info"
+
