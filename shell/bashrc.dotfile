@@ -5,25 +5,6 @@
 #- executing a script
 #- cron
 
-function set_shelloptions()
-{
-        # Case-insensitive globbing (used in pathname expansion)
-        shopt -s nocaseglob;
-
-        # Append to the Bash history file, rather than overwriting it
-        shopt -s histappend;
-
-        # Autocorrect typos in path names when using `cd`
-        shopt -s cdspell;
-
-        # Perform recursive globbing on **
-        # e.g this:
-        # find . -type f -name "*.py" -print0 | xargs -0 cat | wc -l
-        # becomes this:
-        # wc **/*.py -l
-        shopt -s globstar
-}
-
 # start ssh-agent, using existing agent if available;
 # note this is not absolutely necessary if the window manager is set to
 # auto-start ssh-agent on first use (e.g. as with OS X ssh-agent launchd integration);
@@ -116,13 +97,11 @@ function when_interactive()
         # Bring in aliases
         # shellcheck source=/dev/null
         [ -f "${HOME}"/.environment/aliases ] && source "${HOME}"/.environment/aliases
-
-	set_shelloptions
 	
         start_pyenv
-        
         start_ssh_agent
 	start_completions
+        
         [ -z "${USE_POWERLINE+.}" ] || start_powerline
 }
 
@@ -162,8 +141,6 @@ function exit()
 }
 
 # prevent pollution of shell by deleting all local variables and functions
-unset -f set_shell_options
-unset -f start_ssh_agent
 unset -f start_completions
 unset -f start_powerline
 unset -f when_non_interactive
