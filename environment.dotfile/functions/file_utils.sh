@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# change directory and list it
+unset cdl
+function cdl()
+{
+  cd "$@" && ls
+}
+export -f cdl && readonly -f cdl
+
 # Create a new directory and enter it
 unset mkd
 function mkd() 
