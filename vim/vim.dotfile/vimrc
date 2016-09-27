@@ -11,16 +11,18 @@ set number  " Show line numbers
 let mapleader = "\<Space>"
 " Save file: <Leader>w
 nnoremap <Leader>w :w<CR>
+" Call vim-dispatch: <Leader>l
 nnoremap <Leader>l :Dispatch<CR>
 
 " Autocmds
-" Setup dispatch for exilir
+" Setup dispatch action for exilir files to run dogma
 " % references the current file
 autocmd FIleType elixir let b:dispatch = 'dogma %'
-" Run dispatch on save
+" Run dispatch on save for exilir files
+" This will run the default action as set above
 autocmd BufWritePost *.ex,*.exs Dispatch
 
-" Enbable Powerline
+" Enbable Powerline by adding to the vim runtime path (rtp)
 let pippath = $PIP_PATH . "/powerline/bindings/vim/"
 " Not sure this is right ... using exec to allow me to set rtp to a variable
 " Using rtp += pippath does not work
@@ -63,11 +65,11 @@ set background=dark
 colorscheme solarized
 
 " Tab setups
-" Superseeded by sleuth.vim? Thought Sleuth doesnt seem to work ...
+" Superseeded by sleuth.vim? Though Sleuth doesnt seem to work ...
 set expandtab
 set shiftwidth=2
 set softtabstop=2
-" Allow /ftplugin/<language>.vim files
+" Allow /ftplugin/<language>.vim files (i.e. configuration based on filetype)
 " Check detected filetype using :set ft?
 filetype plugin indent on
 " Insert tab using shift+tab

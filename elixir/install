@@ -23,6 +23,7 @@ fi
 cp ./dogma ~/bin/
 
 # reset submodule to prevent them from haunting git status
-# verify we are in the submodule ny checking the .git object is not a directory
+# verify we are in the submodule by checking the .git object is a file
+# ( .git object in a non-submodule directory is a directory )
 [ -f .git ] && git reset --hard
 
