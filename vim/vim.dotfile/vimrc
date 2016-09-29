@@ -1,27 +1,53 @@
-" Enable Pathogen
+"
+" Pathogen
+"
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
+"
 " Personal stuff
+"
 set number  " Show line numbers
-
 " Leader and leader actions
 let mapleader = "\<Space>"
 " Save file: <Leader>w
 nnoremap <Leader>w :w<CR>
-" Call vim-dispatch: <Leader>l
-nnoremap <Leader>l :Dispatch<CR>
 
+"
 " Autocmds
-" Setup dispatch action for exilir files to run dogma
-" % references the current file
-autocmd FIleType elixir let b:dispatch = 'dogma %'
+"
 " Run dispatch on save for exilir files
-" This will run the default action as set above
+" This will run the default action as set for vim-dispatch
 autocmd BufWritePost *.ex,*.exs Dispatch
 
+"
+" Colorscheme
+"
+syntax enable
+set background=dark
+colorscheme solarized
+
+"
+" Tab setups
+"
+" Superseeded by sleuth.vim? Though Sleuth doesnt seem to work ...
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+" Allow /ftplugin/<language>.vim files (i.e. configuration based on filetype)
+" Check detected filetype using :set ft?
+filetype plugin indent on
+" Insert tab using shift+tab
+inoremap <S-Tab> :<C-V><Tab>
+" Configure vim-indent-guides
+let g:indent_guides_start_level=2
+let g:indent_guides_guide_size=1
+
+"
+" Powerline 
+"
 " Enbable Powerline by adding to the vim runtime path (rtp)
 let pippath = $PIP_PATH . "/powerline/bindings/vim/"
 " Not sure this is right ... using exec to allow me to set rtp to a variable
@@ -32,7 +58,9 @@ set t_Co=256
 " Enable unicode symbols for Powerline
 let g:Powerline_symbols = "fancy"
 
-" Syntastic recommended settings
+"
+" Syntastic
+"
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -55,30 +83,15 @@ let g_syntastic_markdown_mdl_args = ''
 let g:syntastic_html_tidy_exec = '/usr/local/bin/tidy'
 let g:syntastic_css_checkers = ['csslint', 'prettycss']
 
-" Configure YouCompleteMe
+"
+" YouCompleteMe
+"
 " Needed after moving to PyEnv for Python environment management
 let g:ycm_path_to_python_interpreter='/usr/bin/python'
 
-" Colorscheme
-syntax enable
-set background=dark
-colorscheme solarized
-
-" Tab setups
-" Superseeded by sleuth.vim? Though Sleuth doesnt seem to work ...
-set expandtab
-set shiftwidth=2
-set softtabstop=2
-" Allow /ftplugin/<language>.vim files (i.e. configuration based on filetype)
-" Check detected filetype using :set ft?
-filetype plugin indent on
-" Insert tab using shift+tab
-inoremap <S-Tab> :<C-V><Tab>
-" Configure vim-indent-guides
-let g:indent_guides_start_level=2
-let g:indent_guides_guide_size=1
-
-" Configure Ctrl-P
+"
+" Ctrl-P
+"
 " Map to <Leader>o
 nnoremap <Leader>o :CtrlP<CR>
 " Set local working directory
@@ -93,7 +106,38 @@ let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 " Ignore files in .gitignore
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
-" Configure Nerdtree
+"
+" Nerdtree
+"
 " Bind to ctrl-n
 map <silent> <C-n> :NERDTreeFocus<CR>
+
+"
+" vim-test
+"
+let test#strategy = {
+  \ 'nearest': 'tslime',
+  \ 'file': 'tslime',
+  \ 'suite': 'tslime',
+\}
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+
+"
+" tslime
+"
+" reset session, window and pane info
+" use <prefix q> to display tmux pane info
+nmap <silent> <leader>r <plug>SetTmuxVars
+
+"
+" vim-dispatch
+"
+" Call vim-dispatch: <Leader>l
+nnoremap <Leader>l :Dispatch<CR>
+" Autocmds
+" Setup dispatch action for exilir files to run dogma
+" % references the current file
+autocmd FIleType elixir let b:dispatch = 'dogma %'
 

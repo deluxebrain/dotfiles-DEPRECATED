@@ -88,3 +88,9 @@
 [submodule "vim/vim.dotfile/bundle/tslime.vim"]
 	path = vim/vim.dotfile/bundle/tslime.vim
 	url = git@github.com:jgdavey/tslime.vim.git
+[submodule "vim/vim.dotfile/bundle/vim-turbux"]
+	path = vim/vim.dotfile/bundle/vim-turbux
+	url = git@github.com:jgdavey/vim-turbux.git
+[submodule "vim/vim.dotfile/bundle/vim-test"]
+	path = vim/vim.dotfile/bundle/vim-test
+	url = git@github.com:janko-m/vim-test.git

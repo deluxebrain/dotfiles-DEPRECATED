@@ -62,6 +62,18 @@ Scenario Outline: something
 	| 10    | 2       | 8         |
 ```
 
+### Testing
+
+#### vim-test
+
+Language agnostic test runner that integrates with buffer shunting plugins to run tests outside of the current vim window.
+See vim-test section of .vimrc
+
+Requires that the projects and tests and structured and named according to language best practices.
+E.g. for elixir tests, the tests should be named _test.exs.
+
+When using tslime to buffer forward to a different tmux pane, use prefix-q to show pane numbers.
+
 ## Linters
 
 ### JSCS

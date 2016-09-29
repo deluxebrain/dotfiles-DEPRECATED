@@ -25,6 +25,20 @@ Starting from Vim 7.4 you can structure your Vim dotfiles as follows:
 
 Vim plugins are orchestrated using Pathogen and installed as git submodules into the bundle directory.
 
+### Installing plugins
+
+```shell
+cd <bundle_dir>
+git submodule add <git_url>
+```
+
+### Removing plugins
+
+```shell
+git rm <submodule_path>
+rm -rf .git/modules/<submodule_path>
+```
+
 ### Disabling plugins
 
 To disable a Pathogen plugin, dename the parent directory from `plugin_name` to `plugin_name~`.
