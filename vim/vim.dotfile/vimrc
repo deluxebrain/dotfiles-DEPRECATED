@@ -22,7 +22,20 @@ nnoremap <silent> <Leader>c :ccl<CR>
 "
 " Run dispatch on save for exilir files
 " This will run the default action as set for vim-dispatch
-autocmd BufWritePost *.ex,*.exs Dispatch
+" BUG: It also runs on wq and leaves the quickfix window behind
+" autocmd BufWritePost *.ex,*.exs Dispatch
+
+" Quit out of vim when last window is the quickfix window
+" Note this doesnt fix a quickfix window left around from a wq
+ autocmd BufEnter * call QuitFloatingQuickfix()
+function! QuitFloatingQuickfix()
+  if &buftype=="quickfix"
+    " if this window is last on screen quit without warning
+      if winbufnr(2) == -1
+        quit!
+      endif
+  endif
+endfunction
 
 "
 " Colorscheme
