@@ -25,15 +25,23 @@ nnoremap <silent> <Leader>c :ccl<CR>
 " BUG: It also runs on wq and leaves the quickfix window behind
 " autocmd BufWritePost *.ex,*.exs Dispatch
 
+" Open NERDTree on open if no files specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Quit out of vim if NERDTree is only window open
 " Quit out of vim when last window is the quickfix window
 " Note this doesnt fix a quickfix window left around from a wq
- autocmd BufEnter * call QuitFloatingQuickfix()
-function! QuitFloatingQuickfix()
+autocmd BufEnter * call QuitLeftoverWindows()
+function! QuitLeftoverWindows()
   if &buftype=="quickfix"
     " if this window is last on screen quit without warning
       if winbufnr(2) == -1
         quit!
       endif
+  endif
+  if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree())
+    quit!
   endif
 endfunction
 
@@ -124,8 +132,7 @@ let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclu
 "
 " Nerdtree
 "
-" Bind to ctrl-n
-map <silent> <C-n> :NERDTreeFocus<CR>
+map <silent> <leader>n :NERDTreeFocus<CR>
 
 "
 " vim-test
