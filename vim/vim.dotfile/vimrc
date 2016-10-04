@@ -84,6 +84,8 @@ let g:Powerline_symbols = "fancy"
 "
 " Syntastic
 "
+" Check status with 
+" :SyntasticInfo
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -105,6 +107,11 @@ let g_syntastic_markdown_mdl_args = ''
 " Use Html5 tidy
 let g:syntastic_html_tidy_exec = '/usr/local/bin/tidy'
 let g:syntastic_css_checkers = ['csslint', 'prettycss']
+" Elixir
+" Need to explicitly enable elixir checking as the code runs in vim itself
+" ( potential security risk )
+let g:syntastic_enable_elixir_checker = 1
+let g:syntastic_elixir_checkers = "elixir"
 
 "
 " YouCompleteMe

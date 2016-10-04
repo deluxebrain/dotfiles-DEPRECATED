@@ -69,6 +69,9 @@ pwgen           # cli tool for generating strong passwords
 youtube-dl
 fzf             # fuzzy file finder
 
+# website generators
+hugo
+
 # Security
 yubikey-personalization 
 
@@ -133,3 +136,6 @@ mutt
 tmux
 # https://robots.thoughtbot.com/tmux-copy-paste-on-os-x-a-better-future
 reattach-to-user-namespace	# enable copy and paste
+
+# and why not
+nyancat
