@@ -168,5 +168,12 @@ nnoremap <Leader>l :Dispatch<CR>
 " Autocmds
 " Setup dispatch action for exilir files to run dogma
 " % references the current file
-autocmd FIleType elixir let b:dispatch = 'dogma %'
+autocmd FileType elixir let b:dispatch = 'dogma %'
+
+"
+" vim-autoformat
+"
+nnoremap <Leader>f :Autoformat<CR>
+" Auto-format on write
+autocmd BufWrite * :Autoformat
 
