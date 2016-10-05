@@ -103,3 +103,6 @@
 [submodule "vim/vim.dotfile/bundle/vim-autoformat"]
 	path = vim/vim.dotfile/bundle/vim-autoformat
 	url = git@github.com:Chiel92/vim-autoformat.git
+[submodule "vim/vim.dotfile/bundle/vim-markdown"]
+	path = vim/vim.dotfile/bundle/vim-markdown
+	url = git@github.com:plasticboy/vim-markdown.git

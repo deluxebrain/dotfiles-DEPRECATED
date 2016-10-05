@@ -1,4 +1,4 @@
-underscore-cli -g	  # JSON processor
+underscore-cli -g         # JSON processor
 jshint -g                 # Javascript linter
 jscs -g                   # JavaScript code style linter
 eslint -g                 # ES6 linter
@@ -10,3 +10,11 @@ jsonlint -g
 markdownlint-cli -g       # markdown linter
 js-yaml -g
 gherkin-lint -g
+
+# Markdown
+remark -g
+remark-cli -g
+remark-lint -g
+remark-html -g
+
+
