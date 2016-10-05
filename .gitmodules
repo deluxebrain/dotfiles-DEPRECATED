@@ -106,3 +106,6 @@
 [submodule "vim/vim.dotfile/bundle/vim-markdown"]
 	path = vim/vim.dotfile/bundle/vim-markdown
 	url = git@github.com:plasticboy/vim-markdown.git
+[submodule "vim/vim.dotfile/bundle/vim-hclfmt"]
+	path = vim/vim.dotfile/bundle/vim-hclfmt
+	url = git@github.com:fatih/vim-hclfmt.git

@@ -176,4 +176,15 @@ autocmd FileType elixir let b:dispatch = 'dogma %'
 nnoremap <silent> <Leader>f :Autoformat<CR>
 " Auto-format on write
 autocmd BufWrite * :Autoformat
+" Custom formatters
+let g:formatdef_custom_hcl = '"hclfmt"'
+let g:formatters_hcl = ['custom_hcl']
+
+"
+" vim-hclfmt
+"
+" Turn off format on save as this is handled by vim-autoformat
+let g:hcl_fmt_autosave = 0
+let g:tf_fmt_autosave = 0
+let g:nomad_fmt_autosave = 0
 

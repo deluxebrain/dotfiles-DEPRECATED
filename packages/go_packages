@@ -1,0 +1,3 @@
+# HCL cli formatter
+go get github.com/fatih/hclfmt
+
