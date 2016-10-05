@@ -36,9 +36,9 @@ autocmd BufEnter * call QuitLeftoverWindows()
 function! QuitLeftoverWindows()
   if &buftype=="quickfix"
     " if this window is last on screen quit without warning
-      if winbufnr(2) == -1
-        quit!
-      endif
+    if winbufnr(2) == -1
+      quit!
+    endif
   endif
   if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree())
     quit!
@@ -69,7 +69,7 @@ let g:indent_guides_start_level=2
 let g:indent_guides_guide_size=1
 
 "
-" Powerline 
+" Powerline
 "
 " Enbable Powerline by adding to the vim runtime path (rtp)
 let pippath = $PIP_PATH . "/powerline/bindings/vim/"
@@ -84,7 +84,7 @@ let g:Powerline_symbols = "fancy"
 "
 " Syntastic
 "
-" Check status with 
+" Check status with
 " :SyntasticInfo
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -127,7 +127,7 @@ nnoremap <Leader>o :CtrlP<CR>
 " Set local working directory
 " 'r' - the nearest ancestor of the current file that contains e.g. .git
 " 'a' - the directory of the current file
-let g:ctrlp_working_path_mode = 'ra' 
+let g:ctrlp_working_path_mode = 'ra'
 " Exclude files and directories
 " wildignore - Vim setting
 " g:ctrlp_custom_ignore - Ctrl-P setting
@@ -145,10 +145,10 @@ map <silent> <leader>n :NERDTreeFocus<CR>
 " vim-test
 "
 let test#strategy = {
-  \ 'nearest': 'tslime',
-  \ 'file': 'tslime',
-  \ 'suite': 'tslime',
-\}
+      \ 'nearest': 'tslime',
+      \ 'file': 'tslime',
+      \ 'suite': 'tslime',
+      \}
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
@@ -173,7 +173,7 @@ autocmd FileType elixir let b:dispatch = 'dogma %'
 "
 " vim-autoformat
 "
-nnoremap <Leader>f :Autoformat<CR>
+nnoremap <silent> <Leader>f :Autoformat<CR>
 " Auto-format on write
 autocmd BufWrite * :Autoformat
 
