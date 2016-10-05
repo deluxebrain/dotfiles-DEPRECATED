@@ -18,11 +18,14 @@ Elixir support for vim, including syntax highlighting, indentation, etc
 
 ###  Syntastic
 
-Verified basic setup is working ok by issuing `:Helptags`
+Verify basic setup is working ok by issuing `:Helptags`
 
 List installed checkers for the detected type of the current file via `:SyntasticInfo`
 
 Note that the underlying syntax checkers need to be installed and configured independently. For a list of supported syntax checkers see: Syntax checkers: https://github.com/scrooloose/syntastic/wiki/Syntax-Checkers
+
+Documenation for the various language integrations: 
+https://github.com/scrooloose/syntastic/blob/master/doc/syntastic-checkers.txt
 
 ###  vim-indent-guides
 
