@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Install GNU tools (OS X ships with the BSD versions)
 # https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/
 
@@ -43,23 +44,23 @@ openssh
 perl518
 rsync
 unzip
-vim --override-system-vi 
+vim --override-system-vi
 macvim --override-system-vim --custom-system-icons
 the_silver_searcher # ack replacement
 
 # Image manipulation
-imagemagick	# e.g. convert between file formats
-jp2a		# convert jpgs to ascii art
+imagemagick     # e.g. convert between file formats
+jp2a            # convert jpgs to ascii art
 libtiff         # support for the Tag Image File Fomrat (TIFF) used for storing image data
 graphviz        # graph visualization software
 
 # Powertools
 ossp-uuid # uuid's
 spark
-jq		# e.g. < my_json.json jq '.' to pretty print
+jq              # e.g. < my_json.json jq '.' to pretty print
 pstree
 tree
-tccutiil	# cli tool to modify os x's accessibility database
+tccutiil        # cli tool to modify os x's accessibility database
 httpie          # cli http client
 poppler         # PDF document splitter
 djvulibre       # OSS implementation of DjVu (web-centric docoument distribution format)
@@ -68,12 +69,13 @@ multitail       # more powerful tail (inc. word highlighting)
 pwgen           # cli tool for generating strong passwords
 youtube-dl
 fzf             # fuzzy file finder
+pandoc
 
 # website generators
 hugo
 
 # Security
-yubikey-personalization 
+yubikey-personalization
 
 # Ops
 ansible
@@ -90,9 +92,9 @@ mono
 nuget
 cmake             # cmake compiler
 node
-shunit2		  # bash testing framework
-roundup		  # bash testing framework
-shellcheck	  # static analyser for bash/sh shell scripts
+shunit2           # bash testing framework
+roundup           # bash testing framework
+shellcheck        # static analyser for bash/sh shell scripts
 tidy-html5        # html5 linter
 goaccess          # log-file parser
 # API Blueprint parser
@@ -105,12 +107,12 @@ postgis           # spatial database extender for postgres
 # ruby
 ruby
 
-# python 
+# python
 python            # includes pip
 python3           # includes pip
 pyenv             # python version manager (c.f rvm)
 pyenv-virtualenv  # pyenv virtual environments
-pyside 		  # Python bindings for Qt - needed for yubikey-neo-manager
+pyside            # Python bindings for Qt - needed for yubikey-neo-manager
 
 # Erlang / Elixir
 erlang
@@ -129,13 +131,15 @@ tmuxinator-completion
 vagrant-completion
 
 # clients
-irssi	# irc
+irssi   # irc
 mutt
+lynx
 
 # tmux and associated
 tmux
 # https://robots.thoughtbot.com/tmux-copy-paste-on-os-x-a-better-future
-reattach-to-user-namespace	# enable copy and paste
+reattach-to-user-namespace      # enable copy and paste
 
 # and why not
 nyancat
+
