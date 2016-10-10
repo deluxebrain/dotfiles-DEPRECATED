@@ -75,17 +75,25 @@ function start_pyenv()
 {
         if which pyenv > /dev/null; then
                 # use Homebrew directories rather that ~/.pyenv
-                export PYENV_ROOT=/usr/local/var/pyenv 
+                export PYENV_ROOT=/usr/local/var/pyenv
                 eval "$(pyenv init -)"
-        fi        
+        fi
 
         if which pyenv-virtualenv-init > /dev/null; then
                 eval "$(pyenv virtualenv-init -)"
         fi
 }
 
+function start_nvm()
+{
+  [ ! -d "$HOME/.nvm" ] && mkdir -p "$HOME/.nvm"
+  export NVM_DIR="$HOME/.nvm"
+  # shellcheck source=/dev/null
+  . "$(brew --prefix nvm)/nvm.sh"
+}
+
 # called when run from an non-interactive shell
-function when_non_interactive() 
+function when_non_interactive()
 {
         # Nothing to see here ...
         :
@@ -97,11 +105,12 @@ function when_interactive()
         # Bring in aliases
         # shellcheck source=/dev/null
         [ -f "${HOME}"/.environment/aliases ] && source "${HOME}"/.environment/aliases
-	
+
         start_pyenv
+        start_nvm
         start_ssh_agent
-	start_completions
-        
+        start_completions
+
         [ -z "${USE_POWERLINE+.}" ] || start_powerline
 }
 
@@ -121,23 +130,23 @@ fi
 # NOTE don't do this until tmux has started up
 function exit()
 {
-	local panes 
+        local panes
 
-	if [ -z "${TMUX}" ]; then
-		builtin exit
-	else
-		panes=$(tmux list-panes | wc -l)
-		if (( panes > 1 )); then
-			builtin exit
-		else
-			# Close the current window and detach from the session
-			# NOTE this appears to be the only way to achieve this ...
-			# 1. As soon as you kill the window this function will stop running
-			# 2. If you just "detach" then session and iterm console are destroyed
-			#	but the window remains attached to the parent session
-			tmux kill-window \; detach
-		fi
-	fi
+        if [ -z "${TMUX}" ]; then
+                builtin exit
+        else
+                panes=$(tmux list-panes | wc -l)
+                if (( panes > 1 )); then
+                        builtin exit
+                else
+                        # Close the current window and detach from the session
+                        # NOTE this appears to be the only way to achieve this ...
+                        # 1. As soon as you kill the window this function will stop running
+                        # 2. If you just "detach" then session and iterm console are destroyed
+                        #       but the window remains attached to the parent session
+                        tmux kill-window \; detach
+                fi
+        fi
 }
 
 # prevent pollution of shell by deleting all local variables and functions

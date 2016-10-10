@@ -109,3 +109,6 @@
 [submodule "vim/vim.dotfile/bundle/vim-hclfmt"]
 	path = vim/vim.dotfile/bundle/vim-hclfmt
 	url = git@github.com:fatih/vim-hclfmt.git
+[submodule "vim/vim.dotfile/bundle/tern_for_vim"]
+	path = vim/vim.dotfile/bundle/tern_for_vim
+	url = git@github.com:ternjs/tern_for_vim.git
