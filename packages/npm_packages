@@ -1,17 +1,25 @@
+# Javascript linters, etc
 underscore-cli -g         # JSON processor
 jshint -g                 # Javascript linter
 jscs -g                   # JavaScript code style linter
+js-beautify -g            # JavaScript formatter
 eslint -g                 # ES6 linter
 eslint-plugin-angular -g
 eslint-plugin-jasmine -g
 eslint-plugin-react -g
 eslint-config-defaults -g # Plugin for ESLint that provides sets of configuration
 jsonlint -g
-markdownlint-cli -g       # markdown linter
+
+# Misc
 js-yaml -g
 gherkin-lint -g
 
+# Build
+# + npm install --save-dev gulp in your project
+gulp-cli -g
+
 # Markdown
+markdownlint-cli -g       # markdown linter
 remark -g
 remark-cli -g
 remark-lint -g
