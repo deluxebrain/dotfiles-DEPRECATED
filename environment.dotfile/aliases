@@ -42,17 +42,10 @@ alias ingitd='[ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == "true" ]'
 alias gitn="git rev-parse --show-toplevel"
 
 #-------------------------------------------------------------
-# Finding stuff
-#-------------------------------------------------------------
-
-# Find all occurences of the supplied text recursively from current directory
-alias fif="grep -Rnw . -e"
-
-#-------------------------------------------------------------
 # File system
 #-------------------------------------------------------------
 
-# request confirmation 
+# request confirmation
 alias rm="rm -i"
 alias cp="cp -i"
 alias mv="mv -i"
@@ -80,6 +73,9 @@ alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET
 
 # Run `dig` and display the most useful info
 alias digger="dig +nocmd any +multiline +noall +answer"
+
+# List all open ports (.e.g to find what port NodeJS server is listening on)
+alias lsp="sudo lsof -i -n -P | grep LISTEN'
 
 #-------------------------------------------------------------
 # Dev powertools
@@ -132,7 +128,7 @@ alias g="git"
 # Overrides
 #-------------------------------------------------------------
 
-alias which="type -a" 		# list all instances
+alias which="type -a"		# list all instances
 
 # http://askubuntu.com/a/22043/306785
 #+ "If the last character of the alias value is a space or tab
@@ -155,9 +151,9 @@ alias vi="vim"
 
 # Detect which 'ls' flavour is in use
 if ls --color > /dev/null 2>&1; then # GNU
-	colorflag="--color"
+colorflag="--color"
 else # OSX
-	colorflag="-G"
+colorflag="-G"
 fi
 
 # Add colors for filetypes and human-readable sizes by default on 'ls'
@@ -236,7 +232,7 @@ alias rck="compgen -k" # shell reserved key words.
 #+ which is the pathname of the currently executing script
 # ${string%substring}
 #+ delete the shortest match of $substring from back of $string
-alias ped="echo ${BASH_SOURCE%/*}"  
+alias ped="echo ${BASH_SOURCE%/*}"
 
 # Prints command traces before they execute
 alias debug="bash -x"
