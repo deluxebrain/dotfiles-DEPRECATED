@@ -75,7 +75,7 @@ alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET
 alias digger="dig +nocmd any +multiline +noall +answer"
 
 # List all open ports (.e.g to find what port NodeJS server is listening on)
-alias lsp="sudo lsof -i -n -P | grep LISTEN'
+alias lsp='sudo lsof -i -n -P | grep LISTEN'
 
 #-------------------------------------------------------------
 # Dev powertools
@@ -121,22 +121,22 @@ command -v sha1sum > /dev/null || alias sha1sum="shasum"
 #-------------------------------------------------------------
 
 alias h="history"
-alias j="jobs -l"		# include process ids
+alias j="jobs -l"               # include process ids
 alias g="git"
 
 #-------------------------------------------------------------
 # Overrides
 #-------------------------------------------------------------
 
-alias which="type -a"		# list all instances
+alias which="type -a"           # list all instances
 
 # http://askubuntu.com/a/22043/306785
 #+ "If the last character of the alias value is a space or tab
 #+ character then the next command word following the alias is
 #+ also checked for alias expansion"
-alias sudu="sudo "	# allow sudo to be used with aliases
+alias sudu="sudo "      # allow sudo to be used with aliases
 
-alias grep="grep --color=auto"	# Always use color
+alias grep="grep --color=auto"  # Always use color
 
 # X Moved to pyenv
 # alias python="python3"
@@ -158,19 +158,19 @@ fi
 
 # Add colors for filetypes and human-readable sizes by default on 'ls'
 alias ls="ls -lhF ${colorflag}"
-alias lx="ls -XB"		# Sort by extension
-alias lk="ls -Sr"		# Sort by size, asc order
-alias lt="ls -tr"		# Sort by date, desc order
-alias lc="ls -tcr"		# Sort by change time, desc order
-alias lu="ls -tur"		# Sort by access time, desc order
+alias lx="ls -XB"               # Sort by extension
+alias lk="ls -Sr"               # Sort by size, asc order
+alias lt="ls -tr"               # Sort by date, desc order
+alias lc="ls -tcr"              # Sort by change time, desc order
+alias lu="ls -tur"              # Sort by access time, desc order
 
 # directories first, with alphanumeric sorting
 alias ll="ls -v --group-directories-first"
 alias lsd="ls  | grep --color=never '^d'"
 alias lm="ll |more"
-alias lr="ll -R"		# Recursive
-alias la="ll -A"		# SHow hidden files
-alias tree="tree -Csuh"		# Alternative to recursive ls
+alias lr="ll -R"                # Recursive
+alias la="ll -A"                # SHow hidden files
+alias tree="tree -Csuh"         # Alternative to recursive ls
 
 unset -v colorflag
 
