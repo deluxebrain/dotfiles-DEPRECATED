@@ -1,47 +1,10 @@
 #!/bin/bash
 
-DEPENDS_ON core
+echo "Creating Vagrant home directory ..." >&2
+sudo mkdir -p /var/vagrant/home
+sudo chmod a+rwx /var/vagrant/home
 
-USE_GLOBAL_ERROR_HANDLER
-
-function setup_cache_directory()
-{
-  local cache_dir
-
-  sudo mkdir -p /var/cache/vagrant
-  sudo chmod a+rwx /var/cache/vagrant
-  mkdir -p "${HOME}/.vagrant.d"
-
-  cache_dir="${HOME}/.vagrant.d/cache"
-  # if cache exists but is not a symlink ...
-  if [[ -d "$cache_dir" && ! -L "$cache_dir" ]]; then
-    msg_prompt "Overwrite vagrant cache directory? [y/n]"
-    read -n 1 -r -s
-    if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
-      msg_error "Unable to overwrite vagrant cache directory"
-      return 1
-    fi
-
-    rm -rf "$cache_dir"
-  fi
-
-  msg_info "Linking /var/cache/vagrant to ${cache_dir}"
-  ln -sfn /var/cache/vagrant "$cache_dir"
-}
-
-function setup_clone_directory()
-{
-  sudo mkdir -p /var/vagrant
-  sudo chmod a+rwx /var/vagrant
-}
-
-
-main()
-{
-  setup_cache_directory
-  setup_clone_directory
-}
-
-main
-exit $?
+echo "Creating Vagrant clone directory ..." >&2
+sudo mkdir -p /var/vagrant/clone
+sudo chmod a+rwx /var/vagrant/clone
 

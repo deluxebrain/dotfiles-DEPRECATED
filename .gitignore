@@ -4,3 +4,7 @@ config.dotfile/.mono
 
 # Elixir
 mix.lock
+
+# Vagrant
+.vagrant
+
