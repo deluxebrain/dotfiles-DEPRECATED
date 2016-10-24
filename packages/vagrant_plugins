@@ -28,3 +28,8 @@ vagrant-aws-winrm # doesnt appear to work
 # load environment variables from .env
 vagrant-env
 
+# vmware fusion plugin is a paid for commercial product
+# in *addidion* to vmware fusion
+# $ vagrant plugin license vagrant-vmware-fusion ~/license.lic
+vagrant-vmware-fusion
+
