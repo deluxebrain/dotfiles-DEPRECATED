@@ -8,6 +8,7 @@
 
 if [ -z "$1" ]; then
   echo "Usage: ${BASH_SOURCE[0]} email-address" >&2
+  exit 1
 fi
 
 echo "Creating ssh directory and setting permissions ..." >&2
@@ -39,39 +40,39 @@ chmod 600 "${HOME}/.ssh/id_rsa"
 chmod 644 "${HOME}/.ssh/id_rsa.pub"
 
 echo "Adding default keypair to ssh-agent" >&2
-ssh-add -K "${HOME}/.ssh/id_rsa" || exit 1
+ssh-add -K "${HOME}/.ssh/id_rsa" > dev/null || exit 1
 if (( $(ssh-add -l | grep -c "id_rsa") != 1 )); then
   echo "Error: unable to add default key to ssh-agent" >&2
   exit
 fi
 
-if [ -f "${HOME}/.ssh/config" ]; then
+if [ ! -f "${HOME}/.ssh/config" ]; then
   echo "Creating ssh config file ..." >&2
   touch "${HOME}/.ssh/config"
 fi
 
 if (( $(grep -i -c "Host github.com" "${HOME}/.ssh/config") == 0 )); then
   echo "Adding entries to ssh config for default ssh keypair ..." >&2
-  cat >> "${HOME}/.ssh.config" <<-EOF
-  Host github.com
-    User git
-    Hostname github.com
-    PreferredAuthentication publickey
-    IdentitiesOnly yes
-    IdentityFile ~/.ssh/id_rsa
+  cat >> "${HOME}/.ssh/config" <<EOF
+Host github.com
+  User git
+  Hostname github.com
+  PreferredAuthentication publickey
+  IdentitiesOnly yes
+  IdentityFile ~/.ssh/id_rsa
 
-  # Example usage for using non-default keypair via a host alias
-  # Mapped back onto the default keypair here in this case
-  # $ git clone git@default-github.com:user/repos
-  Host default-github.com
-    User git
-    Hostname github.com
-    PreferredAuthentication publickey
-    IdentitiesOnly yes
-    IdentityFile ~/.ssh/id_rsa
-	EOF
+# Example usage for using non-default keypair via a host alias
+# Mapped back onto the default keypair here in this case
+# $ git clone git@default-github.com:user/repos
+Host default-github.com
+  User git
+  Hostname github.com
+  PreferredAuthentication publickey
+  IdentitiesOnly yes
+  IdentityFile ~/.ssh/id_rsa
+EOF
 fi
 
-echo "Copying public key to the clipboard - please add to github ..." >&2
+echo "Copying public key to the clipboard ready to add to github ..." >&2
 pbcopy < "${HOME}/.ssh/id_rsa.pub"
 

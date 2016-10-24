@@ -33,3 +33,9 @@ vagrant-env
 # $ vagrant plugin license vagrant-vmware-fusion ~/license.lic
 vagrant-vmware-fusion
 
+# Timezone support
+# sudo systemsetup -settimezone
+# sudo systemsetup -gettimezone
+# sudo systemsetup -listtimezones
+vagrant-timezone
+
