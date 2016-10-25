@@ -10,8 +10,6 @@ USE_GLOBAL_ERROR_HANDLER
 
 function install_prequisites()
 {
-  msg_info "Installing prerequisites ..."
-
   # Ensure xcode command line tools are installed
   msg_info "Installing XCode CLI tools if they are missing ..."
   sudo xcode-select --install
@@ -19,6 +17,9 @@ function install_prequisites()
 
 function main()
 {
+  msg_info "Installing prerequisites ..."
+  install_prequisites
+
   msg_info "Calling symlink installer ..."
   ./scripts/link-repos-to-home
 }
