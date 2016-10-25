@@ -57,7 +57,7 @@ function prompt_for_file_overwrite_action()
   OFS=$IFS
   IFS=","
   # use an array so we can use multi-word option strings
-  optionstring="Overwrite, Overwrite all, Backup, Backup all, Skip, Skip all, Exit"
+  optionstring="Overwrite,Overwrite all,Backup,Backup all,Skip,Skip all,Exit"
   # form an array from our options string ( splitting on , )
   options=( $optionstring )
   IFS=$OFS
