@@ -233,7 +233,7 @@ function link_files()
       msg_error "Bailing out due to problem linking $src to $dst"
       false; return
     fi
-  done
+  done < /dev/tty
 }
 
 # Entry point
