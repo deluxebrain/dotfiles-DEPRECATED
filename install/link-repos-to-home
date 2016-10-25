@@ -1,0 +1,260 @@
+#!/usr/bin/env bash
+
+_SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$_SCRIPT_PATH"
+
+# Bring in the core library and enable global error handler
+# No futher need to check return codes after this point ...
+source ../lib/core.sh || exit 1
+USE_GLOBAL_ERROR_HANDLER
+
+_DEBUG=false
+
+# \\
+# Utility functions
+# //
+
+function path_exists()
+{
+  local path
+  path="$1"
+
+  # check if paths  exists (in one of various forms)
+  # [[		: Allow for construction of complex expressions ( use of && and grouping )
+  # -L		: file exists and is a symlink
+  [[ -n "$path" && (-f "$path" || -d "$path" || -L "$path" ) ]]
+}
+
+function dst_points_to_src()
+{
+  local src dst target
+
+  src="$1"
+  dst="$2"
+
+  # check if dst is a symlink that points to src
+  # readlink returns blank and error if not a symlink
+  target="$(readlink $"dst" > /dev/null >&2)" || return
+  [ "$target" == "$src" ]
+}
+
+function get_link_type()
+{
+	local src
+	src="$1"
+
+	# ##  : Greedy front trim
+	# *.  : Match anything followed by last .
+	echo "${src##*.}"
+}
+
+# \\
+# UI functions
+# //
+
+function prompt_for_file_overwrite_action()
+{
+  local src dst optionstring options OFS action
+
+  src="$1"
+  dst="$2"
+  optionstring="Overwrite, Overwrite all, Backup, Backup all, Skip, Skip all"
+  # capture current IFS so we can set back later
+  OFS=$IFS
+  IFS=","
+
+  # form an array from our options string ( splitting on , )
+  options=( $optionstring )
+  IFS=$OFS
+
+  # display list of menu items using strings from the options array
+  # the prompt string for the select is taken from PS3
+  PS3="File already exists $(basename "$src"); what do you want todo?"
+  select action in "${options[@]}"; do
+    case "$action" in
+      o) g_overwrite=true ;;
+      O) g_overwrite_all=true ;;
+      b) g_backup=true ;;
+      B) g_backup_all=true ;;
+      s) g_skip=true ;;
+      S) g_skip_all=true ;;
+      *) ;;
+    esac
+  done
+}
+
+# \\
+# Strategy functions
+# //
+
+function destination_exists_strategy()
+{
+  local src dst
+
+  src="$1"
+  dst="$2"
+
+  if $g_overwrite_all || $g_backup_all || $g_skip_all; then
+    # global strategy in place - no more action required
+    true; return
+  fi
+
+  if dst_points_to_src "$src" "$dst"; then
+    # destination points to source - skip current file
+    g_skip=true;
+    true; return
+  fi
+
+  # user intervention required
+  prompt_for_file_overwrite_action "$src" "$dst"
+}
+
+function form_backup_path()
+{
+  local path
+
+  path="$1"
+  echo "${path}.backup"
+}
+
+function form_link_path()
+{
+  local src dst
+  local link_type
+
+  src="$1"
+  link_type="$(get_link_type "$src")"
+
+  case "$link_type" in
+  dotfile)
+    dst="${HOME}/.$(basename "${src%.dotfile}")" ;;
+  symlink)
+    dst="${HOME}/$(basename "${src%.symlink}")" ;;
+  local)
+    dst="${HOME}/.$(basename "${src%.local}")" ;;
+  *)
+    echo "unknown link format ${link_type}"
+    false; return ;;
+  esac
+
+  echo "$dst"
+}
+
+# \\
+# Coordinating functions
+# //
+
+function link_file()
+{
+  local src dst backup_path link_type
+  local g_overwrite g_backup g_skip
+
+  src="$1"
+  dst="$2"
+
+  g_overwrite=false
+  g_backup=false
+  g_skip=false
+
+  msg_info "Linking source path ${src} to destination path ${dst} ..."
+
+  # 1. work out what todo when source points to an existing destination
+  if path_exists "$dst"; then
+	  destination_exists_strategy "$src" "$dst"
+
+    # quasi-booleans ...
+    # Note the variables are NOT surrounded by quotes
+    # Hence they will be evaluated as commands
+    # Note it is possible to form complex expressions
+    if $g_overwrite_all || $g_overwrite; then
+      msg_info "removing $dst ..."
+      DEBUG; rm -rf "$dst"
+    elif $g_backup_all || $g_backup; then
+      backup_path="$(form_backup_path "$dst")"
+      msg_info "backing up $dst to $backup_path ..."
+      DEBUG; mv "$dst" "$backup_path"
+    elif $g_skip_all || $g_skip; then
+      msg_info "skipping $src"
+      true; return
+    fi
+  fi
+
+  # 2. link the file
+  link_type="$(get_link_type "$dst")"
+  case "$link_type" in
+  dotfile|symlink)
+    # link target to point at source
+    # -s	: create a symbolic link
+    # -f	: unlink the target if it exists
+    # -n	: if target is already a symlink, dont follow it
+    msg_info "linking $src to $dst ..."
+    DEBUG; ln -sfn "$src" "$dst"
+    ;;
+  local)
+    # create a standalone dotfile that is outside of the repository
+    # this is done by a simple templating function as the packages
+    # ( of which we would use envsubst ) have not yet been installed
+    msg_info "Rendering local file $dst from $src ..."
+    # DEBUG; _render_template "$src" > "$dst"
+    DEBUG; cp "$src" "$dst"
+    ;;
+  *)
+    echo "unknown link format $link_type"
+    false; return;
+    ;;
+  esac
+}
+
+function link_files()
+{
+  local src dst
+
+  msg_info "Installing dotfiles ..."
+  # Find:
+  # -H	      : For symlinks use the file info of the linked file
+  # -not -path  : Exclude .git directory and contents
+  # -o for or, -not for not
+  # Complex logical statements can be built up using escaped brackets
+  # Note use absolute path for find so that absolute paths are returned
+  msg_info "Looking for files and directories to link within $(pwd) ..."
+  find -H "$(pwd)" -maxdepth 3 \
+    \( -name '*.symlink' -o -name '*.dotfile' -o -name '*.local' \) \
+    -not -path '*.git*' | while read -r src
+  do
+    dst="$(form_link_path "$src")"
+    link_file "$src" "$dst"
+  done
+}
+
+# \\
+# Entry point
+# //
+
+function main()
+{
+  local g_overwrite_all g_backup_all g_skip_all
+
+  g_overwrite_all=false
+  g_backup_all=false
+  g_skip_all=false
+
+  # e.g. fA:x
+  # expect flag -f, argument -A, flag -x
+  # if very first character is : then  use silent error reporting
+  while getopts ":fv" opt; do
+    case $opt in
+    f)
+      g_overwrite_all=true ;;
+    v)
+      _DEBUG=true ;;
+    esac
+  done
+
+  # Change into the root git directory for the current script
+  cd "$(git rev-parse --show-toplevel)"
+  link_files
+}
+
+main "$@"
+exit $?
+
