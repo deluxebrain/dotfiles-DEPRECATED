@@ -52,26 +52,28 @@ function prompt_for_file_overwrite_action()
 
   src="$1"
   dst="$2"
-  optionstring="Overwrite, Overwrite all, Backup, Backup all, Skip, Skip all, Exit"
+
   # capture current IFS so we can set back later
   OFS=$IFS
   IFS=","
-
+  # use an array so we can use multi-word option strings
+  optionstring="Overwrite, Overwrite all, Backup, Backup all, Skip, Skip all, Exit"
   # form an array from our options string ( splitting on , )
   options=( $optionstring )
   IFS=$OFS
 
   # display list of menu items using strings from the options array
   # the prompt string for the select is taken from PS3
+  # NOTE pipe from tty as stdin is already in use (as in while loop)
   PS3="File already exists $(basename "$src"); what do you want todo?"
   select action in "${options[@]}"; do
     case "$action" in
-      Overwrite) g_overwrite=true ;;
-      "Overwrite all") g_overwrite_all=true ;;
-      Backup) g_backup=true ;;
-      "Backup all") g_backup_all=true ;;
-      Skill) g_skip=true ;;
-      "Skill all") g_skip_all=true ;;
+      Overwrite) g_overwrite=true; break ;;
+      "Overwrite all") g_overwrite_all=true; break ;;
+      Backup) g_backup=true; break ;;
+      "Backup all") g_backup_all=true; break ;;
+      Skill) g_skip=true; break ;;
+      "Skill all") g_skip_all=true; break ;;
       Exit) exit 1 ;;
       *) msg_warn "Invalid selection" ;;
     esac
