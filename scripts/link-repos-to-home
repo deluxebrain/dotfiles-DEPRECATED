@@ -74,7 +74,7 @@ function prompt_for_file_overwrite_action()
       S) g_skip_all=true ;;
       *) ;;
     esac
-  done
+  done < /dev/tty
 }
 
 # Strategy functions
@@ -233,7 +233,7 @@ function link_files()
       msg_error "Bailing out due to problem linking $src to $dst"
       false; return
     fi
-  done < /dev/tty
+  done
 }
 
 # Entry point
