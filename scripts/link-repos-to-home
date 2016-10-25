@@ -6,10 +6,7 @@ cd "$_SCRIPT_PATH" || exit 1
 
 # Bring in the core library and enable global error handler
 # No futher need to check return codes after this point ...
-source ../lib/core.sh || exit 1
-USE_GLOBAL_ERROR_HANDLER
-
-_DEBUG=false
+source ../lib/cli-utils.sh || exit 1
 
 # Utility functions
 
@@ -153,7 +150,7 @@ function link_file()
 
   # 1. work out what todo when source points to an existing destination
   if path_exists "$dst"; then
-	  destination_exists_strategy "$src" "$dst"
+    destination_exists_strategy "$src" "$dst"
 
     # quasi-booleans ...
     # Note the variables are NOT surrounded by quotes
@@ -161,11 +158,19 @@ function link_file()
     # Note it is possible to form complex expressions
     if $g_overwrite_all || $g_overwrite; then
       msg_info "removing $dst ..."
-      DEBUG; rm -rf "$dst"
+      rm -rf "$dst"
+      if (( $? != 0 )); then
+	msg_error "Unable to delete $dst"
+	false; return;
+      fi
     elif $g_backup_all || $g_backup; then
       backup_path="$(form_backup_path "$dst")"
       msg_info "backing up $dst to $backup_path ..."
-      DEBUG; mv "$dst" "$backup_path"
+      mv -f "$dst" "$backup_path"
+      if (( $? != 0 )); then
+	msg_error "Unable to backup $dst to $backup_path"
+	false; return;
+      fi
     elif $g_skip_all || $g_skip; then
       msg_info "skipping $src"
       true; return
@@ -181,7 +186,11 @@ function link_file()
     # -f	: unlink the target if it exists
     # -n	: if target is already a symlink, dont follow it
     msg_info "linking $src to $dst ..."
-    DEBUG; ln -sfn "$src" "$dst"
+    ln -sfn "$src" "$dst"
+    if (( $? != 0 )); then
+      msg "Unable to link $src to $dst"
+      false; return;
+    fi
     ;;
   local)
     if [ ! -d "$src" ]; then
@@ -192,8 +201,8 @@ function link_file()
     # this is done by a simple templating function as the packages
     # ( of which we would use envsubst ) have not yet been installed
     msg_info "Syncing local file $dst from $src ..."
-    # DEBUG; _render_template "$src" > "$dst"
-    DEBUG; rsync -a --update "$src" "$dst"
+    # render_template "$src" > "$dst"
+    rsync -a --update "$src" "$dst"
     ;;
   *)
     msg_error "unknown link format $link_type"
@@ -220,6 +229,10 @@ function link_files()
   do
     dst="$(form_link_path "$src")"
     link_file "$src" "$dst"
+    if (( $? != 0 )); then
+      msg_error "Bailing out due to problem linking $src to $dst"
+      false; return
+    fi
   done
 }
 
@@ -240,13 +253,11 @@ function main()
     case $opt in
     f)
       g_overwrite_all=true ;;
-    v)
-      _DEBUG=true ;;
     esac
   done
 
   # Change into the root git directory for the current script
-  cd "$(git rev-parse --show-toplevel)"
+  cd "$(git rev-parse --show-toplevel)" || return
   link_files
 }
 

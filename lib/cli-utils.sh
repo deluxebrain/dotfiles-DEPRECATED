@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-[ -z "${__CORE+.}" ] && readonly __CORE= || return 0
+[ -z "${__CLI_UTILS+.}" ] && readonly __CLI_UTILS= || return 0
 
 # Pens
 #+ http://linuxcommand.org/lc3_adv_tput.php
@@ -63,86 +63,6 @@ export PEN_INFO=${BBLUE}${ON_WHITE}
 export PEN_OK=${BGREEN}${ON_WHITE}
 export PEN_DEBUG=${BORANGE}${ON_WHITE}
 
-# Global error handlers
-
-function __exit_handler()
-{
-  # Clean up the named pipe thats been used for storing stderr
-  rm "$ERR_PIPE"
-}
-
-function __error_handler()
-{
-  local message
-  local line_no
-  local code
-
-  # We need to read through all the lines to get to the last one
-  # (which will be the error)
-  # Note - this will block waiting for more input
-  # Hence the timeout option on the read
-  local message_line
-  while read -r -s -t 1 message_line; do
-    message="$message_line"
-  done <"$ERR_PIPE"
-
-  line_no="$1"
-  code="${2:-1}"
-  msg_error "Error on line ${line_no}: ${message}; exiting with status ${code}"
-  exit "${code}"
-}
-
-function __debug_handler()
-{
-  if $__DEBUG; then
-    msg_debug "$BASH_COMMAND"
-    __DEBUG=false
-  fi
-}
-
-function USE_GLOBAL_ERROR_HANDLER()
-{
-  # Inherit traps on ERR within shell functions, command substitutions and subshells
-  set -o errtrace
-
-  # Inherit traps on DEBUG and RETURN within shell functions, command substitutions and subshells
-  set -o functrace
-
-  # Cause any failure anywhere in a pipeline to cause the entire pipeline to fail
-  set -o pipefail
-
-  # Exit the script on any attempt to use an uninitialized variable
-  set -o nounset
-
-  # Dont exit the script if any statement returns a non-true return code
-  # (We want out error handler to fire instead)
-  set +o errexit
-
-  # create a temporary named pipe
-  ERR_PIPE="$(mktemp -u)"
-  mkfifo "$ERR_PIPE"
-
-  # Redirect stderr to the fifo pipe via tee
-  # Note tee splits to a file and stdin hence we need to redirect stdin back to stderr
-  exec 2> >(tee "$ERR_PIPE" >&2)
-
-  # wire up traps
-  trap '__exit_handler' EXIT
-  trap '__error_handler ${LINENO} $?' ERR
-  trap '__debug_handler' DEBUG
-}
-
-# Script debugging and tracing
-
-_DEBUG=false	  # Set to true to echo instead of executing a command
-__DEBUG=false	  # Internal variable related to debugging
-function DEBUG()
-{
-  if $_DEBUG; then
-    __DEBUG=true
-  fi
-}
-
 # Pretty print
 
 function msg_info()
@@ -179,25 +99,5 @@ function fail()
 {
   printf " [ %sFAIL%s ] %s\n" "${PEN_ALERT}" "${PEN_RESET}" "$1" >&2
   exit 1
-}
-
-# Core helpers when only sourcing core
-
-function _join()
-{
-  # Set expansion character
-  local IFS="$1"
-
-  # shift past the first argument (the separator)
-  shift
-
-  # Expand args to "$1c$2c..." where c is first character if IFS
-  echo "$*"
-}
-
-# Generate file from a template
-function _render_template()
-{
-  eval "echo \"$(cat "$1")\""
 }
 

@@ -13,6 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.timezone.value = :host
   end
 
+  # Configure guest metal here
   config.vm.provider "vmware_fusion" do |v|
     v.gui = true
     v.vmx["memsize"] = "8192"

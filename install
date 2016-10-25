@@ -5,14 +5,16 @@ cd "$_SCRIPT_PATH" || exit 1
 
 # Bring in the core library and enable global error handler
 # No futher need to check return codes after this point ...
-source ./lib/core.sh || exit 1
-USE_GLOBAL_ERROR_HANDLER
+source ./lib/cli-utils.sh || exit 1
 
 function install_prequisites()
 {
   # Ensure xcode command line tools are installed
-  msg_info "Installing XCode CLI tools if they are missing ..."
-  sudo xcode-select --install
+  msg_info "Installing XCode CLI tools  ..."
+  sudo xcode-select --install > /dev/null 2>&1
+  if (( $? != 0 )); then
+    msg_info "Already installed"
+  fi
 }
 
 function main()
@@ -22,6 +24,10 @@ function main()
 
   msg_info "Calling symlink installer ..."
   ./scripts/link-repos-to-home
+  if (( $? != 0 )); then
+    msg_error "Unexpected issue installing the symlinks"
+    false; return;
+  fi
 }
 
 main
