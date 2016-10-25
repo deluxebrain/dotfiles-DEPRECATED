@@ -2,6 +2,6 @@
 # Sourced by main shell dotfile
 
 # Github API token for homebrew
-#+ https://github.com/settings/tokens
-#+ Remove ALL scopes
-export HOMEBREW_GITHUB_API_TOKEN="${HOMEBREW_GITHUB_API_TOKEN}"
+# https://github.com/settings/tokens
+export HOMEBREW_GITHUB_API_TOKEN=""
+

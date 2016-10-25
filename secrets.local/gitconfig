@@ -1,5 +1,0 @@
-[user]
-
-	name = "$(git config user.name)"
-	email = "$(git config user.email)"
-

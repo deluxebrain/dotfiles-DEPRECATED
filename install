@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+_SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$_SCRIPT_PATH" || exit 1
+
+# Bring in the core library and enable global error handler
+# No futher need to check return codes after this point ...
+source ./lib/core.sh || exit 1
+USE_GLOBAL_ERROR_HANDLER
+
+function install_prequisites()
+{
+  msg_info "Installing prerequisites ..."
+
+  # Ensure xcode command line tools are installed
+  msg_info "Installing XCode CLI tools if they are missing ..."
+  sudo xcode-select --install
+}
+
+function main()
+{
+  msg_info "Calling symlink installer ..."
+  ./scripts/link-repos-to-home
+}
+
+main
+exit $?
+

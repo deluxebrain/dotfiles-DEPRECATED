@@ -48,11 +48,11 @@ function set_shelloptions()
   # wc **/*.py -l
   shopt -s globstar
 }
-  
+
 function start_tmux()
 {
   local client_count client_id
-  local grouped_session 
+  local grouped_session
 
   # Return if tmux has already been fired up
   [ -z "${TMUX}" ] || return;
@@ -69,8 +69,8 @@ function start_tmux()
   local global_session="${USER}"
 
   # does this session already exist?
-  # create it if not 
-  # -d	: detached from current terminal  
+  # create it if not
+  # -d	: detached from current terminal
   if ! tmux has-session -t "${global_session}" &>2 /dev/null ; then
     tmux new-session -d -s "${global_session}"
   fi
@@ -89,7 +89,7 @@ function start_tmux()
     done
 
     # -2	: 256 color
-    # -t    : grouped with named session so they share same set of windows 
+    # -t    : grouped with named session so they share same set of windows
     # exec	: replace the current shell (needed to make exit work)
     # set to automatically destroy the grouped session when last window closed
     exec tmux -2 new-session -d \
@@ -100,7 +100,7 @@ function start_tmux()
       \; attach-session -t "${grouped_session}"
   else
       exec tmux -2 attach-session -t "${global_session}"
-  fi 
+  fi
 }
 
 function main()
@@ -110,12 +110,12 @@ function main()
   # Bring in global (checked into git) and local (not-checked into git) exports
   # shellcheck source=/dev/null
   [ -f "${HOME}"/.environment/path ] && source "${HOME}"/.environment/path
-  
+
   # shellcheck source=/dev/null
   [ -f "${HOME}"/.environment/exports ] && source "${HOME}"/.environment/exports
-  
+
   # shellcheck source=/dev/null
-  [ -f "${HOME}"/secrets/localrc ] && source "${HOME}"/secrets/localrc
+  [ -f "${HOME}"/.secrets/localrc ] && source "${HOME}"/secrets/localrc
 
   # Bring in helper functions
   local file
@@ -126,7 +126,7 @@ function main()
 
   # Set item to use the generated dynamic profile
   [ -n "${ITERM_PROFILE_NAME}" ] && set_iterm_profile "${ITERM_PROFILE_NAME}"
-  
+
   # shellcheck source=/dev/null
   [ -f "${HOME}"/.bashrc ] && source "${HOME}"/.bashrc
 }

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 _SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd "$_SCRIPT_PATH"
+# shellcheck source=/dev/null
+cd "$_SCRIPT_PATH" || exit 1
 
 # Bring in the core library and enable global error handler
 # No futher need to check return codes after this point ...
@@ -10,9 +11,7 @@ USE_GLOBAL_ERROR_HANDLER
 
 _DEBUG=false
 
-# \\
 # Utility functions
-# //
 
 function path_exists()
 {
@@ -48,9 +47,7 @@ function get_link_type()
 	echo "${src##*.}"
 }
 
-# \\
 # UI functions
-# //
 
 function prompt_for_file_overwrite_action()
 {
@@ -83,9 +80,7 @@ function prompt_for_file_overwrite_action()
   done
 }
 
-# \\
 # Strategy functions
-# //
 
 function destination_exists_strategy()
 {
@@ -140,9 +135,7 @@ function form_link_path()
   echo "$dst"
 }
 
-# \\
 # Coordinating functions
-# //
 
 function link_file()
 {
@@ -226,9 +219,7 @@ function link_files()
   done
 }
 
-# \\
 # Entry point
-# //
 
 function main()
 {
