@@ -52,7 +52,7 @@ function prompt_for_file_overwrite_action()
 
   src="$1"
   dst="$2"
-  optionstring="Overwrite, Overwrite all, Backup, Backup all, Skip, Skip all"
+  optionstring="Overwrite, Overwrite all, Backup, Backup all, Skip, Skip all, Exit"
   # capture current IFS so we can set back later
   OFS=$IFS
   IFS=","
@@ -66,13 +66,14 @@ function prompt_for_file_overwrite_action()
   PS3="File already exists $(basename "$src"); what do you want todo?"
   select action in "${options[@]}"; do
     case "$action" in
-      o) g_overwrite=true ;;
-      O) g_overwrite_all=true ;;
-      b) g_backup=true ;;
-      B) g_backup_all=true ;;
-      s) g_skip=true ;;
-      S) g_skip_all=true ;;
-      *) ;;
+      Overwrite) g_overwrite=true ;;
+      "Overwrite all") g_overwrite_all=true ;;
+      Backup) g_backup=true ;;
+      "Backup all") g_backup_all=true ;;
+      Skill) g_skip=true ;;
+      "Skill all") g_skip_all=true ;;
+      Exit) exit 1 ;;
+      *) msg_warn "Invalid selection" ;;
     esac
   done < /dev/tty
 }
