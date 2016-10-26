@@ -169,7 +169,9 @@ function link_file()
     elif $g_backup_all || $g_backup; then
       backup_path="$(form_backup_path "$dst")"
       msg_info "backing up $dst to $backup_path ..."
-      mv -f "$dst" "$backup_path"
+      # Note use cp -L to unlink any symlinks so we get a hard backup
+      cp -f -r -L "$dst" "$backup_path"
+      rm -rf "$dst"
       if (( $? != 0 )); then
 	msg_error "Unable to backup $dst to $backup_path"
 	false; return;
