@@ -72,8 +72,8 @@ function prompt_for_file_overwrite_action()
       "Overwrite all") g_overwrite_all=true; break ;;
       Backup) g_backup=true; break ;;
       "Backup all") g_backup_all=true; break ;;
-      Skill) g_skip=true; break ;;
-      "Skill all") g_skip_all=true; break ;;
+      Skip) g_skip=true; break ;;
+      "Skip all") g_skip_all=true; break ;;
       Exit) exit 1 ;;
       *) msg_warn "Invalid selection" ;;
     esac
@@ -170,7 +170,7 @@ function link_file()
       backup_path="$(form_backup_path "$dst")"
       msg_info "backing up $dst to $backup_path ..."
       # Note use cp -L to unlink any symlinks so we get a hard backup
-      cp -f -r -L "$dst" "$backup_path"
+      cp -f -R -L "$dst" "$backup_path"
       rm -rf "$dst"
       if (( $? != 0 )); then
 	msg_error "Unable to backup $dst to $backup_path"
@@ -198,15 +198,8 @@ function link_file()
     fi
     ;;
   local)
-    if [ ! -d "$src" ]; then
-      msg_error "local syncing only supports directories"
-      false; return;
-    fi
     # create a standalone dotfile that is outside of the repository
-    # this is done by a simple templating function as the packages
-    # ( of which we would use envsubst ) have not yet been installed
     msg_info "Syncing local file $dst from $src ..."
-    # render_template "$src" > "$dst"
     rsync -a --update "$src" "$dst"
     ;;
   *)
