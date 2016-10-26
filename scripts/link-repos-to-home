@@ -200,7 +200,8 @@ function link_file()
   local)
     # create a standalone dotfile that is outside of the repository
     msg_info "Syncing local file $dst from $src ..."
-    rsync -a --update "$src" "$dst"
+    # ensure the destination has no trailing slashes
+    rsync -a --update "$src" "${dst%/}"
     ;;
   *)
     msg_error "unknown link format $link_type"
