@@ -5,6 +5,7 @@ sudo mkdir -p /var/vagrant/home
 sudo chmod a+rwx /var/vagrant/home
 
 echo "Creating Vagrant clone directory ..." >&2
-sudo mkdir -p /var/vagrant/clone
-sudo chmod a+rwx /var/vagrant/clone
+sudo mkdir -p /var/vagrant/vmware-clone
+sudo chmod a+rwx /var/vagrant/vmware-clone
+
 

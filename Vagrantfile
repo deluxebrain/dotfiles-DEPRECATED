@@ -1,10 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure("2") do |config|
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "macOS_10_12_Sierra_vmware"
+  config.vm.box = "macOS_10_12_sierra_vmware"
 
   if Vagrant.has_plugin?("vagrant-timezone")
     # match host timezone

@@ -17,9 +17,9 @@
 unset is_interactive
 function is_interactive()
 {
-	# $-	| current options set for the shell
-	[[ $- == *i* ]] 
-	return
+  # $-	| current options set for the shell
+  [[ $- == *i* ]]
+  return
 }
 export -f is_interactive && readonly -f is_interactive
 
@@ -28,10 +28,10 @@ export -f is_interactive && readonly -f is_interactive
 unset is_login
 function is_login()
 {
-	# shopt		| bash set options
-	# login_shell	| read-only shell descriptor set by then shell when is login shell
-	shopt -q login_shell
-	return
+  # shopt		| bash set options
+  # login_shell	| read-only shell descriptor set by then shell when is login shell
+  shopt -q login_shell
+  return
 }
 export -f is_login && readonly -f is_login
 
@@ -40,11 +40,12 @@ export -f is_login && readonly -f is_login
 unset manup
 function manup()
 {
-        case "$(type -t "$1")" in
-                # ${parameter:-word}
-                #+ If 'parameter' is unset or null use the expansion of 'word'
-                builtin) help "$1" | "${PAGER:-less}";;         # builtin
-                *) command -p man "$@";;                        # external command
-        esac
+  case "$(type -t "$1")" in
+    # ${parameter:-word}
+    #+ If 'parameter' is unset or null use the expansion of 'word'
+    builtin) help "$1" | "${PAGER:-less}";;         # builtin
+    *) command -p man "$@";;                        # external command
+  esac
 }
 export -f manup && readonly -f manup
+

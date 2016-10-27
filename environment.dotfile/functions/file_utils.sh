@@ -10,9 +10,9 @@ export -f cdl && readonly -f cdl
 
 # Create a new directory and enter it
 unset mkd
-function mkd() 
+function mkd()
 {
-    mkdir -p "$@" && cd "$_" || exit 1
+  mkdir -p "$@" && cd "$_" || exit 1
 }
 export -f mkd && readonly -f mkd
 
@@ -23,6 +23,6 @@ export -f mkd && readonly -f mkd
 unset tre
 function tre()
 {
-        tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | ${PAGER:-less} -FRNX;
+  tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | ${PAGER:-less} -FRNX;
 }
 export -f tre && readonly -f tre

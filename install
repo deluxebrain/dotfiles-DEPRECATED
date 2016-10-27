@@ -7,6 +7,19 @@ cd "$_SCRIPT_PATH" || exit 1
 # No futher need to check return codes after this point ...
 source ./lib/cli-utils.sh || exit 1
 
+# https://gist.github.com/cowboy/3118588
+function sudo_keepalive()
+{
+  # Ask for administrator password upfront
+  sudo -v
+
+  # Keep-alive: update existing sudo timestamp if set
+  #+ $$: PID of the parent process (or parent script)
+  #+ kill -0 PID: exits with 0 if the process associated with PID is running
+  #+ kill -0 "$$" || exit: aborts while loop after process stops running
+  while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+}
+
 function install_prequisites()
 {
   # Ensure xcode command line tools are installed
@@ -19,8 +32,12 @@ function install_prequisites()
 
 function main()
 {
+  msg_warn "** Asking for sudo privileges up front ***"
+  msg_warn "These privileges will last for the duration of the running of this script"
+  sudo_keepalive || return
+
   msg_info "Installing prerequisites ..."
-  install_prequisites
+  install_prequisites || return
 
   msg_info "Calling symlink installer ..."
   ./scripts/link-repos-to-home

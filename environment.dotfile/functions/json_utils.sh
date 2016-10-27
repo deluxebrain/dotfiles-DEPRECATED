@@ -4,7 +4,7 @@
 unset jpp
 function jpp()
 {
-	jq '.' < "$1"
+  jq '.' < "$1"
 }
 export -f jpp && readonly -f jpp
 

@@ -2,7 +2,7 @@
 
 ## Karabiner
 
-1. Grant Karabiner accessility acess 
+1.  Grant Karabiner accessility acess 
 
 System Preferences ...
 	Securiy & Privacy
@@ -11,7 +11,7 @@ System Preferences ...
 
 NOTE: automated via the tccutil cli utility.
 
-2. Delegate key repeat control to Karabiner 
+2.  Delegate key repeat control to Karabiner 
 
 Karabiner ...
 	Preferences ...
@@ -22,7 +22,7 @@ NOTE: It doesnt appear possible to automate this step either via the Karabiner C
 
 ## Seil
 
-1. Remove OS X caps lock binding 
+1.  Remove OS X caps lock binding 
 
 System Preferences  ...
 	Keyboard ...
@@ -30,4 +30,3 @@ System Preferences  ...
 			Caps Lock: No Action
 
 NOTE: Automated via the unmap_caps.scpt apple script.
-
