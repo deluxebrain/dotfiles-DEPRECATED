@@ -1,49 +1,33 @@
 #!/bin/bash
-#
-# Homebrew
-#
-# This installs some of the common dependencies needed (or at least desired)
-# using Homebrew.
 
-CWD="${BASH_SOURCE%/*}" # path to executing script
-
-function main()
+function app_exists()
 {
-	# Check for github api token and warn if missing
-	[ ! "${HOMEBREW_GITHUB_API_TOKEN}" ] && \
-		msg_ "HOMEBREW_GITHUB_API_TOKEN environment variable is not set"
-
-	__install_brew
-        __install_brew_packages
-        __install_cask_packages
-
-	brew cleanup && brew cask cleanup
-
-	# Report success status back to parent shell
-        exit 0
-      }
-
-
-
-function install_brew()
-{
-  app_exists? "brew" || {
-	  print_info "Installing Homebrew ..."
-	  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  }
-
-  app_exists? "brew cask" || {
-	  print_info "Installing Cask ..."
-	  brew install caskroom/cask/brew-cask
-  }
-  brew tap caskroom/versions
-
-  print_info "Updating Homebrew ..."
-  brew update
-
-  print_info "Checking for updates to any pre-existing formulae ..."
-  brew upgrade
+  # command -v	: describe a command without executiing it, exit 1 if doesnt exist
+  command -v "$1" >/dev/null 2>&1
 }
 
-main "$@"
+if [ ! "$HOMEBREW_GITHUB_API_TOKEN" ]; then
+  echo "Please set the HOMEBREW_GITHUB_API_TOKEN environment variable and retry" >&2
+  return 1
+fi
+
+if ! app_exists "brew"; then
+  echo "Installing Homebrew ..." >&2
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
+if ! app_exists "brew cask"; then
+  echo "Installing Cask ..." >&2
+  brew install caskroom/cask/brew-cask
+fi
+
+echo "Updating Homebrew ..." >&2
+brew update
+
+echo "Checking for updates to any pre-existing formulae ..." >&2
+brew upgrade
+
+echo "Cleaning up outdated formuale ..." >&2
+brew cleanup
+brew cask cleanup
 

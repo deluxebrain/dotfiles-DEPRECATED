@@ -32,6 +32,13 @@ function install_prequisites()
 
 function main()
 {
+  # we are going to be doing a lot of brew installations
+  # so ask for the github api token up front
+  if [ ! "$HOMEBREW_GITHUB_API_TOKEN" ]; then
+    msg_error "Please set the HOMEBREW_GITHUB_API_TOKEN environment variable and retry"
+    return 1
+  fi
+
   msg_warn "** Asking for sudo privileges up front ***"
   msg_warn "These privileges will last for the duration of the running of this script"
   sudo_keepalive || return
@@ -43,7 +50,14 @@ function main()
   ./scripts/link-repos-to-home
   if (( $? != 0 )); then
     msg_error "Unexpected issue installing the symlinks"
-    false; return;
+    return 1
+  fi
+
+  msg_info "Calling into homebrew installer ..."
+  ./packages/install
+  if (( $? != 0 )); then
+    msg_error "Unexpected issue installing homebrew"
+    return 1
   fi
 }
 

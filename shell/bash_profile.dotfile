@@ -115,7 +115,8 @@ function main()
   [ -f "${HOME}"/.environment/exports ] && source "${HOME}"/.environment/exports
 
   # shellcheck source=/dev/null
-  [ -f "${HOME}"/.secrets/localrc ] && source "${HOME}"/secrets/localrc
+  # bring in any user profile specific "secret" exports
+  [ -f "${HOME}/.localrc" ] && source "${HOME}/.localrc"
 
   # Bring in helper functions
   local file

@@ -10,6 +10,13 @@ source ../lib/cli-utils.sh || exit 1
 
 # Utility functions
 
+function render_template()
+{
+  local template
+  template="$(cat "$1")"
+  eval "echo \"${template}\""
+}
+
 function path_exists()
 {
   local path
@@ -114,24 +121,26 @@ function form_backup_path()
 
 function form_link_path()
 {
-  local src dst
-  local link_type
+  local src dst link_type name
 
   src="$1"
   link_type="$(get_link_type "$src")"
 
   case "$link_type" in
   dotfile)
-    dst="${HOME}/.$(basename "${src%.dotfile}")" ;;
+    name="$(basename "${src%.dotfile}")" ;;
   symlink)
-    dst="${HOME}/$(basename "${src%.symlink}")" ;;
+    name="$(basename "${src%.symlink}")" ;;
   local)
-    dst="${HOME}/.$(basename "${src%.local}")" ;;
+    name="$(basename "${src%.local}")" ;;
+  template)
+    name="$(basename "${src%.template}")" ;;
   *)
     msg_error "unknown link format ${link_type}"
     false; return ;;
   esac
 
+  dst="${HOME}/.${name}"
   echo "$dst"
 }
 
@@ -208,6 +217,9 @@ function link_file()
       rsync -a --update "$src" "$dst"
     fi
     ;;
+  template)
+    msg_info "Rendering template $src to $dst ..."
+    render_template "$src" > "$dst" ;;
   *)
     msg_error "unknown link format $link_type"
     false; return;

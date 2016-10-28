@@ -7,3 +7,7 @@ homebrew/dupes
 
 # fonts
 caskroom/fonts
+
+# Alternative versions of Casks
+caskroom/versions
+

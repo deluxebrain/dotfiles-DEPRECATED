@@ -36,10 +36,3 @@ function join()
 }
 export -f join && readonly -f join
 
-unset render_template
-function render_template()
-{
-  eval "echo \"$(cat "$1")\""
-}
-export -f render_template && readonly -f render_template
-
