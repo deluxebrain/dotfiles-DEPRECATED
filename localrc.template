@@ -3,5 +3,5 @@
 
 # Github API token for homebrew
 # https://github.com/settings/tokens
-export HOMEBREW_GITHUB_API_TOKEN="$HOMEBREW_GITHUB_API_TOKEN"
+export HOMEBREW_GITHUB_API_TOKEN=\""$HOMEBREW_GITHUB_API_TOKEN"\"
 

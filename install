@@ -23,11 +23,34 @@ function sudo_keepalive()
 function install_prequisites()
 {
   # Ensure xcode command line tools are installed
-  msg_info "Installing XCode CLI tools  ..."
+  msg_info "Installing XCode CLI tools  ..." >&2
   sudo xcode-select --install > /dev/null 2>&1
   if (( $? != 0 )); then
-    msg_info "Already installed"
+    msg_info "Already installed" >&2
   fi
+}
+
+function user_prompt()
+{
+  local question answer
+  question="$1"
+
+  # pattern replace out all whitespace
+  while [ -z "${answer// }" ]; do
+    msg_prompt "$question" >&2
+    read -r answer
+  done
+
+  echo "$answer"
+}
+
+function get_git_details()
+{
+  export GIT_NAME
+  export GIT_EMAIL
+
+  GIT_NAME="$(user_prompt "Enter git user name")"
+  GIT_EMAIL="$(user_prompt "Enter git email")"
 }
 
 function main()
@@ -35,29 +58,33 @@ function main()
   # we are going to be doing a lot of brew installations
   # so ask for the github api token up front
   if [ ! "$HOMEBREW_GITHUB_API_TOKEN" ]; then
-    msg_error "Please set the HOMEBREW_GITHUB_API_TOKEN environment variable and retry"
-    msg_info "This is just an access token created within GitHub with NO ADDED SCOPES"
+    msg_error "Please set the HOMEBREW_GITHUB_API_TOKEN environment variable and retry" >&2
+    msg_info "This is just an access token created within GitHub with NO ADDED SCOPES" >&2
     return 1
   fi
 
-  msg_warn "** Asking for sudo privileges up front ***"
-  msg_warn "These privileges will last for the duration of the running of this script"
+  # get the users git details
+  # these will be baked into .gitlocal
+  get_git_details || return
+
+  msg_warn "** Asking for sudo privileges up front ***" >&2
+  msg_warn "These privileges will last for the duration of the running of this script" >&2
   sudo_keepalive || return
 
-  msg_info "Installing prerequisites ..."
+  msg_info "Installing prerequisites ..." >&2
   install_prequisites || return
 
-  msg_info "Calling symlink installer ..."
+  msg_info "Calling symlink installer ..." >&2
   ./scripts/link-repos-to-home
   if (( $? != 0 )); then
-    msg_error "Unexpected issue installing the symlinks"
+    msg_error "Unexpected issue installing the symlinks" >&2
     return 1
   fi
 
-  msg_info "Calling into homebrew installer ..."
+  msg_info "Calling into homebrew installer ..." >&2
   ./packages/install
   if (( $? != 0 )); then
-    msg_error "Unexpected issue installing homebrew"
+    msg_error "Unexpected issue installing homebrew" >&2
     return 1
   fi
 }

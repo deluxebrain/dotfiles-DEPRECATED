@@ -1,4 +1,4 @@
 [user]
-  name = "$GIT_NAME"
-  email = "$GIT_EMAIL"
+name = \""$GIT_NAME"\"
+email = \""$GIT_EMAIL"\"
 

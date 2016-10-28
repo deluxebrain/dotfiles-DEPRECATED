@@ -77,7 +77,7 @@ function msg_debug()
 
 function msg_prompt()
 {
-  printf " [ %s?%s ] %s\n" "${PEN_INFO}" "${PEN_RESET}" "$1"
+  printf " [ %s???%s ] %s\n" "${PEN_INFO}" "${PEN_RESET}" "$1"
 }
 
 function msg_ok()
