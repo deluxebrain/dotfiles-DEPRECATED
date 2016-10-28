@@ -240,7 +240,7 @@ function link_files()
   # Note use absolute path for find so that absolute paths are returned
   msg_info "Looking for files and directories to link within $(pwd) ..."
   find -H "$(pwd)" -maxdepth 3 \
-    \( -name '*.symlink' -o -name '*.dotfile' -o -name '*.local' \) \
+    \( -name '*.symlink' -o -name '*.dotfile' -o -name '*.local' -o -name '*.template' \) \
     -not -path '*.git*' | while read -r src
   do
     dst="$(form_link_path "$src")"

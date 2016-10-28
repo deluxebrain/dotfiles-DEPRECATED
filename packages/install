@@ -13,10 +13,11 @@ fi
 
 if ! app_exists "brew"; then
   echo "Installing Homebrew ..." >&2
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  # redirect stdin away from tty to avoid any user prompts
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null
 fi
 
-if ! app_exists "brew cask"; then
+if ((  $(brew cask --version >/dev/null 2>&1) != 0 )); then
   echo "Installing Cask ..." >&2
   brew install caskroom/cask/brew-cask
 fi

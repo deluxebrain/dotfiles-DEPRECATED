@@ -36,6 +36,7 @@ function main()
   # so ask for the github api token up front
   if [ ! "$HOMEBREW_GITHUB_API_TOKEN" ]; then
     msg_error "Please set the HOMEBREW_GITHUB_API_TOKEN environment variable and retry"
+    msg_info "This is just an access token created within GitHub with NO ADDED SCOPES"
     return 1
   fi
 
