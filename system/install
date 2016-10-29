@@ -1,12 +1,5 @@
 #!/bin/bash
 
-DEPENDS_ON priv
-
-USE_GLOBAL_ERROR_HANDLER
-
-# Authenticate the user upfront
-sudo_keepalive || exit 1
-
 #---------------------------------------------------------------------
 # General UI / Unix
 #---------------------------------------------------------------------

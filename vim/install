@@ -1,62 +1,56 @@
-#!/bin/bash
+#!/usr/env bash
 
-PSD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-DEPENDS_ON path \
-	exists 
-
-USE_GLOBAL_ERROR_HANDLER
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$DIR" || exit
 
 function run_custom_installer()
 {
-	customInstallerPath="$(path_combine "${PSD}" "${reposName}")"
-	
-	if [ -x "${customInstallerPath}" ]; then
-		msg_info "Found custom installer for ${reposName}"
-		msg_info "Running script: ${customInstallerPath}"
-		"${customInstallerPath}" "${reposPath}"
-	else
-		msg_info "No custom installer found for ${reposName}"
-	fi
+  local repos_name repos_path
+  repos_name="$1"
+  repos_path="$2"
+
+  if [ -f "$repos_name" ]; then
+    echo "Found custom installer for $repos_name"
+    # shellcheck source=/dev/null
+    . "${repos_name}.sh" "$repos_path"
+  else
+    msg_info "No custom installer found for $repos_name"
+  fi
 }
 
 function generate_helptags()
 {
-	if [ -d "./doc" ]; then
-		msg_info "Generating helptags from doc directory ..."	
-		vim -u NONE -c "helptags doc" -c -q
-	else
-		msg_ingo "No helptags to generate - no doc direcotry found"
-	fi 
+  if [ -d "./doc" ]; then
+    echo "Generating helptags from doc directory" >&2
+    vim -u NONE -c "helptags doc" -c -q
+  else
+    echo "No helptags to generate" >&2
+  fi
 }
 
 function main()
 {
-	local pathToBundles
-	local reposPath
-	local reposName
-	local customInstallerPath
+  local bundles_path
+  local bundle_path
+  local repos_name
 
-	pathToBundles="/Users/$USER/.vim/bundle"
-	dir_exists? "${pathToBundles}" || \
-		fail "Unable to location vim bundles at ${pathToBundles}"
+  bundles_path="./vim.dotfile/bundle"
+  for bundle_path in "${bundles_path}"/*; do
+  (
+    cd "$bundle_path" || return
+    repos_name="$(git name)"
+    echo "Installing vim plugin $repos_name" >&2
+    git submodule update --init --recursive
 
-	for reposPath in ${pathToBundles}/*
-	do
-	(
-		msg_info "Changing to repos directory: ${reposPath}"
-		cd "${reposPath}" || { false; return; }
-		
-		reposName="$(git name)"
-		msg_info "Installing ${reposName}"
-		git submodule update --init --recursive
+    echo "Running custom installer for $repos_name" >&2
+    run_custom_installer "$repos_name"
 
-		run_custom_installer
-		generate_helptags
-	)
-	done
+    echo "Generating help tags for $repos_name" >&2
+    generate_helptags
+  )
+  done
 }
 
-main "$@" 
+main "$@"
 exit $?
 
