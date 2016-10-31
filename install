@@ -71,8 +71,8 @@ function run_installers()
 
 function install_packages()
 {
-  ./packages/brew-apps || return
   ./packages/brew-taps || return
+  ./packages/brew-apps || return
   ./packages/cask-apps || return
   ./packages/cask-fonts || return
   ./packages/gem-packages || return
