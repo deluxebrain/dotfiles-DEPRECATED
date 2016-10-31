@@ -129,18 +129,21 @@ function form_link_path()
   case "$link_type" in
   dotfile)
     name="$(basename "${src%.dotfile}")" ;;
+    dst="${HOME}/.${name}"
   symlink)
     name="$(basename "${src%.symlink}")" ;;
+    dst="${HOME}/${name}"
   local)
     name="$(basename "${src%.local}")" ;;
+  dst="${HOME}/.${name}"
   template)
     name="$(basename "${src%.template}")" ;;
+  dst="${HOME}/.${name}"
   *)
     msg_error "unknown link format ${link_type}"
     false; return ;;
   esac
 
-  dst="${HOME}/.${name}"
   echo "$dst"
 }
 
