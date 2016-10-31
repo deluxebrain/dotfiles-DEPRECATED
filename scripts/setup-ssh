@@ -39,7 +39,7 @@ chmod 600 "${HOME}/.ssh/id_rsa"
 chmod 644 "${HOME}/.ssh/id_rsa.pub"
 
 echo "Adding default keypair to ssh-agent" >&2
-ssh-add -K "${HOME}/.ssh/id_rsa" > /dev/null || exit 1
+ssh-add "${HOME}/.ssh/id_rsa" > /dev/null || exit 1
 if (( $(ssh-add -l | grep -c "id_rsa") != 1 )); then
   echo "Error: unable to add default key to ssh-agent" >&2
   exit
