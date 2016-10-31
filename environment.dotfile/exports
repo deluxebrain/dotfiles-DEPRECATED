@@ -22,6 +22,9 @@ export ITERM_PROFILE_NAME="${USER}"
 
 export SYS_PIP_PACKAGES_PATH="/usr/local/lib/python2.7/site-packages"
 # export PIP_PATH="/usr/local/var/pyenv/versions/3.5.1/lib/python3.5/site-packages"
+# prevent homebrew attempting to access git api
+# ( this would require the homebrew api token to have increased scope )
+export HOMEBREW_NO_GITHUB_API
 
 #-------------------------------------------------------------
 # Scripting
