@@ -1,5 +1,5 @@
 # Terminal and related
-iterm2-beta
+iterm2
 alfred
 
 # Environment
@@ -7,13 +7,15 @@ flux            # f.lux
 spectacle       # window manager
 
 # Powertools
-karabiner	# keyboard mapping
-seil		# capslock remapping
+# these dont work in macos sierra
+# karabiner
+# seil
+karabiner-elements
 
 # Browsers and related
 google-chrome
 
-# Google 
+# Google
 google-drive
 
 # Virtualisation and packaging

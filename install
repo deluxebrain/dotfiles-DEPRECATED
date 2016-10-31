@@ -55,6 +55,8 @@ function get_git_details()
 
 function main()
 {
+  local answer
+
   # we are going to be doing a lot of brew installations
   # so ask for the github api token up front
   if [ ! "$HOMEBREW_GITHUB_API_TOKEN" ]; then
@@ -63,26 +65,46 @@ function main()
     return 1
   fi
 
-  # get the users git details
-  # these will be baked into .gitlocal
-  get_git_details || return
-
   msg_warn "** Asking for sudo privileges up front ***" >&2
   msg_warn "These privileges will last for the duration of the running of this script" >&2
   sudo_keepalive || return
 
-  msg_info "Installing prerequisites ..." >&2
+  # get the users git details
+  # these will be baked into .gitlocal
+  get_git_details || return
+
+  msg_info "Setting up ssh keypairs for github access..." >&2
+  ./scripts/setup-ssh "$GIT_EMAIL"
+  if (( $? != 0 )); then
+    msg_error "Unexpected issue setting up ssh keypairs" >&2
+    return 1
+  fi
+
+  msg_warn "Public keypair has been copied to clipboard"
+  msg_prompt "Please add this to your github account then hit enter to continue"
+  while [ -z "$answer" ]; do
+    read -r answer
+  done
+
+  msg_info "Initializing all submodules..." >&2
+  git submodule update --init --recursive
+  if (( $? != 0 )); then
+    msg_error "Unexpected issue initializing git submodules" >&2
+    return 1
+  fi
+
+  msg_info "Installing prerequisites..." >&2
   install_prequisites || return
 
-  msg_info "Calling symlink installer ..." >&2
+  msg_info "Calling symlink installer..." >&2
   ./scripts/link-repos-to-home
   if (( $? != 0 )); then
     msg_error "Unexpected issue installing the symlinks" >&2
     return 1
   fi
 
-  msg_info "Calling into homebrew installer ..." >&2
-  ./packages/install
+  msg_info "Calling into homebrew installer..." >&2
+  ./scripts/install-package-managers
   if (( $? != 0 )); then
     msg_error "Unexpected issue installing homebrew" >&2
     return 1
