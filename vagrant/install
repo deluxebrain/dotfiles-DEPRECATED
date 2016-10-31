@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo "Creating Vagrant home directory ..." >&2
+echo "Creating Vagrant home directory..." >&2
 sudo mkdir -p /var/vagrant/home
 sudo chmod a+rwx /var/vagrant/home
 
-echo "Creating Vagrant clone directory ..." >&2
+echo "Creating Vagrant clone directory..." >&2
 sudo mkdir -p /var/vagrant/vmware-clone
 sudo chmod a+rwx /var/vagrant/vmware-clone
 

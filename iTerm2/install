@@ -1,9 +1,4 @@
-#!/bin/bash
-#
-# CreateProfile
-#
-# This creates an iTerm2 dynamic profile based on the supplied template
-# and configuration
+#!/usr/bin/env bash
 
 _SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$_SCRIPT_PATH" || exit 1
@@ -37,7 +32,7 @@ form_and_verify_path()
 setup_permissions()
 {
   # Grant accessibility access to iterm and all scripts executed from iterm
-  echo "Granting accessibility access to iTerm ..." >&2
+  echo "Granting accessibility access to iTerm..." >&2
   sudo tccutil -i com.googlecode.iterm2
 }
 
@@ -46,7 +41,7 @@ setup_profile()
   local profile_path colorscheme_path
 
   # Load config
-  echo "Loading profile config from $(pwd)/profile.conf ..." >&2
+  echo "Loading profile config from $(pwd)/profile.conf..." >&2
   source ./profile.conf || return 1
 
   # form profile plist file path

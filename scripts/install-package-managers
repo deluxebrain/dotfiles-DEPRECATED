@@ -17,7 +17,8 @@ if ! app_exists "brew"; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null
 fi
 
-if ((  $(brew cask --version >/dev/null 2>&1) != 0 )); then
+brew cask --version >/dev/null 2>&1
+if (( $? != 0 )); then
   echo "Installing Cask ..." >&2
   brew install caskroom/cask/brew-cask
 fi
