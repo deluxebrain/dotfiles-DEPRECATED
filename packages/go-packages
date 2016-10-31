@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+export GOPATH=~/go
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
+
 # HCL cli formatter
 go get github.com/fatih/hclfmt
 
