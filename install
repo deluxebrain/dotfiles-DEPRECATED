@@ -82,9 +82,7 @@ function main()
 
   msg_warn "Public keypair has been copied to clipboard"
   msg_prompt "Please add this to your github account then hit enter to continue"
-  while [ -z "$answer" ]; do
-    read -r answer
-  done
+  read -r
 
   msg_info "Initializing all submodules..." >&2
   git submodule update --init --recursive
