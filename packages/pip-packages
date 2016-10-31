@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# *** All to be run into the global python environment using syspip alias ***
+shopt -s expand_aliases; alias syspip="/usr/local/bin/pip"
+
+# development environment
+# # NOTE doesnt play nicely with Python 3 ( which comes with pyenv )
+# pip install virtualenv              # create isolated Python environments
+
+# AWS
+pip install aws-shell
+pip install awscli
+
+# tools
+pip install pygments
+pip install powerline-status
+pip install pyinstaller             # dependency for yubikey-neo-manager
+pip install pycrypto                # dependency for yubikey-neo-manager
+pip install ansible-lint
+pip install pyprind                 # progress indicator
+
+# data analysis and machine/deep learning
+pip install pandas                  # data structures and analysis tools
+pip install scipy                   # scientific computing tools for python
+pip install sklearn                 # scikit-learn
+pip install nltk                    # natural language toolkit
+pip install csvkit                  # tools for working with csv files
+pip install theano                  # maths expressions involving multi-dimensional arrays
+
+# python
+pip install flake8                  # wrapper around PyFlakes, pep8 and McCabe
+
+# IDE related
+pip install notebook                #  Jupyter (a.k.a IPython) notebook
+

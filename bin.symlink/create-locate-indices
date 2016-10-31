@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-function main() 
+function main()
 {
-	mkdir -p "/Users/${USER}/tmp" || { false; return; }
-	export LC_ALL=C	
-	updatedb --localpaths="/Users/${USER}" \
-		--output="/Users/${USER}/tmp/user_locatedb"
-	if [ "${GIT_REPOS_ROOT}" ]; then
-		updatedb --localpaths="${GIT_REPOS_ROOT}" \
-			--output="/Users/${USER}/tmp/repos_locatedb"
-	fi
+  mkdir -p "/Users/${USER}/tmp" || { false; return; }
+  export LC_ALL=C
+  updatedb --localpaths="/Users/${USER}" \
+    --output="/Users/${USER}/tmp/user_locatedb"
+  if [ -n "${GIT_REPOS_ROOT}" ]; then
+    updatedb --localpaths="${GIT_REPOS_ROOT}" \
+      --output="/Users/${USER}/tmp/repos_locatedb"
+  fi
 }
 
 main

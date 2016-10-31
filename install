@@ -20,16 +20,6 @@ function sudo_keepalive()
   while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 }
 
-function install_prequisites()
-{
-  # Ensure xcode command line tools are installed
-  msg_info "Installing XCode CLI tools  ..." >&2
-  sudo xcode-select --install > /dev/null 2>&1
-  if (( $? != 0 )); then
-    msg_info "Already installed" >&2
-  fi
-}
-
 function user_prompt()
 {
   local question answer
@@ -51,6 +41,46 @@ function get_git_details()
 
   GIT_NAME="$(user_prompt "Enter git user name")"
   GIT_EMAIL="$(user_prompt "Enter git email")"
+}
+
+function install_prequisites()
+{
+  # Ensure xcode command line tools are installed
+  msg_info "Installing XCode CLI tools  ..." >&2
+  sudo xcode-select --install > /dev/null 2>&1
+  if (( $? != 0 )); then
+    msg_info "Already installed" >&2
+  fi
+}
+
+function run_installers()
+{
+  local installer
+
+  msg_info "Looking for installers in all subdirectories..." >&2
+  find . -name 'install' -mindepth 2 -maxdepth 3 -not -path '*#/#' | \
+    while read -r installer; do
+      msg_info "Found installer $installer" >&2
+      "$installer"
+      if (( $? != 0 )); then
+        msg_error "Unexpected issue running installer $installer" >&2
+        return 1
+      fi
+    done
+}
+
+function install_packages()
+{
+  ./packages/brew-apps || return
+  ./packages/brew-taps || return
+  ./packages/cask-apps || return
+  ./packages/cask-fonts || return
+  ./packages/gem-packages || return
+  ./packages/go-packages || return
+  ./packages/mix-packages || return
+  ./packages/npm-packages || return
+  ./packages/pip-packages || return
+  ./packages/vagrant-plugins || return
 }
 
 function main()
@@ -105,6 +135,20 @@ function main()
   ./scripts/install-package-managers
   if (( $? != 0 )); then
     msg_error "Unexpected issue installing homebrew" >&2
+    return 1
+  fi
+
+  msg_info "Installing packages..." >&2
+  install_packages
+  if (( $? != 0 )); then
+    msg_error "Unexpected issue installing packages" >&2
+    return 1
+  fi
+
+  msg_info "Running in all installers..." >&2
+  run_installers
+  if (( $? != 0 )); then
+    msg_error "Unexpected issue running in installers" >&2
     return 1
   fi
 }

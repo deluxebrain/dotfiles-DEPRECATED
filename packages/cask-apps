@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# Terminal and related
+brew cask install iterm2
+brew cask install alfred
+
+# Environment
+brew cask install flux            # f.lux
+brew cask install spectacle       # window manager
+
+# Powertools
+# these dont work in macos sierra
+# karabiner
+# seil
+brew cask install karabiner-elements
+
+# Browsers and related
+brew cask install google-chrome
+
+# Google
+brew cask install google-drive
+
+# Virtualisation and packaging
+brew cask install vagrant
+brew cask install virtualbox
+brew cask install vmware-fusion
+
+# Graphics
+brew cask install inkscape
+
+# Audio
+brew cask install pd
+
+# Security
+brew cask install macpass
+brew cask install yubikey-neo-manager
+brew cask install yubikey-personalization-gui
+brew cask install gpgtools
+
+# .Net development
+brew cask install visual-studio-code
+brew cask install xamarin-studio
+

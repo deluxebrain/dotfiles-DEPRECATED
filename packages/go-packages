@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # HCL cli formatter
 go get github.com/fatih/hclfmt
 

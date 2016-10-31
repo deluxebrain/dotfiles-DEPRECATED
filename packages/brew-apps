@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+
+# Install GNU tools (OS X ships with the BSD versions)
+# https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/
+
+# GNU core (e.g. ls, cat)
+brew install coreutils
+
+# Others - prefixed with a "g" unless --with-default-names
+# Some of these will be keg only
+# ( https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/How-to-build-software-outside-Homebrew-with-Homebrew-keg-only-dependencies.md )
+brew install binutils
+brew install diffutils
+brew install ed --with-default-names
+brew install findutils --with-default-names
+brew install gawk
+brew install gnu-indent --with-default-names
+brew install gnu-sed --with-default-names
+brew install gnu-tar --with-default-names
+brew install gnu-which --with-default-names
+brew install gnu-getopt --with-default-names
+brew install gnutls
+brew install grep --with-default-names
+brew install gzip
+brew install screen
+brew install watch
+brew install wdiff
+brew install wget
+brew install gettext, link --force gettext  # envsubst
+
+# OS X replacements
+brew install bash
+brew install emacs
+brew install gdb
+brew install gpatch
+brew install m4
+brew install make
+brew install nano
+
+# Complementary non-GNU packages
+brew install file-formula
+brew install git
+brew install less
+brew install openssh
+brew install perl518
+brew install rsync
+brew install unzip
+brew install vim --override-system-vi
+brew install macvim --override-system-vim --custom-system-icons
+brew install the_silver_searcher # ack replacement
+
+# Image manipulation
+brew install imagemagick     # e.g. convert between file formats
+brew install jp2a            # convert jpgs to ascii art
+brew install libtiff         # support for the Tag Image File Fomrat (TIFF) used for storing image data
+brew install graphviz        # graph visualization software
+
+# Powertools
+brew install ossp-uuid # uuid's
+brew install spark
+brew install jq              # e.g. < my_json.json jq '.' to pretty print
+brew install pstree
+brew install tree
+brew install tccutiil        # cli tool to modify os x's accessibility database
+brew install httpie          # cli http client
+brew install poppler         # PDF document splitter
+brew install djvulibre       # OSS implementation of DjVu (web-centric docoument distribution format)
+brew install ghostscript     # PostSript and PDF interpreter
+brew install multitail       # more powerful tail (inc. word highlighting)
+brew install pwgen           # cli tool for generating strong passwords
+brew install youtube-dl
+brew install fzf             # fuzzy file finder
+brew install pandoc
+
+# website generators
+brew install hugo
+
+# Security
+brew install yubikey-personalization
+
+# Ops
+brew install ansible
+brew install terraform       # cross-provider cloud infrastructure management platform
+brew install vault           # store and access secrets
+brew install consul-template # templating engine that works with vault (and doesnt require consul!)
+
+# Development
+brew install packer
+brew install ctags
+brew install go
+brew install rust
+brew install mono
+brew install nuget
+brew install cmake             # cmake compiler
+brew install node
+brew install shunit2           # bash testing framework
+brew install roundup           # bash testing framework
+brew install shellcheck        # static analyser for bash/sh shell scripts
+brew install tidy-html5        # html5 linter
+brew install goaccess          # log-file parser
+# API Blueprint parser
+brew install https://raw.github.com/apiaryio/drafter/master/tools/homebrew/drafter.rb --HEAD
+
+# Postgres
+brew install postgres --with-python
+brew install postgis           # spatial database extender for postgres
+
+# ruby
+brew install ruby
+
+# python
+brew install python            # includes pip
+brew install python3           # includes pip
+brew install pyenv             # python version manager (c.f rvm)
+brew install pyenv-virtualenv  # pyenv virtual environments
+brew install pyside            # Python bindings for Qt - needed for yubikey-neo-manager
+
+# Erlang / Elixir
+brew install erlang
+brew install elixir
+
+# completions
+brew install bash-completion
+brew install brew-cask-completion
+brew install docker-completion
+brew install docker-machine-completion
+brew install grunt-completion
+brew install pip-completion
+brew install rake-completion
+brew install ruby-completion
+brew install tmuxinator-completion
+brew install vagrant-completion
+
+# clients
+brew install irssi   # irc
+brew install mutt
+brew install lynx
+
+# tmux and associated
+brew install tmux
+# https://robots.thoughtbot.com/tmux-copy-paste-on-os-x-a-better-future
+brew install reattach-to-user-namespace      # enable copy and paste
+
+# and why not
+brew install nyancat
+

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Javascript linters, etc
+npm install -g underscore-cli         # JSON processor
+npm install -g jshint                 # Javascript linter
+npm install -g jscs                   # JavaScript code style linter
+npm install -g js-beautify            # JavaScript formatter
+npm install -g eslint                 # ES6 linter
+npm install -g eslint-plugin-angular
+npm install -g eslint-plugin-jasmine
+npm install -g eslint-plugin-react
+npm install -g eslint-config-defaults # Plugin for ESLint that provides sets of configuration
+npm install -g jsonlint
+
+# Misc
+npm install -g js-yaml
+npm install -g gherkin-lint
+
+# Build
+# + npm install --save-dev gulp in your project
+npm install -g gulp-cli
+
+# Markdown
+npm install -g markdownlint-cli       # markdown linter
+npm install -g remark
+npm install -g remark-cli
+npm install -g remark-lint
+npm install -g remark-html
+
+

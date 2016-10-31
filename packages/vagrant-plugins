@@ -1,41 +1,43 @@
+#!/usr/bin/env bash
+
 # List all installed plugins using:
 # $ vagrant plugin list
 
 # Needed when provisioning via PowerShell 5 (perhaps ...)
-winrm-fs
+vagrant plugin add winrm-fs
 
 # Cache packages
 # Note - cached to: $HOME/.vagrant.d/cache/<box-name>/<optional-bucket-name>
-vagrant-cachier
+vagrant plugin add vagrant-cachier
 
 # desired state configuration provisioning plugin
 # https://www.penflip.com/powershellorg/the-dsc-book
-vagrant-dsc
+vagrant plugin add vagrant-dsc
 
 # Manage /etc/hosts on guest and host
 # Includes support for Winodws hosts.ini
-vagrant-hostmanager
+vagrant plugin add vagrant-hostmanager
 
 # Adds support for synced folders over sshfs
-vagrant-sshfs
+vagrant plugin add vagrant-sshfs
 
 # https://github.com/mitchellh/vagrant-aws
 # use with the dummy AWS box:
 # vagrant box add dummy https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
-vagrant-aws
-vagrant-aws-winrm # doesnt appear to work
+vagrant plugin add vagrant-aws
+vagrant plugin add vagrant-aws-winrm # doesnt appear to work
 
 # load environment variables from .env
-vagrant-env
+vagrant plugin add vagrant-env
 
 # vmware fusion plugin is a paid for commercial product
 # in *addidion* to vmware fusion
 # $ vagrant plugin license vagrant-vmware-fusion ~/license.lic
-vagrant-vmware-fusion
+vagrant plugin add vagrant-vmware-fusion
 
 # Timezone support
 # sudo systemsetup -settimezone
 # sudo systemsetup -gettimezone
 # sudo systemsetup -listtimezones
-vagrant-timezone
+vagrant plugin add vagrant-timezone
 

@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
+
 # https://github.com/Homebrew/homebrew-completions
-homebrew/completions
+brew tap homebrew/completions
 
 # more recent versions of OS X tools
-homebrew/dupes
+brew tap homebrew/dupes
 
 # fonts
-caskroom/fonts
+brew tap caskroom/fonts
 
 # Alternative versions of Casks
-caskroom/versions
+brew tap caskroom/versions
 
