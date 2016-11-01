@@ -17,6 +17,10 @@ alias ~="cd ~"
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
 
+# Sleep the screen without sleeping the machine
+# ( basically lock the box without sleeping )
+pmset displaysleepnow
+
 #-------------------------------------------------------------
 # AWS
 #-------------------------------------------------------------
