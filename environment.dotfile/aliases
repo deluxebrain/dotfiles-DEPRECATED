@@ -19,7 +19,7 @@ alias reload="exec $SHELL -l"
 
 # Sleep the screen without sleeping the machine
 # ( basically lock the box without sleeping )
-pmset displaysleepnow
+alias lock="pmset displaysleepnow"
 
 #-------------------------------------------------------------
 # AWS
