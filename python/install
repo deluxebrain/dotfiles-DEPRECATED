@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+pyenv install 2.7.12
+pyenv install 3.5.2

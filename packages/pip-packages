@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-# *** All to be run into the global python environment using syspip alias ***
-shopt -s expand_aliases; alias syspip="/usr/local/bin/pip"
+# Shouldn't need todo this as pyenv uses system python by default
+# All to be run into the global python environment using syspip alias
+# shopt -s expand_aliases; alias syspip="/usr/local/bin/pip"
 
 # development environment
 # # NOTE doesnt play nicely with Python 3 ( which comes with pyenv )
