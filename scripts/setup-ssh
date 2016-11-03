@@ -63,6 +63,9 @@ Host github.com
 # Example usage for using non-default keypair via a host alias
 # Mapped back onto the default keypair here in this case
 # $ git clone git@default-github.com:user/repos
+# Then within the repos set the username and email
+# $ git config user.name "<user_name>"
+# $ git config user.email "<user_email>"
 Host default-github.com
   User git
   Hostname github.com
