@@ -3,9 +3,11 @@
 echo "Creating Vagrant home directory..." >&2
 sudo mkdir -p /var/vagrant/home
 sudo chmod a+rwx /var/vagrant/home
+export VAGRANT_HOME="/var/vagrant/home"
 
 echo "Creating Vagrant clone directory..." >&2
 sudo mkdir -p /var/vagrant/vmware-clone
 sudo chmod a+rwx /var/vagrant/vmware-clone
+export VAGRANT_VMWARE_CLONE_DIRECTORY="/var/vagrant/vmware-clone"
 
 

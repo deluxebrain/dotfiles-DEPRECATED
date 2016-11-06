@@ -58,10 +58,11 @@ function run_installers()
   local installer
 
   msg_info "Looking for installers in all subdirectories..." >&2
-  find . -name 'install' -mindepth 2 -maxdepth 3 -not -path '*#/#' | \
+  find . -name 'install' -mindepth 2 -maxdepth 3 -not -path '*#/*' | \
     while read -r installer; do
       msg_info "Found installer $installer" >&2
-      "$installer"
+      # shellcheck source=/dev/null
+      . "$installer"
       if (( $? != 0 )); then
         msg_error "Unexpected issue running installer $installer" >&2
         return 1
