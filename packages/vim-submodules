@@ -10,34 +10,33 @@ cd ../vim/vim.dotfile/pack/plugins/start || exit
 while read -r submodule; do
   [ -z "$submodule" ] && continue
   echo "Installing $submodule"
-  git submodule add "$submodule" || exit
+  git submodule add "$submodule"
 done <<< '
-git@github.com/tpope/vim-pathogen.git
-git@github.com/tpope/vim-sensible.git
-git@github.com/tpope/vim-unimpaired.git
-git@github.com/scrooloose/syntastic.git
-git@github.com/altercation/vim-colors-solarized.git
-git@github.com/nathanaelkane/vim-indent-guides.git
-git@github.com/tpope/vim-sleuth.git
-git@github.com/ctrlpvim/ctrlp.vim.git
-git@github.com/sheerun/vim-polyglot.git
-git@github.com/davidhalter/jedi-vim.git
-git@github.com/fatih/vim-go.git
-git@github.com/kylef/apiblueprint.vim.git
-git@github.com/Valloric/YouCompleteMe.git
-git@github.com/tpope/vim-fugitive.git
-git@github.com/tpope/vim-obsession.git
-git@github.com/PProvost/vim-ps1.git
-git@github.com/airblade/vim-gitgutter.git
-git@github.com/godlygeek/tabular.git
-git@github.com/tpope/vim-cucumber.git
-git@github.com/scrooloose/nerdtree.git
-git@github.com/tpope/vim-vinegar.git
+git@github.com:tpope/vim-sensible.git
+git@github.com:tpope/vim-unimpaired.git
+git@github.com:scrooloose/syntastic.git
+git@github.com:altercation/vim-colors-solarized.git
+git@github.com:nathanaelkane/vim-indent-guides.git
+git@github.com:tpope/vim-sleuth.git
+git@github.com:ctrlpvim/ctrlp.vim.git
+git@github.com:sheerun/vim-polyglot.git
+git@github.com:davidhalter/jedi-vim.git
+git@github.com:fatih/vim-go.git
+git@github.com:kylef/apiblueprint.vim.git
+git@github.com:Valloric/YouCompleteMe.git
+git@github.com:tpope/vim-fugitive.git
+git@github.com:tpope/vim-obsession.git
+git@github.com:PProvost/vim-ps1.git
+git@github.com:airblade/vim-gitgutter.git
+git@github.com:godlygeek/tabular.git
+git@github.com:tpope/vim-cucumber.git
+git@github.com:scrooloose/nerdtree.git
+git@github.com:tpope/vim-vinegar.git
 git@github.com:tpope/vim-surround.git
-git@github.com/slashmili/alchemist.vim.git
-git@github.com/elixir-lang/vim-elixir.git
-git@github.com/mattreduce/vim-mix.git
-git@github.com/tpope/vim-dispatch.git
+git@github.com:slashmili/alchemist.vim.git
+git@github.com:elixir-lang/vim-elixir.git
+git@github.com:mattreduce/vim-mix.git
+git@github.com:tpope/vim-dispatch.git
 git@github.com:jgdavey/tslime.vim.git
 git@github.com:jgdavey/vim-turbux.git
 git@github.com:janko-m/vim-test.git
