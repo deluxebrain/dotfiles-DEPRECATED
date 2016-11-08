@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+
+# Change into the vim pack directory
+# Note we will be installing all plugins to auto-start
+cd ../vim/vim.dotfile/pack/plugins/start || exit
+
+# Link all plugins into the vim pack directory as git submodules
+while read -r submodule; do
+  [ -z "$submodule" ] && continue
+  echo "Installing $submodule"
+  git submodule add "$submodule" || exit
+done <<< '
+git@github.com/tpope/vim-pathogen.git
+git@github.com/tpope/vim-sensible.git
+git@github.com/tpope/vim-unimpaired.git
+git@github.com/scrooloose/syntastic.git
+git@github.com/altercation/vim-colors-solarized.git
+git@github.com/nathanaelkane/vim-indent-guides.git
+git@github.com/tpope/vim-sleuth.git
+git@github.com/ctrlpvim/ctrlp.vim.git
+git@github.com/sheerun/vim-polyglot.git
+git@github.com/davidhalter/jedi-vim.git
+git@github.com/fatih/vim-go.git
+git@github.com/kylef/apiblueprint.vim.git
+git@github.com/Valloric/YouCompleteMe.git
+git@github.com/tpope/vim-fugitive.git
+git@github.com/tpope/vim-obsession.git
+git@github.com/PProvost/vim-ps1.git
+git@github.com/airblade/vim-gitgutter.git
+git@github.com/godlygeek/tabular.git
+git@github.com/tpope/vim-cucumber.git
+git@github.com/scrooloose/nerdtree.git
+git@github.com/tpope/vim-vinegar.git
+git@github.com:tpope/vim-surround.git
+git@github.com/slashmili/alchemist.vim.git
+git@github.com/elixir-lang/vim-elixir.git
+git@github.com/mattreduce/vim-mix.git
+git@github.com/tpope/vim-dispatch.git
+git@github.com:jgdavey/tslime.vim.git
+git@github.com:jgdavey/vim-turbux.git
+git@github.com:janko-m/vim-test.git
+git@github.com:tpope/vim-projectionist.git
+git@github.com:SirVer/ultisnips.git
+git@github.com:Chiel92/vim-autoformat.git
+git@github.com:plasticboy/vim-markdown.git
+git@github.com:fatih/vim-hclfmt.git
+git@github.com:ternjs/tern_for_vim.git
+'
+
+# Initialize each of the submodules
+for plugin_path in ./* ; do
+  (
+    cd "$plugin_path" || exit
+    git submodule update --init --recursive
+  )
+done
+
+
+
+
+

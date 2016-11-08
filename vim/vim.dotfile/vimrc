@@ -1,14 +1,14 @@
 "
 " Pathogen
 "
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-execute pathogen#infect()
-syntax on
-filetype plugin indent on
+" runtime bundle/vim-pathogen/autoload/pathogen.vim
+" execute pathogen#infect()
 
 "
 " Personal stuff
 "
+syntax on
+filetype plugin indent on
 " want to map caps to escape and ctrl - but can in macos sierra
 " so for now caps is ctrl and use jk,kj for escape
 :imap jk <Esc>

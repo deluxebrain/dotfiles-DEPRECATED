@@ -3,50 +3,52 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR" || exit
 
+PLUGINS_PATH="./vim.dotfile/pack/plugins/start"
+
 function run_custom_installer()
 {
   local repos_name repos_path
   repos_name="$1"
   repos_path="$2"
 
-  if [ -f "$repos_name" ]; then
-    echo "Found custom installer for $repos_name"
+  if [ -f "${DIR}/${repos_name}" ]; then
+    echo "Found custom installer for $repos_name" >&2
     # shellcheck source=/dev/null
-    . "${repos_name}.sh" "$repos_path"
+    . "${DIR}/${repos_name}.sh" "$repos_path"
   else
-    msg_info "No custom installer found for $repos_name"
+    echo "No custom installer found for $repos_name" >&2
   fi
 }
 
 function generate_helptags()
-{
+(
+  cd "$1" || return
+
   if [ -d "./doc" ]; then
     echo "Generating helptags from doc directory" >&2
     vim -u NONE -c "helptags doc" -c -q
   else
     echo "No helptags to generate" >&2
   fi
-}
+  )
 
 function main()
 {
-  local bundles_path
-  local bundle_path
+  local plugin_path
   local repos_name
 
-  bundles_path="./vim.dotfile/bundle"
-  for bundle_path in "${bundles_path}"/*; do
+  for plugin_path in "${PLUGINS_PATH}"/*; do
   (
-    cd "$bundle_path" || return
+    cd "$plugin_path" || return
     repos_name="$(git name)"
     echo "Installing vim plugin $repos_name" >&2
     git submodule update --init --recursive
 
     echo "Running custom installer for $repos_name" >&2
-    run_custom_installer "$repos_name"
+    run_custom_installer "$repos_name" "$repos_path"
 
     echo "Generating help tags for $repos_name" >&2
-    generate_helptags
+    generate_helptags "$repos_path"
   )
   done
 }
