@@ -27,4 +27,7 @@ npm install -g remark-cli
 npm install -g remark-lint
 npm install -g remark-html
 
+# Testing frameworks
+npm install -g selenium-standalone
+npm install -g phantomjs
 

@@ -88,6 +88,10 @@ brew install terraform       # cross-provider cloud infrastructure management pl
 brew install vault           # store and access secrets
 brew install consul-template # templating engine that works with vault (and doesnt require consul!)
 
+# Testing
+brew install selenium-server-standalone
+brew install chromedriver
+
 # Development
 brew install packer
 brew install ctags

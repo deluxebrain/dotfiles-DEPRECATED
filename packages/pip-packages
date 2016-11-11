@@ -4,10 +4,6 @@
 # All to be run into the global python environment using syspip alias
 # shopt -s expand_aliases; alias syspip="/usr/local/bin/pip"
 
-# development environment
-# # NOTE doesnt play nicely with Python 3 ( which comes with pyenv )
-# pip install virtualenv              # create isolated Python environments
-
 # AWS
 pip install aws-shell
 pip install awscli
