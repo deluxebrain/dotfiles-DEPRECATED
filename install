@@ -62,7 +62,7 @@ function run_installers()
     while read -r installer; do
       msg_info "Found installer $installer" >&2
       # shellcheck source=/dev/null
-      . "$installer"
+      "$installer"
       if (( $? != 0 )); then
         msg_error "Unexpected issue running installer $installer" >&2
         return 1
