@@ -58,7 +58,11 @@ function run_installers()
   local installer
 
   msg_info "Looking for installers in all subdirectories..." >&2
-  find . -name 'install' -mindepth 2 -maxdepth 3 -not -path '*#/*' | \
+  find . \
+    -mindepth 2 \
+    -maxdepth 3 \
+    -name 'install' \
+    -not -path '*#/*' | \
     while read -r installer; do
       msg_info "Found installer $installer" >&2
       # shellcheck source=/dev/null
