@@ -16,6 +16,9 @@ Along the way - you will be asked the following:
 -   To enter your local machine account password
 -   To enter your git username and associated email address
 -   To add the newly generated ssh public key to your github account
+-   For any pre-existing dotfiles, you will need to confirm the overwrite action
+
+Once this information has all been entered the install should continue unattended.
 
 ## Symlinking
 
