@@ -56,7 +56,7 @@ setup_profile()
     "/Users/${USER}" \
     ".themes" \
     "${_PROFILE_COLORSCHEME_NAME}")"
-  if ( $? != 0 ); then
+  if (( $? != 0 )); then
     echo "Unable to form path to colorscheme list" >&2
     return 1
   fi

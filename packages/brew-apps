@@ -30,7 +30,7 @@ brew install screen
 brew install watch
 brew install wdiff
 brew install wget
-brew install gettext, link --force gettext  # envsubst
+brew install gettext && brew link --force gettext  # envsubst
 
 # OS X replacements
 brew install bash
@@ -65,7 +65,7 @@ brew install spark
 brew install jq              # e.g. < my_json.json jq '.' to pretty print
 brew install pstree
 brew install tree
-brew install tccutiil        # cli tool to modify os x's accessibility database
+brew install tccutil         # cli tool to modify os x's accessibility database
 brew install httpie          # cli http client
 brew install poppler         # PDF document splitter
 brew install djvulibre       # OSS implementation of DjVu (web-centric docoument distribution format)
