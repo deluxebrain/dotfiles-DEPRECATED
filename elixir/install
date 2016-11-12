@@ -5,25 +5,25 @@ set -o errexit
 # change into the script directory
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-echo building dogma and installing into bin directory
-
+echo "building dogma ..." >&2
 cd ./dogma
 mix deps.get --force
 mix local.rebar --force
-
 # this creates the dogma binary in the parent directory
 mix escript.build --force
 
 # copy it across to the bin folder
 if [ ! -x ./dogma ]; then
-  echo cant find the dogma binary >&2
+  echo "cant find the dogma binary" >&2
   exit 1
 fi
 
+echo "copying dogma to home bin directory ..." >&2
 cp ./dogma ~/bin/
 
 # reset submodule to prevent them from haunting git status
 # verify we are in the submodule by checking the .git object is a file
 # ( .git object in a non-submodule directory is a directory )
+echo "resetting the dogma submodule ..." >&2
 [ -f .git ] && git reset --hard
 

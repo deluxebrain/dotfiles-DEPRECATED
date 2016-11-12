@@ -1,5 +1,22 @@
 # @deluxebrain does dotfiles
 
+## Installation
+
+Install as follows:
+
+```sh
+git clone https://github.com/deluxebrain/dotfiles && cd dotfiles
+export HOMEBREW_GITHUB_API_TOKEN="<personal-access-token>"
+./install | tee install.log 2>&1
+```
+
+Along the way - you will be asked the following:
+
+-   To have exported your `HOMEBREW_GITHUB_API_TOKEN`
+-   To enter your local machine account password
+-   To enter your git username and associated email address
+-   To add the newly generated ssh public key to your github account
+
 ## Symlinking
 
 The dotfile synchronization model is based around symlinking files and directories in the dotfiles repository to their respective positions in the `$HOME` directory.
