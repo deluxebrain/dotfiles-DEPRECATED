@@ -77,4 +77,8 @@ fi
 
 echo "Copying public key to the clipboard ready to add to github ..." >&2
 pbcopy < "${HOME}/.ssh/id_rsa.pub"
+if (( $? != 0 )); then
+  echo "Unable to copy public key to clipboard - maybe tmux or screen is running ?" >&2
+  exit 1
+fi
 

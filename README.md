@@ -7,7 +7,7 @@ Install as follows:
 ```sh
 git clone https://github.com/deluxebrain/dotfiles && cd dotfiles
 export HOMEBREW_GITHUB_API_TOKEN="<personal-access-token>"
-./install | tee install.log 2>&1
+./install 2>&1 | tee install.log
 ```
 
 Along the way - you will be asked the following:
