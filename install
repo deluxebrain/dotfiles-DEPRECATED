@@ -95,6 +95,12 @@ function install_packages()
   ./packages/vagrant-plugins || return
 }
 
+function load_minimal_environment()
+{
+  # shellcheck source=/dev/null
+  source "${HOME}/.environment/exports"
+}
+
 function main()
 {
   local answer
@@ -134,12 +140,23 @@ function main()
   fi
 
   msg_info "Installing prerequisites..." >&2
-  install_prequisites || return
+  install_prequisites
+  if (( $? != 0 )); then
+    msg_error "Unexpected issue installing prerequisites" >&2
+    return 1
+  fi
 
   msg_info "Calling symlink installer..." >&2
   ./scripts/link-repos-to-home
   if (( $? != 0 )); then
     msg_error "Unexpected issue installing the symlinks" >&2
+    return 1
+  fi
+
+  msg_info "Loading minimal environment ..." >&2
+  load_minimal_environment
+  if (( $? != 0 )); then
+    msg_error "Unexpected issue loading minimal environment" >&2
     return 1
   fi
 

@@ -23,7 +23,6 @@ brew cask install google-drive
 
 # Virtualisation and packaging
 # set the vagrant home directory before installation
-export VAGRANT_HOME="/var/vagrant/home"
 if [ -z "$VAGRANT_HOME" ]; then
   echo "Please ensure VAGRANT_HOME environment variable is set" >&2
   exit 1
