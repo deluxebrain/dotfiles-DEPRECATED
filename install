@@ -39,8 +39,14 @@ function get_git_details()
   export GIT_NAME
   export GIT_EMAIL
 
-  GIT_NAME="$(user_prompt "Enter git user name")"
-  GIT_EMAIL="$(user_prompt "Enter git email")"
+  if [[ ( -n "$(git config user.name)" ) && \
+    ( -n "$(git config user.email)" ) ]]; then
+    GIT_NAME="$(git config user.name)"
+    GIT_EMAIL="$(git config user.email)"
+  else
+    GIT_NAME="$(user_prompt "Enter git user name")"
+    GIT_EMAIL="$(user_prompt "Enter git email")"
+  fi
 }
 
 function install_prequisites()
