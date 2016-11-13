@@ -143,6 +143,13 @@ function main()
     return 1
   fi
 
+  msg_info "Importing environment ..." >&2
+  source "${HOME}/.environment/exports"
+  if (( $? != 0 )); then
+    msg_error "Unexpected issue importing environment" >&2
+    return 1
+  fi
+
   msg_info "Calling into homebrew installer..." >&2
   ./scripts/install-package-managers
   if (( $? != 0 )); then
