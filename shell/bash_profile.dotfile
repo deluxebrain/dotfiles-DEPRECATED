@@ -108,11 +108,13 @@ function main()
   set_shelloptions
 
   # Bring in global (checked into git) and local (not-checked into git) exports
-  # shellcheck source=/dev/null
-  [ -f "${HOME}"/.environment/path ] && source "${HOME}"/.environment/path
 
+  # path may depend on exports so run in first
   # shellcheck source=/dev/null
   [ -f "${HOME}"/.environment/exports ] && source "${HOME}"/.environment/exports
+
+  # shellcheck source=/dev/null
+  [ -f "${HOME}"/.environment/path ] && source "${HOME}"/.environment/path
 
   # shellcheck source=/dev/null
   # bring in any user profile specific "secret" exports

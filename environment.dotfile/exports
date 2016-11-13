@@ -78,7 +78,6 @@ export NODE_REPL_MODE='sloppy'
 
 export GOPATH=~/go;
 export GOBIN=$GOPATH/bin;
-export PATH=$PATH:$GOBIN;
 
 #-------------------------------------------------------------
 # Python

@@ -7,3 +7,6 @@ export PATH="$HOME/bin:$PATH"
 # Mono
 export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/Current/Commands
 
+# Go
+export PATH=$PATH:$GOBIN
+

@@ -30,10 +30,7 @@ function generate_helptags()
     # -u NONE --> dont run any initializations
     # -c      --> run command
     # -q      --> quit when done
-    vim -u NONE -c "helptags doc" -c -q
-
-    # vim used in this fashion messes with the terminal - restore it
-    stty sane
+    vim -u NONE -c "helptags doc" -c -q >/dev/null 2>&1
   else
     echo "No helptags to generate" >&2
   fi
@@ -61,6 +58,9 @@ function main()
 
   for plugin_path in "${PLUGINS_PATH}"/*; do
     install_plugin "$plugin_path" || return
+
+    # restore terminal
+    stty sane
   done
 }
 
