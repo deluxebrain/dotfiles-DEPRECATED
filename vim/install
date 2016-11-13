@@ -58,9 +58,6 @@ function main()
 
   for plugin_path in "${PLUGINS_PATH}"/*; do
     install_plugin "$plugin_path" || return
-
-    # restore terminal
-    stty sane
   done
 }
 
