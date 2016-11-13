@@ -28,7 +28,7 @@ if [ -z "$VAGRANT_HOME" ]; then
   exit 1
 fi
 sudo mkdir -p "$VAGRANT_HOME"
-chmod a+rwx "$VAGRANT_HOME"
+sudo chmod a+rwx "$VAGRANT_HOME"
 brew cask install vagrant
 brew cask install virtualbox
 brew cask install vmware-fusion
