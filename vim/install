@@ -31,6 +31,9 @@ function generate_helptags()
     # -c      --> run command
     # -q      --> quit when done
     vim -u NONE -c "helptags doc" -c -q
+
+    # vim used in this fashion messes with the terminal - restore it
+    stty sane
   else
     echo "No helptags to generate" >&2
   fi
