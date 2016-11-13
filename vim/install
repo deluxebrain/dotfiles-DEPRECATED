@@ -14,7 +14,7 @@ function run_custom_installer()
   if [ -f "${DIR}/${repos_name}" ]; then
     echo "Found custom installer for $repos_name" >&2
     # shellcheck source=/dev/null
-    . "${DIR}/${repos_name}.sh" "$repos_path"
+    "${DIR}/${repos_name}.sh" "$repos_path"
   else
     echo "No custom installer found for $repos_name" >&2
   fi

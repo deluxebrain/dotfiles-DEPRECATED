@@ -94,7 +94,9 @@ setup_profile()
 
 main()
 {
-  setup_permissions || return
+  # tccutil doesn't work with macos sierra
+  # setup_permissions || return
+
   setup_profile || return
 }
 
