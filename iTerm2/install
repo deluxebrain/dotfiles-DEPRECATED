@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-_SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd "$_SCRIPT_PATH" || exit 1
+SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$SCRIPT_PATH" || exit 1
+
+ITERM_PROFILE_DIR="${HOME}/Library/Application Support/iTerm2/DynamicProfiles"
 
 function join()
 {
@@ -29,14 +31,16 @@ form_and_verify_path()
   echo "${path}"
 }
 
-setup_permissions()
+function set_iterm_profile
 {
-  # Grant accessibility access to iterm and all scripts executed from iterm
-  echo "Granting accessibility access to iTerm..." >&2
-  sudo tccutil -i com.googlecode.iterm2
+  if [ -n "${TMUX}" ]; then
+    echo -ne "\033Ptmux;\033\033]50;SetProfile=$1\007\033\\"
+  else
+    echo -ne "\033]50;SetProfile=$1\007"
+  fi
 }
 
-setup_profile()
+function setup_profile()
 {
   local profile_path colorscheme_path
 
@@ -49,13 +53,13 @@ setup_profile()
     echo "Export variable ITERM_PROFILE_DIR not set or not valid path" >&2
     return 1
   fi
-  profile_path="$(path_combine "${ITERM_PROFILE_DIR}" "${_PROFILE_NAME}".plist)"
+  profile_path="$(path_combine "${ITERM_PROFILE_DIR}" "${PROFILE_NAME}".plist)"
 
   # form path to colorscheme plist
   colorscheme_path="$(form_and_verify_path \
     "/Users/${USER}" \
     ".themes" \
-    "${_PROFILE_COLORSCHEME_NAME}")"
+    "${PROFILE_COLORSCHEME_NAME}")"
   if (( $? != 0 )); then
     echo "Unable to form path to colorscheme list" >&2
     return 1
@@ -87,16 +91,12 @@ setup_profile()
     <(plutil -convert json "${colorscheme_path}" -o -) \
     > "${profile_path}"
 
-  echo "Configuring iTerm to use ${_PROFILE_NAME}" >&2
-  set_iterm_profile "${_PROFILE_NAME}"
-  do_iterm_growl "Profile ${_PROFILE_NAME} created and set as current profile"
+  echo "Configuring iTerm to use ${PROFILE_NAME}" >&2
+  set_iterm_profile "${PROFILE_NAME}"
 }
 
 main()
 {
-  # tccutil doesn't work with macos sierra
-  # setup_permissions || return
-
   setup_profile || return
 }
 

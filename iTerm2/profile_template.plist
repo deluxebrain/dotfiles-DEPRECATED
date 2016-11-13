@@ -1,9 +1,7 @@
 {
-	"Profiles": [
-		{
-			"Name": "${_PROFILE_NAME}",
-			"Guid": "${_PROFILE_ID}",
-			"Normal Font": "${_PROFILE_FONT_FAMILY} ${_PROFILE_FONT_SIZE}"
-		}
-	]
+  "Profiles": [{
+    "Name": "${PROFILE_NAME}",
+    "Guid": "${PROFILE_ID}",
+    "Normal Font": "${PROFILE_FONT_FAMILY} ${PROFILE_FONT_SIZE}"
+  }]
 }
