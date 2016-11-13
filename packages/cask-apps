@@ -22,6 +22,10 @@ brew cask install firefox
 brew cask install google-drive
 
 # Virtualisation and packaging
+# set the vagrant home directory before installation
+sudo mkdir -p /var/vagrant/home
+chmod a+rwx /var/vagrant/home
+export VAGRANT_HOME="/var/vagrant/home"
 brew cask install vagrant
 brew cask install virtualbox
 brew cask install vmware-fusion

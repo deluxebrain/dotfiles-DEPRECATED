@@ -1,6 +1,0 @@
-#!/bin/bash
-
-echo "Creating Vagrant home directory..." >&2
-sudo mkdir -p /var/vagrant/home
-sudo chmod a+rwx /var/vagrant/home
-
