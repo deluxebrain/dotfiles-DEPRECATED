@@ -75,6 +75,10 @@ Host default-github.com
 EOF
 fi
 
+echo "Adding github to known_hosts ..." >&2
+grep "github" "${HOME}/.ssh/known_hosts" >/dev/null 2>&1 || \
+  ssh-keyscan -t -rsa github.com >> "${HOME}/.ssh/known_hosts"
+
 echo "Copying public key to the clipboard ready to add to github ..." >&2
 pbcopy < "${HOME}/.ssh/id_rsa.pub"
 if (( $? != 0 )); then
