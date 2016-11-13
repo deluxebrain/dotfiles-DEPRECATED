@@ -20,17 +20,36 @@ function run_custom_installer()
   fi
 }
 
+# run in subshell as messes with cwd
 function generate_helptags()
 (
   cd "$1" || return
 
   if [ -d "./doc" ]; then
     echo "Generating helptags from doc directory" >&2
+    # -u NONE --> dont run any initializations
+    # -c      --> run command
+    # -q      --> quit when done
     vim -u NONE -c "helptags doc" -c -q
   else
     echo "No helptags to generate" >&2
   fi
-  )
+)
+
+# run in subshell as messes with cwd
+function install_plugin()
+(
+  cd "$1" || return
+  repos_name="$(git name)"
+  echo "Installing vim plugin $repos_name" >&2
+  git submodule update --init --recursive
+
+  echo "Running custom installer for $repos_name" >&2
+  run_custom_installer "$repos_name" "$repos_path"
+
+  echo "Generating help tags for $repos_name" >&2
+  generate_helptags "$repos_path"
+)
 
 function main()
 {
@@ -38,18 +57,7 @@ function main()
   local repos_name
 
   for plugin_path in "${PLUGINS_PATH}"/*; do
-  (
-    cd "$plugin_path" || return
-    repos_name="$(git name)"
-    echo "Installing vim plugin $repos_name" >&2
-    git submodule update --init --recursive
-
-    echo "Running custom installer for $repos_name" >&2
-    run_custom_installer "$repos_name" "$repos_path"
-
-    echo "Generating help tags for $repos_name" >&2
-    generate_helptags "$repos_path"
-  )
+    install_plugin "$plugin_path" || return
   done
 }
 

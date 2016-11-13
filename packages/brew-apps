@@ -117,11 +117,14 @@ brew install postgis           # spatial database extender for postgres
 brew install ruby
 
 # python
-# brew install python         # use pyenv to install python
+# brew install python          # use pyenv to install python
 # brew install python3
 brew install pyenv             # python version manager (c.f rvm)
 brew install pyenv-virtualenv  # pyenv virtual environments
 brew install pyside            # Python bindings for Qt - needed for yubikey-neo-manager
+
+# node
+brew install nvm
 
 # Erlang / Elixir
 brew install erlang

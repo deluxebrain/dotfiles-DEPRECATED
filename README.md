@@ -7,7 +7,9 @@ Install as follows:
 ```sh
 git clone https://github.com/deluxebrain/dotfiles && cd dotfiles
 export HOMEBREW_GITHUB_API_TOKEN="<personal-access-token>"
-./install 2>&1 | tee install.log
+./install 2>&1 \
+| awk '{ print strftime ("%Y-%m-%d %H:%M:%S "), $0, fflush();}' \
+| tee install.log
 ```
 
 Along the way - you will be asked the following:
