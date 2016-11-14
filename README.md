@@ -1,6 +1,26 @@
 # @deluxebrain does dotfiles
 
-## Installation
+## OS installation
+
+Boot machine, holding `Command` `Option` `P` `R` keys to clean NVRAM. Wait for the beep and keep holding keys until the machine reboots.
+
+Then reboot machine one further time, holding `Command` `R` keys to launch recovery mode. From there, proceed to format disk and install the OS. 
+
+## First boot
+
+### User accounts
+
+TODO
+
+### Application firewwall
+
+Although the `dotfiles` installation will install and configure the application firewall, you probably want to manually set this up at this stage to further protect your machine.
+
+1.  System Preferences --> Security & Privacy
+    a. Firewall --> Turn on Firewall
+    b. Firewall Options ... --> Enable stealth mode
+
+## dotfiles Installation
 
 Install as follows:
 
