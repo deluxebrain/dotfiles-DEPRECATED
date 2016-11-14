@@ -11,6 +11,7 @@ function run_custom_installer()
   repos_name="$1"
   repos_path="$2"
 
+  echo "Looking for custom installer for $repos_name in $repos_path" >&2
   if [ -f "${DIR}/${repos_name}" ]; then
     echo "Found custom installer for $repos_name" >&2
     # shellcheck source=/dev/null
@@ -23,6 +24,7 @@ function run_custom_installer()
 # run in subshell as messes with cwd
 function generate_helptags()
 (
+  echo "Changing directory to helptags path $1" >&2
   cd "$1" || return
 
   if [ -d "./doc" ]; then
@@ -39,7 +41,9 @@ function generate_helptags()
 # run in subshell as messes with cwd
 function install_plugin()
 (
+  echo "Changing directory to plugin path $1" >&2
   cd "$1" || return
+
   repos_name="$(git name)"
   echo "Installing vim plugin $repos_name" >&2
   git submodule update --init --recursive
@@ -56,6 +60,7 @@ function main()
   local plugin_path
   local repos_name
 
+  echo "Looking for plugins in $PLUGINS_PATH" >&2
   for plugin_path in "${PLUGINS_PATH}"/*; do
     install_plugin "$plugin_path" || return
   done

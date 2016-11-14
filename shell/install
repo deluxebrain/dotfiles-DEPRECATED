@@ -10,5 +10,5 @@ if ! grep -Fxq '/usr/local/bin/bash' /etc/shells; then
   sudo bash -c "echo /usr/local/bin/bash >> /etc/shells"
 fi
 
-sudo chsh -s /usr/local/bin/bash
+sudo chsh -s /usr/local/bin/bash "$USER"
 
