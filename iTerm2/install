@@ -49,9 +49,14 @@ function setup_profile()
   source ./profile.conf || return 1
 
   # form profile plist file path
-  if [[ ( -z "${ITERM_PROFILE_DIR}" ) || ( ! -d "${ITERM_PROFILE_DIR}" ) ]]; then
-    echo "Export variable ITERM_PROFILE_DIR not set or not valid path" >&2
+  if [ -z "$ITERM_PROFILE_DIR" ]; then
+    echo "Export variable ITERM_PROFILE_DIR not set" >&2
     return 1
+  fi
+  # if iterm has yet be started for the first time, iterm profile directory will not exist
+  if [ ! -d "$ITERM_PROFILE_DIR" ]; then
+    echo "Creating iterm profile directory ..." >&2
+    mkdir -p "$ITERM_PROFILE_DIR"
   fi
   profile_path="$(path_combine "${ITERM_PROFILE_DIR}" "${PROFILE_NAME}".plist)"
 
