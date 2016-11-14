@@ -8,11 +8,47 @@ Then reboot machine one further time, holding `Command` `R` keys to launch recov
 
 ## First boot
 
-### User accounts
+### Setup the initial user
 
-TODO
+The first user account created is always an administrator account ( members of the admin group with sudo access ). I usually reserve this initial account as a system-wide "support" account - reserved for performing administrative actions such as creating new accounts, dealing with account recovery etc. 
+In many cases this is overkill - but very useful in situations where a single machine is being operated with multiple user accounts.
 
-### Application firewwall
+MacOS Sierra allows accounts to be hidden both from the login screen and Finder, which is especially relevant to this initial support user and helps keep the system tidy.
+
+#### Hiding the initial support user
+
+Perform the following steps from the Terminal, loggedin as an administrator:
+
+```sh
+# Hide the user from the login window
+sudo dscl . create /Users/<user-name> IsHidden 1
+
+# To unhide the user
+sudo dscl . create /Users/<user-name> IsHidden 0
+
+# Move the home directory to /var ( a hidden directory )
+sudo mv /Users/hiddenuser /var/<user-name>
+sudo dscl . -create /Users/<user-name> NFSHomeDirectory /var/<user-name>
+
+# Remove the Public Folder share point
+sudo dscl . -delete "/SharePoints/Hidden User's Public Folder"
+```
+
+Remember that this user is only hidden from these specific aspects. For example, the following command will display the user:
+
+```sh
+dscacheutil -q user
+```
+
+#### Logging in as the hidden support user
+
+From the login screen, perform the following steps;
+
+1.  Select any user using the arrow keys, ensuring the password entry box remains closed
+2.  Press `opt` `return` to bring up a username and password text entry field 
+3.  Sign in by manually entering the account details
+
+### Setup the application firewwall
 
 Although the `dotfiles` installation will install and configure the application firewall, you probably want to manually set this up at this stage to further protect your machine.
 

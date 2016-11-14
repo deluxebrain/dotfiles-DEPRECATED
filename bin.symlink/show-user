@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+  echo "Usage: ${BASH_SOURCE[0]##*/} account-name" >&2
+  exit 1
+fi
+
+sudo dscl . create "/Users/$1" IsHidden 0
+

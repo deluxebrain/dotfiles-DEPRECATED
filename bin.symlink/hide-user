@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+if [[ ( -z "$1" ) || ( -z "$2" ) ]]; then
+  echo "Usage: ${BASH_SOURCE[0]##*/} account-name full-name " >&2
+  exit 1
+fi
+
+sudo dscl . create "/Users/$1" IsHidden 1
+sudo mv "/Users/$1" "/var/$1"
+sudo dscl . -create "/Users/$1" NFSHomeDirectory "/var/$1"
+sudo dscl . -delete "/SharePoints/${2}'s Public Folder"
+
