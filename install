@@ -181,7 +181,8 @@ function main()
     return 1
   fi
 
-  msg_info "Installation completed - some changes wont come into affect until a reboot" >&2
+  msg_info "Installation completed"
+  msg_warn "Nothing will really work until you reboot ..." >&2
 }
 
 main
