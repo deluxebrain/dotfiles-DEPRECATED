@@ -5,6 +5,14 @@ cd "$DIR" || exit
 
 PLUGINS_PATH="./vim.dotfile/pack/plugins/start"
 
+function get_git_repos_name()
+{
+  git remote show origin -n \
+    | grep "Fetch URL" \
+    | awk -F': ' '{print $2}' \
+    | xargs -I"{}" basename "{}" .git
+}
+
 function run_custom_installer()
 {
   local repos_name repos_path
@@ -44,7 +52,7 @@ function install_plugin()
   echo "Changing directory to plugin path $1" >&2
   cd "$1" || return
 
-  repos_name="$(git name)"
+  repos_name="$(get_git_repos_name)"
   echo "Installing vim plugin $repos_name" >&2
   git submodule update --init --recursive
 
