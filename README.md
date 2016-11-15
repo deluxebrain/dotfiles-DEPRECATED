@@ -17,7 +17,9 @@ MacOS Sierra allows accounts to be hidden both from the login screen and Finder,
 
 #### Hiding the initial support user
 
-Perform the following steps from the Terminal, loggedin as an administrator:
+Perform the following steps from the Terminal, logged in as an administrator: 
+
+Note that these steps are available post dotfiles installation using the `hide-user` script.
 
 ```sh
 # Hide the user from the login window
@@ -55,6 +57,12 @@ Although the `dotfiles` installation will install and configure the application 
 1.  System Preferences --> Security & Privacy
     a. Firewall --> Turn on Firewall
     b. Firewall Options ... --> Enable stealth mode
+
+### Any other prerequisites
+
+The dotfiles installation will install the `xcode-cli` tools - which is required by e..g homebrew.
+
+However - a significant minority of package installations are dependent on the full xcode experience. Although it appears that this dependency can be installed _after_ the installation of the dependent packages, its probably worth going ahead and installing xcode before proceeding with the dotfiles install.
 
 ## dotfiles Installation
 
