@@ -1,4 +1,4 @@
-# Testing with Packer and Vagrant
+# dotfiles development and testing
 
 ## Prerequisites
 
@@ -53,7 +53,7 @@ TODO
 
 Download MacOS installer to `/var/media/iso` directory.
 
-Clone _osx-vm-templates_ git repository. Note - the best practice is to use the packer builds as application agnostic base builds. In this way - the image configurations are geared towards the requirements for the baking process - not any specific application usage of the build. Any additional configuration of the images for any application specific requirements are there done through the `vagrantfile`. This means that it should not be necessary to make any alterations to the actual template repository. 
+The _osx-vm-templates_ git repository has been linked as a submodule. Note - the best practice is to use the packer builds as application agnostic base builds. In this way - the image configurations are geared towards the requirements for the baking process - not any specific application usage of the build. Any additional configuration of the images for any application specific requirements are there done through the `vagrantfile`. This means that it should not be necessary to make any alterations to the actual template repository. 
 
 The native MacOS installer does not support bootstrapping via vagrant. The `prepare_iso.sh` script exists to perform modifications to the image to this end.
 

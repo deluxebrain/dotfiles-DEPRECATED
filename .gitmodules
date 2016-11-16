@@ -217,3 +217,6 @@
 [submodule "vim/vim.dotfile/pack/plugins/start/tern_for_vim"]
 	path = vim/vim.dotfile/pack/plugins/start/tern_for_vim
 	url = git@github.com:ternjs/tern_for_vim.git
+[submodule "dotfiles-dev/osx-vm-templates"]
+	path = dotfiles-dev/osx-vm-templates
+	url = git@github.com:timsutton/osx-vm-templates.git
