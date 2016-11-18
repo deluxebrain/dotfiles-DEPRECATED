@@ -13,6 +13,7 @@ brew cask install spectacle       # window manager
 # karabiner
 # seil
 brew cask install karabiner-elements
+brew cask install tuntap # required by openvon
 
 # Browsers and related
 brew cask install google-chrome
