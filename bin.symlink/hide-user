@@ -5,8 +5,16 @@ if [[ ( -z "$1" ) || ( -z "$2" ) ]]; then
   exit 1
 fi
 
+# Hide the user
 sudo dscl . create "/Users/$1" IsHidden 1
-sudo mv "/Users/$1" "/var/$1"
-sudo dscl . -create "/Users/$1" NFSHomeDirectory "/var/$1"
+
+# Move the users home
+# REMOVED FOR NOW - this messes with /Users/$USER
+# sudo mv "/Users/$1" "/var/$1"
+# sudo dscl . -create "/Users/$1" NFSHomeDirectory "/var/$1"
+
+# Hide the users Public Folder mount point
 sudo dscl . -delete "/SharePoints/${2}'s Public Folder"
 
+# Hide "Other users" from login window
+sudo defaults write /Library/Preferences/com.apple.loginwindow SHOWOTHERUSERS_MANAGED -bool FALSE

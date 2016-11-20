@@ -11,6 +11,10 @@ if [ ! "$HOMEBREW_GITHUB_API_TOKEN" ]; then
   return 1
 fi
 
+echo "Setting up file permissions to support multi-user environments" >&2
+sudo chgrp -R admin /usr/local
+sudo chmod -R g+w /usr/local
+
 if ! app_exists "brew"; then
   echo "Installing Homebrew ..." >&2
   # redirect stdin away from tty to avoid any user prompts
