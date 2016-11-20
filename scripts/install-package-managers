@@ -12,7 +12,17 @@ if [ ! "$HOMEBREW_GITHUB_API_TOKEN" ]; then
 fi
 
 echo "Setting up file permissions to support multi-user environments" >&2
-sudo chgrp -R admin /usr/local
+# Create account for the admistration of homebrew and add current user
+if ! dseditgroup -q -o read homebrew >/dev/null 2>&1; then
+  echo "Creating homebrew group ..." >&2
+  sudo dseditgroup -o create homebrew
+fi
+if ! dseditgroup -q -o checkmember -m "$USER" homebrew >/dev/null 2>&1; then
+  echo "Adding current user to homebrew group ..." >&2
+  sudo dseditgroup -o edit -a "$USER" -t user homebrew
+fi
+echo "Setting up file permissions for homebrew ..." >&2
+sudo chgrp -R homebrew /usr/local
 sudo chmod -R g+w /usr/local
 
 if ! app_exists "brew"; then
@@ -21,8 +31,7 @@ if ! app_exists "brew"; then
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null
 fi
 
-brew cask --version >/dev/null 2>&1
-if (( $? != 0 )); then
+if ! brew cask --version >/dev/null 2>&1; then
   echo "Installing Cask ..." >&2
   brew install caskroom/cask/brew-cask
 fi

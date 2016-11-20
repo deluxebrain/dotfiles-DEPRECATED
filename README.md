@@ -69,7 +69,7 @@ However - a significant minority of package installations are dependent on the f
 Install as follows:
 
 ```sh
-git clone https://github.com/deluxebrain/dotfiles && cd dotfiles
+git clone git@github.com:deluxebrain/dotfiles.git && cd dotfiles
 export HOMEBREW_GITHUB_API_TOKEN="<personal-access-token>"
 ./install 2>&1 \
 | awk '{ print strftime ("%Y-%m-%d %H:%M:%S "), $0, fflush();}' \
