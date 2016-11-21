@@ -116,7 +116,8 @@ let g:syntastic_elixir_checkers = "elixir"
 " YouCompleteMe
 "
 " Needed after moving to PyEnv for Python environment management
-let g:ycm_path_to_python_interpreter='/usr/bin/python'
+" No longer needed as using default system python
+" let g:ycm_path_to_python_interpreter='/usr/bin/python'
 
 "
 " Ctrl-P

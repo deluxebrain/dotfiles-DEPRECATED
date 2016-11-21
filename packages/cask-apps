@@ -19,8 +19,9 @@ brew cask install tuntap # required by openvon
 brew cask install google-chrome
 brew cask install firefox
 
-# Google
+# Cloud
 brew cask install google-drive
+brew cask install dropbox
 
 # Virtualisation and packaging
 # set the vagrant home directory before installation

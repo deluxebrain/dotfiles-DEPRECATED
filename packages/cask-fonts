@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 # https://github.com/caskroom/homebrew-fonts/tree/master/Casks
+# To support machines with multiple accounts the fonts need to be REINSTALLED
+# per user account
 brew cask reinstall font-m-plus
 brew cask reinstall font-clear-sans
 brew cask reinstall font-roboto
