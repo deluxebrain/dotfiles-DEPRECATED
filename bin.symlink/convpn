@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
 cd ~/.openvpn || exit
-sudo openvpn --config ./client.ovpn
-
+sudo openvpn --config ./client.ovpn &
 

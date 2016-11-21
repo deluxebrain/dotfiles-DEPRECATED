@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "Adding openvpn to sudoers for current user" >&2
+echo "$USER host = (root) NOPASSWD: /usr/local/sbin/openvpn" | (sudo bash -c 'EDITOR="tee -a" visudo')
