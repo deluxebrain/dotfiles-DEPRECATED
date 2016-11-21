@@ -60,6 +60,7 @@ brew install libtiff         # support for the Tag Image File Fomrat (TIFF) used
 brew install graphviz        # graph visualization software
 
 # Powertools
+brew install expect
 brew install ossp-uuid # uuid's
 brew install spark
 brew install jq              # e.g. < my_json.json jq '.' to pretty print
