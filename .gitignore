@@ -8,3 +8,4 @@ mix.lock
 # Vagrant
 .vagrant
 
+log/

@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd "$DIR" || exit
-
 cd ~/.openvpn || exit
 sudo openvpn --config ./client.ovpn
 
