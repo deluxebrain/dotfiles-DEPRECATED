@@ -5,6 +5,14 @@ if [[ ( -z "$1" ) || ( -z "$2" ) ]]; then
   exit 1
 fi
 
+# Other useful stuff
+# list users
+# dscl . list /Users | grep <user>
+# delete user
+# sudo dscl . delete /Users/<user>
+# remove the hidden flag
+# sudo dscl . delete /Users/<user> IsHidden
+
 # Hide the user
 sudo dscl . create "/Users/$1" IsHidden 1
 
