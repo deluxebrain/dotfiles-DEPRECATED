@@ -5,34 +5,35 @@ cd "$DIR" || exit
 
 PLUGINS_PATH="./vim.dotfile/pack/plugins/start"
 
-function get_git_repos_name()
-{
+function get_repos_name()
+(
+  cd "$1" || return
+
   git remote show origin -n \
     | grep "Fetch URL" \
     | awk -F': ' '{print $2}' \
     | xargs -I"{}" basename "{}" .git
-}
+)
 
 function run_custom_installer()
 {
-  local repos_name repos_path
-  repos_name="$1"
-  repos_path="$2"
+  local plugin_name plugin_path
+  plugin_name="$1"
+  plugin_path="$2"
 
-  echo "Looking for custom installer for $repos_name in $repos_path" >&2
-  if [ -f "${DIR}/${repos_name}" ]; then
-    echo "Found custom installer for $repos_name" >&2
+  echo "Looking for custom installer for $plugin_name in $(pwd)" >&2
+  if [ -f "./${plugin_name}.sh" ]; then
+    echo "Found custom installer for $plugin_name" >&2
     # shellcheck source=/dev/null
-    "${DIR}/${repos_name}.sh" "$repos_path"
+    "./${plugin_name}.sh" "$plugin_path"
   else
-    echo "No custom installer found for $repos_name" >&2
+    echo "No custom installer found for $plugin_name" >&2
   fi
 }
 
 # run in subshell as messes with cwd
 function generate_helptags()
 (
-  echo "Changing directory to helptags path $1" >&2
   cd "$1" || return
 
   if [ -d "./doc" ]; then
@@ -49,28 +50,22 @@ function generate_helptags()
 # run in subshell as messes with cwd
 function install_plugin()
 (
-  echo "Changing directory to plugin path $1" >&2
   cd "$1" || return
-
-  repos_name="$(get_git_repos_name)"
-  echo "Installing vim plugin $repos_name" >&2
   git submodule update --init --recursive
-
-  echo "Running custom installer for $repos_name" >&2
-  run_custom_installer "$repos_name" "$repos_path"
-
-  echo "Generating help tags for $repos_name" >&2
-  generate_helptags "$repos_path"
 )
 
 function main()
 {
   local plugin_path
-  local repos_name
+  local plugin_name
 
   echo "Looking for plugins in $PLUGINS_PATH" >&2
   for plugin_path in "${PLUGINS_PATH}"/*; do
+    plugin_name="$(get_repos_name "$plugin_path")" || return
+    echo "Installing vim plugin $plugin_name from $plugin_path" >&2
     install_plugin "$plugin_path" || return
+    run_custom_installer "$plugin_name" "$plugin_path" || return
+    generate_helptags "$plugin_path" || return
   done
 }
 

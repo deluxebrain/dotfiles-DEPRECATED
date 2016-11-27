@@ -131,6 +131,9 @@ let g:syntastic_elixir_checkers = "elixir"
 " Needed after moving to PyEnv for Python environment management
 " No longer needed as using default system python
 " let g:ycm_path_to_python_interpreter='/usr/bin/python'
+" Use these if something else is bound to tab
+" let g:ycm_key_list_select_completion=[ ]
+" let g:ycm_key_list_previous_completion=[ ]
 
 "
 " Ctrl-P
