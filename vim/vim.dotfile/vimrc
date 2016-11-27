@@ -87,12 +87,23 @@ set t_Co=256
 let g:Powerline_symbols = "fancy"
 
 "
+" Turbux
+"
+let g:no_turbux_mappings=1
+map <leader>rt <Plug>SendTestToTmux
+map <leader>rT <Plug>SendFocusedTestToTmux
+
 " Tern
 "
 " Enable keyboard shortcuts
-let g:tern_map_keys=1
+" let g:tern_map_keys=1
 " display argument type hints when cursor left over function
 let g:tern_show_argument_hints='on_hold'
+map <leader>td :TernDef<CR>
+map <leader>td :TernDoc<CR>
+map <leader>tt :TernType<CR>
+map <leader>tr :TernRefs<CR>
+map <leader>tR :TernRename<CR>
 
 "
 " EditorConfig
