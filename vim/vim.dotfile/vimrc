@@ -44,6 +44,13 @@ function! QuitLeftoverWindows()
 endfunction
 
 "
+" Plugins
+"
+
+" General
+helptags ALL " regenerate helptags at start
+
+"
 " Colorscheme
 "
 syntax enable
@@ -78,6 +85,12 @@ exec "set rtp+=" . pippath
 set t_Co=256
 " Enable unicode symbols for Powerline
 let g:Powerline_symbols = "fancy"
+
+"
+" EditorConfig
+"
+" Play nicely with Fugitive
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 "
 " Syntastic

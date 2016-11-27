@@ -220,3 +220,6 @@
 [submodule "dotfiles-dev/osx-vm-templates"]
 	path = dotfiles-dev/osx-vm-templates
 	url = git@github.com:timsutton/osx-vm-templates.git
+[submodule "vim/vim.dotfile/pack/plugins/start/editorconfig-vim"]
+	path = vim/vim.dotfile/pack/plugins/start/editorconfig-vim
+	url = git@github.com:editorconfig/editorconfig-vim.git
