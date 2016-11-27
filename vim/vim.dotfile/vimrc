@@ -87,6 +87,14 @@ set t_Co=256
 let g:Powerline_symbols = "fancy"
 
 "
+" Tern
+"
+" Enable keyboard shortcuts
+let g:tern_map_keys=1
+" display argument type hints when cursor left over function
+let g:tern_show_argument_hints='on_hold'
+
+"
 " EditorConfig
 "
 " Play nicely with Fugitive
@@ -165,8 +173,8 @@ let test#strategy = {
       \ 'file': 'tslime',
       \ 'suite': 'tslime',
       \}
-nmap <silent> <leader>t :TestNearest<CR>
-nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>u :TestNearest<CR>
+nmap <silent> <leader>u :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
 
 "

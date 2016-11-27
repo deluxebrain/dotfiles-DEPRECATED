@@ -11,6 +11,7 @@ npm install -g eslint-plugin-jasmine
 npm install -g eslint-plugin-react
 npm install -g eslint-config-defaults # Plugin for ESLint that provides sets of configuration
 npm install -g jsonlint
+npm install -g tern
 
 # Misc
 npm install -g js-yaml
