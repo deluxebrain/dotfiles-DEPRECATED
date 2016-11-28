@@ -51,3 +51,6 @@ brew cask install gpgtools
 brew cask install visual-studio-code
 brew cask install xamarin-studio
 
+# Java
+brew cask install java
+
