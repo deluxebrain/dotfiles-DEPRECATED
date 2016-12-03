@@ -3,6 +3,10 @@
 "
 syntax on
 filetype plugin indent on
+" use utf-8
+set encoding=utf-8      " display encoding
+set fileencoding=utf-8  " file encoding
+
 " want to map caps to escape and ctrl - but can in macos sierra
 " so for now caps is ctrl and use jk,kj for escape
 :imap jk <Esc>

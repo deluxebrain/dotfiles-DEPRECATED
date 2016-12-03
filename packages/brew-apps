@@ -76,6 +76,7 @@ brew install pwgen           # cli tool for generating strong passwords
 brew install youtube-dl
 brew install fzf             # fuzzy file finder
 brew install pandoc
+brew install dos2unix
 
 # website generators
 brew install hugo

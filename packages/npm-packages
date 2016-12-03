@@ -32,3 +32,5 @@ npm install -g remark-html
 npm install -g selenium-standalone
 npm install -g phantomjs
 npm install -g allure-commandline     # ui for mocha tests / plays nicely with webdriverio
+npm install -g mocha
+
