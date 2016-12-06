@@ -54,3 +54,6 @@ brew cask install xamarin-studio
 # Java
 brew cask install java
 
+# MySQL
+brew cask install mysqlworkbench
+
