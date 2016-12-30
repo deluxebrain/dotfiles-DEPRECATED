@@ -84,7 +84,20 @@ Along the way - you will be asked the following:
 -   To add the newly generated ssh public key to your github account
 -   For any pre-existing dotfiles, you will need to confirm the overwrite action
 
-Once this information has all been entered the install should continue unattended.
+Once this information has all been entered the install should continue unattended. It suggests a reboot once completed - it is prudent todo so at this time.
+
+### Post installation manual steps
+
+Applications installed via `cask` will need a manual first run to go through their inital setup and add themselves to start at login (as appropriate).
+
+Additionall, the `dotfiles` repos will have been cloned using `https`. This is fine is the repos is to be treated as readonly. However - to allow `push`es this needs to be updated to `ssh` as follows:
+
+```sh
+cd PATH_TO_DOTFILES_REPOS
+git remote -v # verify current origin
+git remove set-url origin git@github.com:USERNAME/REPOS.git
+git remove -v # verify new origin 
+```
 
 ## Symlinking
 
