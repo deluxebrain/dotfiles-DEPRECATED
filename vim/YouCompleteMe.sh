@@ -14,7 +14,8 @@ function main()
     --omnisharp-completer \
     --gocode-completer \
     --tern-completer \
-    --racer-completer
+    --racer-completer \
+    --clang-completer
 }
 
 main "$@"
