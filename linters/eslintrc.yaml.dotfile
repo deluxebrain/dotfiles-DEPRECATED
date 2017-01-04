@@ -1,9 +1,0 @@
----
-  extends:
-    - defaults/configurations/google
-  plugins:
-    - eslint-plugin-angular
-    - eslint-plugin-react
-    - eslint-plugin-jasmine
-
-

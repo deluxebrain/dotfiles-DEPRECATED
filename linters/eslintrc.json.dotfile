@@ -1,0 +1,18 @@
+{
+  "extends": "defaults/configuration/google",
+  "plugins": [
+    "eslint-plugin-angular",
+    "eslint-plugin-react",
+    "eslint-plugin-jasmine"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "semi": 2
+  }
+}
