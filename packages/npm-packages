@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Languages
+npm install -g typescript
+
 # Javascript linters, etc
 npm install -g underscore-cli         # JSON processor
 npm install -g jshint                 # Javascript linter
