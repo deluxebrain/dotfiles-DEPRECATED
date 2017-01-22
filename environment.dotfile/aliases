@@ -245,6 +245,8 @@ alias debug="bash -x"
 # Package managers
 #-------------------------------------------------------------
 
-alias brewup="brew update && brew upgrade brew-cask && brew cleanup && brew cask cleanup"
-alias brewupall="brew update && brew upgrade && brew cleanup && brew cask cleanup"
+alias brewup="brew update && brew upgrade && brew cleanup && brew cask cleanup"
+alias caskup="brew cask list | xargs brew cask install --force"
+alias vagrantup="vagrant plugin update"
+
 alias syspip="/usr/local/bin/pip"

@@ -154,7 +154,7 @@ brew install lynx
 # tmux and associated
 brew install tmux
 # https://robots.thoughtbot.com/tmux-copy-paste-on-os-x-a-better-future
-brew install reattach-to-user-namespace      # enable copy and paste
+brew install reattach-to-user-namespace -with-wrap-pbcopy-and-pbpaste # enable copy and paste
 
 # and why not
 brew install nyancat

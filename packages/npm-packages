@@ -37,3 +37,9 @@ npm install -g phantomjs
 npm install -g allure-commandline     # ui for mocha tests / plays nicely with webdriverio
 npm install -g mocha
 
+# Cloud
+npm install -g serverless
+
+# Transpilers
+npm install -g fable-compiler
+
