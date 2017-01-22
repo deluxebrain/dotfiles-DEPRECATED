@@ -1,6 +1,8 @@
 {
 	"common": {
-		"term_truecolor": false
+		"term_truecolor": false,
+		"log_file": "~/log/powerline.log",
+		"log_level": "ERROR"
 	},
 	"ext": {
 		"ipython": {
@@ -25,8 +27,8 @@
 			}
 		},
 		"tmux": {
-			"colorscheme": "solarized",
-			"theme": "default"
+			"colorscheme": "custom-solarized",
+			"theme": "custom"
 		},
 		"vim": {
 			"colorscheme": "solarized",

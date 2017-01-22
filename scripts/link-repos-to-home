@@ -143,6 +143,10 @@ function form_link_path()
     name="$(basename "${src%.template}")"
     dst="${HOME}/.${name}"
     ;;
+  create)
+    name="$(basename "${src%.create}")"
+    dst="${HOME}/${name}"
+    ;;
   *)
     msg_error "unknown link format ${link_type}"
     return 1
@@ -227,7 +231,14 @@ function link_file()
     ;;
   template)
     msg_info "Rendering template $src to $dst ..."
-    render_template "$src" > "$dst" ;;
+    render_template "$src" > "$dst"
+    ;;
+  create)
+    msg_info "Creating directory $dst ..."
+    if [ ! -d "$dst" ]; then
+      mkdir "$dst"
+    fi
+    ;;
   *)
     msg_error "unknown link format $link_type"
     false; return;

@@ -223,3 +223,9 @@
 [submodule "vim/vim.dotfile/pack/plugins/start/editorconfig-vim"]
 	path = vim/vim.dotfile/pack/plugins/start/editorconfig-vim
 	url = git@github.com:editorconfig/editorconfig-vim.git
+[submodule "tmux.dotfile/plugins/tpm"]
+	path = tmux.dotfile/plugins/tpm
+	url = git@github.com:tmux-plugins/tpm.git
+[submodule "tmux.dotfile/plugins/tmux-battery"]
+	path = tmux.dotfile/plugins/tmux-battery
+	url = git@github.com:tmux-plugins/tmux-battery.git
