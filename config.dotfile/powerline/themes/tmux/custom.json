@@ -16,7 +16,9 @@
 			"function": "powerline.segments.common.bat.battery",
 			"args": {
 				"gamify": false,
-				"steps": 5
+				"steps": 5,
+				"offline": "",
+				"online": ""
 			}
 		}, {
 			"function": "powerline.segments.common.net.hostname"
