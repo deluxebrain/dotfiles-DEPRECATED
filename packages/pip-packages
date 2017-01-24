@@ -11,9 +11,12 @@
 pip install aws-shell
 pip install awscli
 
+# Powerline and related
+pip install powerline-status
+pip install psutil # uptime
+
 # tools
 # pip install pygments
-pip install powerline-status
 # pip install pyinstaller             # dependency for yubikey-neo-manager
 # pip install pycrypto                # dependency for yubikey-neo-manager
 # pip install ansible-lint
