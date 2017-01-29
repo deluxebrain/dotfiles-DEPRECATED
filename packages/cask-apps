@@ -15,6 +15,9 @@ brew cask install spectacle       # window manager
 brew cask install karabiner-elements
 brew cask install tuntap # required by openvon
 
+# Ops
+brew cask install chefdk
+
 # Browsers and related
 brew cask install google-chrome
 brew cask install firefox
