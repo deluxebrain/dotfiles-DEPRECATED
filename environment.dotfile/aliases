@@ -102,10 +102,6 @@ alias map="xargs -n1"
 # E.g: mt -cS lab mylog.log
 alias mt="multitail -cT ansi"
 
-#-------------------------------------------------------------
-# Dev powertools
-#-------------------------------------------------------------
-
 # Generate secure password
 # At least one number, at least one special symbol, random, 12 chars long
 alias secpwd="pwgen -n -y -s 12 1"
@@ -251,3 +247,11 @@ alias vagrantup="vagrant plugin update"
 alias pipup="pip list --outdated 2>/dev/null | cut -d ' ' -f1 | xargs -n1 pip install -U"
 
 alias syspip="/usr/local/bin/pip"
+
+
+#-------------------------------------------------------------
+# Development
+#-------------------------------------------------------------
+alias csi="csharp"
+alias fsi="fsharpi"
+
