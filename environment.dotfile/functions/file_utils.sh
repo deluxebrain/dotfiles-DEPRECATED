@@ -26,3 +26,11 @@ function tre()
   tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | ${PAGER:-less} -FRNX;
 }
 export -f tre && readonly -f tre
+
+unset t2s
+function t2s()
+{
+  expand -t 2 "$1" | sponge "$1"
+}
+export -f t2s && readonly -f t2s
+
