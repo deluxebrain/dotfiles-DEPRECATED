@@ -76,6 +76,7 @@
 [submodule "vim/vim.dotfile/pack/plugins/start/YouCompleteMe"]
 	path = vim/vim.dotfile/pack/plugins/start/YouCompleteMe
 	url = git@github.com:Valloric/YouCompleteMe.git
+	ignore = dirty
 [submodule "vim/vim.dotfile/pack/plugins/start/vim-fugitive"]
 	path = vim/vim.dotfile/pack/plugins/start/vim-fugitive
 	url = git@github.com:tpope/vim-fugitive.git

@@ -26,8 +26,13 @@
 
 3.  Updating git submodules
 
-    Use the following (including the --remote option):
+    Use the following
 
     ```shell
-    git submodule update --recursive --remote
+    git submodule update --recursive
     ```
+
+    Note - add `ignore = dirty` to the gitmodules file for any submodule that is
+    _compiled_ in some way. I.e. for submodules that that will be changed in
+    some way. This cannot be achieved using the parent gitignore file as this is
+    not inherited by submodule git repositories.
