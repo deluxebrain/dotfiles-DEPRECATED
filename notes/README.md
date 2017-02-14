@@ -23,3 +23,11 @@
 
     Note the use of `sponge` (moreutils) that allows a file to be rewritten back
     to itself.
+
+3.  Updating git submodules
+
+    Use the following (including the --remote option):
+
+    ```shell
+    git submodule update --recursive --remote
+    ```
