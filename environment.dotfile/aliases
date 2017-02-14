@@ -245,7 +245,7 @@ alias brewup="brew update && brew upgrade && brew cleanup && brew cask cleanup"
 alias caskup="brew cask list | xargs brew cask install --force"
 alias vagrantup="vagrant plugin update"
 alias pipup="pip list --outdated 2>/dev/null | cut -d ' ' -f1 | xargs -n1 pip install -U"
-
+alias modup="git submodule foreach --recursive git reset --hard; git submodule update --recursive --remote; ./vim/install; git submodule foreach --recursive git reset --hard"
 alias syspip="/usr/local/bin/pip"
 
 
