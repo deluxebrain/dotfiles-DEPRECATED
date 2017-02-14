@@ -8,4 +8,7 @@ mix.lock
 # Vagrant
 .vagrant
 
+# rust
+Cargo.lock
+
 log/
