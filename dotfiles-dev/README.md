@@ -1,11 +1,5 @@
 # dotfiles development and testing
 
-    pote that `.gitignore` files are not inherited by submodules.
-    For example, submodules that are _compiled_ in some way will generate artefacts (e.g lock files) that would usually be managed through the gitignore file.
-    However - in the case of submodules the gitignore in the parent git repository is not inherited by the submodule.
-    The solution to this is to add `ignore = dirty` to the gitmodules file for
-    the
-
 ## Prerequisites
 
 ### Packer
