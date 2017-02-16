@@ -36,3 +36,15 @@
     _compiled_ in some way. I.e. for submodules that that will be changed in
     some way. This cannot be achieved using the parent gitignore file as this is
     not inherited by submodule git repositories.
+
+4.  Debugging a vim plugin
+
+    E.g. tab completions stops working in YouCompleteMe.
+
+    Verify the current <tab> binding using:
+
+    ```sh
+    :verbose imap <tab>
+    ```
+
+    For example this was showing that the <tab> key was bound to utilsnips.

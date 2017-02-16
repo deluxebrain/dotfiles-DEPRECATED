@@ -155,3 +155,6 @@
 [submodule "tmux.dotfile/plugins/tmux-battery"]
 	path = tmux.dotfile/plugins/tmux-battery
 	url = git@github.com:tmux-plugins/tmux-battery.git
+[submodule "vim/vim.dotfile/pack/plugins/start/supertab"]
+	path = vim/vim.dotfile/pack/plugins/start/supertab
+	url = git@github.com:ervandew/supertab.git
