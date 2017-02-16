@@ -1,5 +1,11 @@
 # dotfiles development and testing
 
+    pote that `.gitignore` files are not inherited by submodules.
+    For example, submodules that are _compiled_ in some way will generate artefacts (e.g lock files) that would usually be managed through the gitignore file.
+    However - in the case of submodules the gitignore in the parent git repository is not inherited by the submodule.
+    The solution to this is to add `ignore = dirty` to the gitmodules file for
+    the
+
 ## Prerequisites
 
 ### Packer
@@ -53,14 +59,22 @@ TODO
 
 Download MacOS installer to `/var/media/iso` directory.
 
-The _osx-vm-templates_ git repository has been linked as a submodule. Note - the best practice is to use the packer builds as application agnostic base builds. In this way - the image configurations are geared towards the requirements for the baking process - not any specific application usage of the build. Any additional configuration of the images for any application specific requirements are there done through the `vagrantfile`. This means that it should not be necessary to make any alterations to the actual template repository. 
+The _osx-vm-templates_ git repository has been linked as a submodule. Note - the best practice is to use the packer builds as application agnostic base builds. In this way - the image configurations are geared towards the requirements for the baking process - not any specific application usage of the build. Any additional configuration of the images for any application specific requirements are there done through the `vagrantfile`. This means that it should not be necessary to make any alterations to the actual template repository.
 
 The native MacOS installer does not support bootstrapping via vagrant. The `prepare_iso.sh` script exists to perform modifications to the image to this end.
 
 ```sh
 sudo prepare_iso/prepare_iso.sh <path_to_source> <output directory>
-# e.g. 
+# e.g.
 # sudo prepare_iso/prepare_iso.sh "/var/media/iso/Install macos Sierra.xpp/" /var/media/iso/prepared"
+```
+
+Note if using virtualbox then support for remote management needs to be disabled
+due to a freezing issue. This is done by passing the following additioning
+options to prepare_iso.sh
+
+```sh
+-D DISABLE_REMOTE_MANAGEMENT
 ```
 
 This defaults the image to use `vagrant` for the username and password of the admin user installed by the script. Use `-u` and `-p` to override this.
@@ -69,7 +83,7 @@ This defaults the image to use `vagrant` for the username and password of the ad
 
 The packer build pipeline automatically runs in all available updates. Hence - its worth re-running the pipeline when major updates are available.
 
-1.  Run packer to create the base MacOS vagrant image. 
+1.  Run packer to create the base MacOS vagrant image.
 
     Note the provisioning delay of 30 seconds is recommended for any subsequent provisioning steps that involve Internet downloads.
 
