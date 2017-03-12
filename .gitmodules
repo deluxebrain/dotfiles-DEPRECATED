@@ -158,3 +158,6 @@
 [submodule "vim/vim.dotfile/pack/plugins/start/supertab"]
 	path = vim/vim.dotfile/pack/plugins/start/supertab
 	url = git@github.com:ervandew/supertab.git
+[submodule "vim/vim.dotfile/pack/plugins/start/vim-commentary"]
+	path = vim/vim.dotfile/pack/plugins/start/vim-commentary
+	url = git@github.com:tpope/vim-commentary.git
