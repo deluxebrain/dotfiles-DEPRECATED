@@ -50,9 +50,9 @@ git@github.com:ternjs/tern_for_vim.git
 
 # Initialize each of the submodules
 for plugin_path in ./* ; do
-  (
-    cd "$plugin_path" || exit
-    git submodule update --init --recursive
-  )
+(
+  cd "$plugin_path" || exit
+  git submodule update --init --recursive
+)
 done
 
