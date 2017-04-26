@@ -22,9 +22,6 @@
 [submodule "vim/vim.dotfile/bundle/vim-projectionist"]
 	path = vim/vim.dotfile/bundle/vim-projectionist
 	url = git@github.com:tpope/vim-projectionist.git
-[submodule "vim/vim.dotfile/bundle/ultisnips"]
-	path = vim/vim.dotfile/bundle/ultisnips
-	url = git@github.com:SirVer/ultisnips.git
 [submodule "vim/vim.dotfile/bundle/vim-autoformat"]
 	path = vim/vim.dotfile/bundle/vim-autoformat
 	url = git@github.com:Chiel92/vim-autoformat.git
